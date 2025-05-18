@@ -5,6 +5,7 @@ import java.util.List;
 
 public interface ITicketek {
 	
+	
     /**
      * 1) Registra las sedes que no tienen asientos, como los estadios.
      * Estas tienen un unico sector llamado campo.
