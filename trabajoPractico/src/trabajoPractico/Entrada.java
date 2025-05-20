@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Entrada implements IEntrada{
 	private String codigo;
 	private String nombreEspectaculo;
-	private LocalDate fecha;
+	private Fecha fecha;
 	private String sector;
 	private int ubicacion;
 	private double precioEntrada;
@@ -16,6 +16,7 @@ public class Entrada implements IEntrada{
 		this.sector = sector;
 		this.ubicacion = ubicacion;
 		this.precioEntrada = precioEntrada;
+		this.fecha = new Fecha(fecha);
 	}
 	
 	@Override

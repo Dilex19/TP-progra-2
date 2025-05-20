@@ -5,10 +5,10 @@ import java.util.HashMap;
 
 public class Espectaculo {
 	private String nombre;
-	private HashMap<LocalDate,Funcion> funciones;
+	private HashMap<Fecha,Funcion> funciones;
 	
 	Espectaculo(String nombre){
 		this.nombre =  nombre;
-		this.funciones = new  HashMap<LocalDate,Funcion>();
+		this.funciones = new  HashMap<Fecha,Funcion>();
 	}
 }
