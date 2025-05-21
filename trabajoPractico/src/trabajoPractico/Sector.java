@@ -2,7 +2,7 @@ package trabajoPractico;
 
 public class Sector {
 	private String nombre;
-	private int incremento;
+	private double incremento;
 	private	int capacidad;
 	private int cantidadDeAsientosPorFila;
 
@@ -13,7 +13,7 @@ public class Sector {
 		this.cantidadDeAsientosPorFila = cantidadDeAsientosPorFila;
 	}
 	
-	public int porcentajeAdicional() {
+	public double porcentajeAdicional() {
 		return incremento;
 	}
 	

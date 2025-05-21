@@ -14,4 +14,8 @@ public abstract class Sede {
 	public int capacidadMaxima(){
 		return this.capacidadMaxima;
 	}
+	
+	public double costoEntrada(double precioBase) {
+		return precioBase;
+	}
 }
