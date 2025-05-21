@@ -10,13 +10,19 @@ public class Entrada implements IEntrada{
 	private int ubicacion;
 	private double precioEntrada;
 	
-	Entrada(String codigo, String nombreEspectaculo, String fecha, String sector, int ubicacion, double precioEntrada){
+	Entrada(String codigo, String nombreEspectaculo, Fecha fecha, String sector, int ubicacion, double precioEntrada){
 		this.codigo = codigo;
 		this.nombreEspectaculo = nombreEspectaculo;
 		this.sector = sector;
 		this.ubicacion = ubicacion;
 		this.precioEntrada = precioEntrada;
-		this.fecha = new Fecha(fecha);
+		this.fecha =fecha;
+	}
+	
+	Entrada(String codigo, String nombreEspectaculo, Fecha fecha){
+		this.codigo = codigo;
+		this.nombreEspectaculo = nombreEspectaculo;
+		this.fecha = fecha;
 	}
 	
 	@Override

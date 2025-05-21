@@ -7,13 +7,13 @@ public class Usuario {
 	private String nombre;
 	private String apellido;
 	private String contraseña;
-	private HashMap<String, IEntrada> entradasCompradas;
+	private HashMap<String, Entrada> entradasCompradas;
 	
 	Usuario(String email, String nombre, String apellido, String contraseña){
 		this.email = email;
 		this.nombre = nombre;
 		this.apellido =  apellido;
 		this.contraseña = contraseña;
-		entradasCompradas = new HashMap<String, IEntrada>();
+		entradasCompradas = new HashMap<String, Entrada>();
 	}
 }

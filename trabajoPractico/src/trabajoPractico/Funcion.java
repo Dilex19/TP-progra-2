@@ -2,6 +2,7 @@ package trabajoPractico;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Funcion {
 	private Sede sede;
@@ -35,5 +36,42 @@ public class Funcion {
 				asientos.put(sectoresDeSede[i], asientosBoolean);
 			}
 		}
+	}
+	
+	public LinkedList<Entrada> venderEntrada(String nombreEspectaculo, int cantAsientos){
+		if(sede instanceof Estadio) {
+			
+			if(cantidadAsientosDisponibles() - cantAsientos >=0) {
+				LinkedList<Entrada> nuevasEntradas = new LinkedList<Entrada>();
+				for(int i = 0; i < cantAsientos; i++) {
+					String codigoEntrada = codigoRandomParaEntrada();
+					Entrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, this.fecha);
+					entradasVendidas.put(codigoEntrada, nuevaEntrada);
+					nuevasEntradas.add(nuevaEntrada);
+				}
+				return nuevasEntradas;
+			}
+			else {
+				throw new RuntimeException("Error: Se quiere comprar más entradas de las disponibles. La cantidad de entradas dispobibles es: " + cantidadAsientosDisponibles());
+			}
+		}
+		else {
+			throw new RuntimeException("Error: Los parametros no concuerdan con el tipo de Sede.");
+		}
+	}
+	
+	public int cantidadAsientosDisponibles() {
+		return sede.capacidadMaxima() - entradasVendidas.size();
+	}
+	
+	
+	public String codigoRandomParaEntrada() {
+		int randomNum = (int)(Math.random() * (100000 - 10000)) + 10000;
+		String randomNumString = randomNum + "";
+		while(entradasVendidas.containsKey(randomNumString)) {
+			randomNum = (int)(Math.random() * (100000 - 10000)) + 10000;
+			randomNumString = "" + randomNum;
+		}
+		return randomNumString;
 	}
 }
