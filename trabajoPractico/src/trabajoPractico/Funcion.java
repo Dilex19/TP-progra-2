@@ -60,10 +60,42 @@ public class Funcion {
 		}
 	}
 	
+	public LinkedList<Entrada> venderEntrada(String nombreEspectaculo, String sector, int[] asientos){
+		if(sede instanceof SedeConSectores) {
+			boolean[] arrayAsientos = this.asientos.get(sector);
+			LinkedList<Entrada> nuevasEntradas = new LinkedList<Entrada>();
+			if(estanDisponibles(sector, asientos)) {
+				for(int a : asientos) {
+					arrayAsientos[a] = false;
+					String codigoEntrada = codigoRandomParaEntrada();
+					Entrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, fecha, sector, a, precioBase);
+					entradasVendidas.put(codigoEntrada, nuevaEntrada);
+				}
+			}else {
+				throw new RuntimeException("Error: Hay asientos no disponibles para su venta");
+			}
+			return nuevasEntradas;
+			
+			
+		}
+		else {
+			throw new RuntimeException("Error: Los parametros no concuerdan con el tipo de Sede.");
+		}
+	}
+	
 	public int cantidadAsientosDisponibles() {
 		return sede.capacidadMaxima() - entradasVendidas.size();
 	}
 	
+	public boolean estanDisponibles(String sector,int[] asientos) {
+		boolean[] arrayAsientos = this.asientos.get(sector);
+		for(int a : asientos) {
+			if(arrayAsientos[a] == false) {
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	public String codigoRandomParaEntrada() {
 		int randomNum = (int)(Math.random() * (100000 - 10000)) + 10000;
