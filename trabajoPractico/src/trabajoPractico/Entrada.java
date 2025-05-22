@@ -7,14 +7,15 @@ public class Entrada implements IEntrada{
 	private String nombreEspectaculo;
 	private Fecha fecha;
 	private String sector;
-	private int ubicacion;
+	private String fila;
+	private int asiento;
 	private double precioEntrada;
 	
-	Entrada(String codigo, String nombreEspectaculo, Fecha fecha, String sector, int ubicacion, double precioEntrada){
+	Entrada(String codigo, String nombreEspectaculo, Fecha fecha, String sector, int ubicacion, int fila, double precioEntrada){
 		this.codigo = codigo;
 		this.nombreEspectaculo = nombreEspectaculo;
 		this.sector = sector;
-		this.ubicacion = ubicacion;
+		this.asiento = ubicacion;
 		this.precioEntrada = precioEntrada;
 		this.fecha =fecha;
 	}
@@ -38,5 +39,16 @@ public class Entrada implements IEntrada{
 		return null;
 	}
 	
-	public 
+	public int asiento() {
+		return asiento;
+	}
+	
+	public String obtenerCodigo() {
+		return codigo;
+	}
+
+	public String obtenerSector() {
+		// TODO Auto-generated method stub
+		return sector;
+	}
 }

@@ -4,13 +4,14 @@ import java.util.HashMap;
 
 public abstract class SedeConSectores extends Sede {
 	private HashMap<String, Sector> sectores;
+	private int cantidadDeAsientosPorFila;
 	
 	SedeConSectores(String nombre, String direccion, int capacidadMaxima, int asientosPorFila, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
 		super(nombre, direccion, capacidadMaxima);
 		this.sectores = new HashMap<String , Sector>();
-		
+		this.cantidadDeAsientosPorFila = asientosPorFila;
 		for(int i = 0 ; i<sectores.length; i++) {
-			Sector sector = new Sector(sectores[i], porcentajeAdicional[i], capacidad[i], asientosPorFila);
+			Sector sector = new Sector(sectores[i], porcentajeAdicional[i], capacidad[i]);
 			this.sectores.put(sectores[i], sector);
 		}
 	}
@@ -44,5 +45,9 @@ public abstract class SedeConSectores extends Sede {
 	
 	public Sector obtenerSector(String nombreSector) {
 		return sectores.get(nombreSector);
+	}
+	
+	public int filaDeUnAsiento(int asiento) {
+		return 1 + asiento% cantidadDeAsientosPorFila;
 	}
 }

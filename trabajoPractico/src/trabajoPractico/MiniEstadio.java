@@ -12,7 +12,7 @@ public class MiniEstadio extends SedeConSectores{
 	}
 	
 	public double costoEntrada(String nombreSector, double precioBase) {
-		Sector sec = obtenerSector(nombreSector);
+		Sector sec = obtenerSector(nombreSector); 
 		return valorFijo + precioBase * ((precioBase * sec.porcentajeAdicional()) / 100.0);
 	}
 
