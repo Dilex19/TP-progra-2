@@ -51,4 +51,8 @@ public class Entrada implements IEntrada{
 		// TODO Auto-generated method stub
 		return sector;
 	}
+	
+	public Fecha obtenerFecha() {
+		return fecha;
+	}
 }

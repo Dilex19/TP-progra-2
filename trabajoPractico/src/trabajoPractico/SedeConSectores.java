@@ -8,19 +8,22 @@ public abstract class SedeConSectores extends Sede {
 	
 	SedeConSectores(String nombre, String direccion, int capacidadMaxima, int asientosPorFila, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
 		super(nombre, direccion, capacidadMaxima);
-		this.sectores = new HashMap<String , Sector>();
 		int total = 0;
 		for(int i : capacidad) {
 			total+=i;
 		}
-		if(total == capacidadMaxima) {
-			this.cantidadDeAsientosPorFila = asientosPorFila;
-			for(int i = 0 ; i<sectores.length; i++) {
-				Sector sector = new Sector(sectores[i], porcentajeAdicional[i], capacidad[i]);
-				this.sectores.put(sectores[i], sector);
-			}
-		}else {
+		if(total != capacidadMaxima) {
 			throw new RuntimeException("La suma de la capacidad de los sectores no concuerda con la capacidad maxima de la Sede");
+		}
+		if(asientosPorFila<=0) {
+			throw new RuntimeException("Error: la cantidad de asientos por fila no puede ser negativa o cero");
+		}
+		
+		this.sectores = new HashMap<String , Sector>();
+		this.cantidadDeAsientosPorFila = asientosPorFila;
+		for(int i = 0 ; i<sectores.length; i++) {
+			Sector sector = new Sector(sectores[i], porcentajeAdicional[i], capacidad[i]);
+			this.sectores.put(sectores[i], sector);
 		}
 	}
 	

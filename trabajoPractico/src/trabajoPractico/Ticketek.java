@@ -18,38 +18,43 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
-		if(!sedes.containsKey(nombre)) {
-			Sede sede = new Estadio(nombre,direccion,capacidadMaxima);
-			sedes.put(nombre, sede);
-
-		} else {
-			throw new RuntimeException("El nombre de la sede ya esta registrado");
+		if(sedes.containsKey(nombre)) {
+			throw new RuntimeException("Error: El nombre de la sede ya esta registrado");
 		}
+		if(capacidadMaxima <=0) {
+			throw new RuntimeException("Error: la capacidad maxima no puede ser negativa o 0.");
+		}
+		Sede sede = new Estadio(nombre,direccion,capacidadMaxima);
+		sedes.put(nombre, sede);
+			
+
 	}
 
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
-		if(!sedes.containsKey(nombre)) {
-			Sede sede = new Teatro(nombre, direccion, capacidadMaxima, asientosPorFila, sectores, capacidad, porcentajeAdicional);
-			sedes.put(nombre, sede);
-
-		} else {
-			throw new RuntimeException("El nombre de la sede ya esta registrado");
+		if(sedes.containsKey(nombre)) {
+			throw new RuntimeException("Error: El nombre de la sede ya esta registrado");
 		}
+		if(capacidadMaxima <=0) {
+			throw new RuntimeException("Error: la capacidad maxima no puede ser negativa o 0.");
+		}
+		Sede sede = new Teatro(nombre, direccion, capacidadMaxima, asientosPorFila, sectores, capacidad, porcentajeAdicional);
+		sedes.put(nombre, sede);
 	}
 
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			int cantidadPuestos, double precioConsumicion, String[] sectores, int[] capacidad,
 			int[] porcentajeAdicional) {
-		if(!sedes.containsKey(nombre)) {
-			Sede sede = new MiniEstadio(nombre, direccion, capacidadMaxima, asientosPorFila, cantidadPuestos, precioConsumicion, sectores, capacidad, porcentajeAdicional);
-			sedes.put(nombre, sede);
-
-		} else {
-			throw new RuntimeException("El nombre de la sede ya esta registrado");
+		if(sedes.containsKey(nombre)) {
+			throw new RuntimeException("Error: El nombre de la sede ya esta registrado");
 		}
+		if(capacidadMaxima <=0) {
+			throw new RuntimeException("Error: la capacidad maxima no puede ser negativa o 0.");
+		}
+		Sede sede = new MiniEstadio(nombre, direccion, capacidadMaxima, asientosPorFila, cantidadPuestos, precioConsumicion, sectores, capacidad, porcentajeAdicional);
+		sedes.put(nombre, sede);
 	}
 
 	@Override

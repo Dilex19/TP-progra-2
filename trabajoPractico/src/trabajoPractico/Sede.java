@@ -6,6 +6,9 @@ public abstract class Sede {
 	private String nombre;
 	
 	Sede(String nombre, String direccion, int capacidadMaxima){
+		if(nombre.isEmpty() || direccion.isEmpty() || capacidadMaxima<= 0) {
+			throw new RuntimeException("Error: El nombre y la direccion no pueden estan vacios, y la capacidad maxima no puede ser menor a 1");
+		}
 		this.nombre = nombre;
 		this.direccion = direccion;
 		this.capacidadMaxima = capacidadMaxima;

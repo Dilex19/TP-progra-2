@@ -12,12 +12,15 @@ public class Funcion {
 	private HashMap<String,Entrada> entradasVendidas;
 	
 	
-	Funcion(Sede sede, String fecha, double precioBase){
+	Funcion(Fecha fecha, Sede sede, double precioBase){
+		if(precioBase<0) 
+			throw new RuntimeException("Error: El precio base no puede ser menor a cero");
+		
 		this.sede = sede;
 		this.precioBase = precioBase;
 		this.asientos = new HashMap<String, boolean[]>();
 		this.entradasVendidas = new HashMap<String, Entrada>();
-		this.fecha = new Fecha(fecha);
+		this.fecha = fecha;
 		
 		if(sede instanceof SedeConSectores) {
 			SedeConSectores sedeConSec = (SedeConSectores) sede; 
@@ -40,19 +43,20 @@ public class Funcion {
 	public LinkedList<Entrada> venderEntrada(String nombreEspectaculo, int cantAsientos){
 		if(sede instanceof Estadio) {
 			
-			if(cantidadAsientosDisponibles() - cantAsientos >=0) {
-				LinkedList<Entrada> nuevasEntradas = new LinkedList<Entrada>();
-				for(int i = 0; i < cantAsientos; i++) {
-					String codigoEntrada = codigoRandomParaEntrada();
-					Entrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, this.fecha, costoEntrada());
-					entradasVendidas.put(codigoEntrada, nuevaEntrada);
-					nuevasEntradas.add(nuevaEntrada);
-				}
-				return nuevasEntradas;
-			}
-			else {
+			if(cantidadAsientosDisponibles() - cantAsientos <0) {
 				throw new RuntimeException("Error: Se quiere comprar más entradas de las disponibles. La cantidad de entradas dispobibles es: " + cantidadAsientosDisponibles());
 			}
+			
+			LinkedList<Entrada> nuevasEntradas = new LinkedList<Entrada>();
+			for(int i = 0; i < cantAsientos; i++) {
+				String codigoEntrada = codigoRandomParaEntrada();
+				Entrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, this.fecha, costoEntrada());
+				entradasVendidas.put(codigoEntrada, nuevaEntrada);
+				nuevasEntradas.add(nuevaEntrada);
+			}
+			
+			return nuevasEntradas;
+			
 		}
 		else {
 			throw new RuntimeException("Error: Los parametros no concuerdan con el tipo de Sede.");
@@ -61,22 +65,23 @@ public class Funcion {
 	
 	public LinkedList<Entrada> venderEntrada(String nombreEspectaculo, String sector, int[] asientos){
 		if(sede instanceof SedeConSectores) {
+			if(!estanDisponibles(sector, asientos)) {
+				throw new RuntimeException("Error: Hay asientos no disponibles para su venta");
+			}
+			
 			SedeConSectores sedeConS = (SedeConSectores) sede;
 			boolean[] arrayAsientos = this.asientos.get(sector);
 			LinkedList<Entrada> nuevasEntradas = new LinkedList<Entrada>();
-			if(estanDisponibles(sector, asientos)) {
-				for(int a : asientos) {
-					arrayAsientos[a] = false;
-					int fila = sedeConS.filaDeUnAsiento(a);
-					String codigoEntrada = codigoRandomParaEntrada();
-					Entrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, fecha, sector, a, fila, costoEntrada(sector));
-					entradasVendidas.put(codigoEntrada, nuevaEntrada);
-				}
-			}else {
-				throw new RuntimeException("Error: Hay asientos no disponibles para su venta");
+			
+			
+			for(int a : asientos) {
+				arrayAsientos[a] = false;
+				int fila = sedeConS.filaDeUnAsiento(a);
+				String codigoEntrada = codigoRandomParaEntrada();
+				Entrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, fecha, sector, a, fila, costoEntrada(sector));
+				entradasVendidas.put(codigoEntrada, nuevaEntrada);
 			}
 			return nuevasEntradas;
-			
 			
 		}
 		else {
@@ -161,5 +166,9 @@ public class Funcion {
 		} else {
 			throw new RuntimeException("Error: La entrada no esta registrada en la Funcion.");
 		}
+	}
+	
+	public String toString() {
+		return "a";
 	}
 }
