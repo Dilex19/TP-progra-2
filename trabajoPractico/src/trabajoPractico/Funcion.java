@@ -6,7 +6,6 @@ import java.util.LinkedList;
 
 public class Funcion {
 	private Sede sede;
-	private SedeConSectores sedeConSectores;
 	private Fecha fecha;
 	private double precioBase;
 	private HashMap<String, boolean[]> asientos;
@@ -45,7 +44,7 @@ public class Funcion {
 				LinkedList<Entrada> nuevasEntradas = new LinkedList<Entrada>();
 				for(int i = 0; i < cantAsientos; i++) {
 					String codigoEntrada = codigoRandomParaEntrada();
-					Entrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, this.fecha);
+					Entrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, this.fecha, costoEntrada());
 					entradasVendidas.put(codigoEntrada, nuevaEntrada);
 					nuevasEntradas.add(nuevaEntrada);
 				}
@@ -68,7 +67,7 @@ public class Funcion {
 				for(int a : asientos) {
 					arrayAsientos[a] = false;
 					String codigoEntrada = codigoRandomParaEntrada();
-					Entrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, fecha, sector, a, precioBase);
+					Entrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, fecha, sector, a, costoEntrada(sector));
 					entradasVendidas.put(codigoEntrada, nuevaEntrada);
 				}
 			}else {
@@ -97,6 +96,51 @@ public class Funcion {
 		return true;
 	}
 	
+	
+	public double costoEntrada() {
+		if(sede instanceof Estadio) {
+			return sede.costoEntrada(precioBase);
+		}else {
+			throw new RuntimeException("Error: Los parametros no concuerdan con el tipo de Sede.");
+		}
+	}
+	
+	public double costoEntrada(String sector) {
+		if(sede instanceof SedeConSectores) {
+			if(sede instanceof MiniEstadio) {
+				MiniEstadio sedeMiniEstadio = (MiniEstadio) sede;
+				return sedeMiniEstadio.costoEntrada(sector, precioBase);
+			}
+			SedeConSectores sedeConSec = (SedeConSectores) sede;
+			return sedeConSec.costoEntrada(sector, precioBase);
+		}else {
+			throw new RuntimeException("Error: Los parametros no concuerdan con el tipo de Sede.");
+		}
+	}
+	
+	public LinkedList<Entrada> listarEntradas(){
+		LinkedList<Entrada> entradas = new LinkedList<Entrada>();
+		for(Entrada entrada : entradasVendidas.values()) {
+			entradas.add(entrada);
+		}
+		return entradas;
+	}
+	
+	public double totalRecaudado() {
+		double totalRecaudado = 0;
+		for(Entrada entrada : entradasVendidas.values()) {
+			totalRecaudado = entrada.precio();
+		}
+		return totalRecaudado;
+	}
+	
+	public double totalRecaudadoPorSede(Sede sede) {
+		if(this.sede.equals(sede)) {
+			return totalRecaudado();
+		} 
+		return 0;
+	}
+	
 	public String codigoRandomParaEntrada() {
 		int randomNum = (int)(Math.random() * (100000 - 10000)) + 10000;
 		String randomNumString = randomNum + "";
@@ -105,5 +149,9 @@ public class Funcion {
 			randomNumString = "" + randomNum;
 		}
 		return randomNumString;
+	}
+	
+	public void anularEntrada(Entrada entra) {
+		
 	}
 }

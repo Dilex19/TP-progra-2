@@ -19,10 +19,11 @@ public class Entrada implements IEntrada{
 		this.fecha =fecha;
 	}
 	
-	Entrada(String codigo, String nombreEspectaculo, Fecha fecha){
+	Entrada(String codigo, String nombreEspectaculo, Fecha fecha, double precioEntrada){
 		this.codigo = codigo;
 		this.nombreEspectaculo = nombreEspectaculo;
 		this.fecha = fecha;
+		this.precioEntrada = precioEntrada;
 	}
 	
 	@Override
@@ -36,5 +37,6 @@ public class Entrada implements IEntrada{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	public 
 }
