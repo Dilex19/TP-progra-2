@@ -11,4 +11,6 @@ public class Espectaculo {
 		this.nombre =  nombre;
 		this.funciones = new  HashMap<Fecha,Funcion>();
 	}
+	
+	
 }

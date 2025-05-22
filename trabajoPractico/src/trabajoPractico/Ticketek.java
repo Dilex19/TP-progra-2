@@ -18,23 +18,38 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
-		// TODO Auto-generated method stub
-		
+		if(!sedes.containsKey(nombre)) {
+			Sede sede = new Estadio(nombre,direccion,capacidadMaxima);
+			sedes.put(nombre, sede);
+
+		} else {
+			throw new RuntimeException("El nombre de la sede ya esta registrado");
+		}
 	}
 
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
-		// TODO Auto-generated method stub
-		
+		if(!sedes.containsKey(nombre)) {
+			Sede sede = new Teatro(nombre, direccion, capacidadMaxima, asientosPorFila, sectores, capacidad, porcentajeAdicional);
+			sedes.put(nombre, sede);
+
+		} else {
+			throw new RuntimeException("El nombre de la sede ya esta registrado");
+		}
 	}
 
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			int cantidadPuestos, double precioConsumicion, String[] sectores, int[] capacidad,
 			int[] porcentajeAdicional) {
-		// TODO Auto-generated method stub
-		
+		if(!sedes.containsKey(nombre)) {
+			Sede sede = new MiniEstadio(nombre, direccion, capacidadMaxima, asientosPorFila, cantidadPuestos, precioConsumicion, sectores, capacidad, porcentajeAdicional);
+			sedes.put(nombre, sede);
+
+		} else {
+			throw new RuntimeException("El nombre de la sede ya esta registrado");
+		}
 	}
 
 	@Override
@@ -45,8 +60,11 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public void registrarEspectaculo(String nombre) {
-		// TODO Auto-generated method stub
-		
+		if(espectaculos.containsKey(nombre)) {
+			throw new RuntimeException("El nombre del espectaculo ya esta registrado");
+		}
+		Espectaculo espectaculo = new Espectaculo(nombre);
+		espectaculos.put(nombre, espectaculo);
 	}
 
 	@Override
