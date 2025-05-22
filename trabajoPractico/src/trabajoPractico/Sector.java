@@ -4,13 +4,11 @@ public class Sector {
 	private String nombre;
 	private double incremento;
 	private	int capacidad;
-	private int cantidadDeAsientosPorFila;
 
-	Sector(String nombre, int incremento, int capacidad, int asientosPorFila){
+	Sector(String nombre, int incremento, int capacidad){
 		this.nombre = nombre;
 		this.incremento = incremento;
 		this.capacidad = capacidad;
-		this.cantidadDeAsientosPorFila = cantidadDeAsientosPorFila;
 	}
 	
 	public double porcentajeAdicional() {

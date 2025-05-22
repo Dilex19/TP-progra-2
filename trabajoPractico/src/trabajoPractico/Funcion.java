@@ -61,13 +61,15 @@ public class Funcion {
 	
 	public LinkedList<Entrada> venderEntrada(String nombreEspectaculo, String sector, int[] asientos){
 		if(sede instanceof SedeConSectores) {
+			SedeConSectores sedeConS = (SedeConSectores) sede;
 			boolean[] arrayAsientos = this.asientos.get(sector);
 			LinkedList<Entrada> nuevasEntradas = new LinkedList<Entrada>();
 			if(estanDisponibles(sector, asientos)) {
 				for(int a : asientos) {
 					arrayAsientos[a] = false;
+					int fila = sedeConS.filaDeUnAsiento(a);
 					String codigoEntrada = codigoRandomParaEntrada();
-					Entrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, fecha, sector, a, costoEntrada(sector));
+					Entrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, fecha, sector, a, fila, costoEntrada(sector));
 					entradasVendidas.put(codigoEntrada, nuevaEntrada);
 				}
 			}else {
@@ -152,6 +154,12 @@ public class Funcion {
 	}
 	
 	public void anularEntrada(Entrada entra) {
-		
+		if(entradasVendidas.containsKey(entra.obtenerCodigo())) {
+			entradasVendidas.remove(entra.obtenerCodigo());
+			boolean[] asientosDelSector = asientos.get(entra.obtenerSector());
+			asientosDelSector[entra.asiento()] = true;
+		} else {
+			throw new RuntimeException("Error: La entrada no esta registrada en la Funcion.");
+		}
 	}
 }
