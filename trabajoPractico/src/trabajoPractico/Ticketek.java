@@ -1,5 +1,6 @@
 package trabajoPractico;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -73,35 +74,59 @@ public class Ticketek implements ITicketek {
 	}
 
 	@Override
-	public void agregarFuncion(String nombreEspectaculo, String fecha, String sede, double precioBase) {
-		// TODO Auto-generated method stub
+	public void agregarFuncion(String nombreEspectaculo, String fechaString, String sedeString, double precioBase) {
+		if(!espectaculos.containsKey(nombreEspectaculo)) 
+			throw new RuntimeException("El nombre del espectaculo no esta registrado.");
 		
+		if(!sedes.containsKey(sedeString)) 
+			throw new RuntimeException("El nombre de la sede no esta registrado.");
+		Fecha fechaObjeto = new Fecha(fechaString);
+		LocalDate fecha = fechaObjeto.obtenerFecha();
+		Sede sede = sedes.get(sedeString);
+		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
+		espectaculo.agregarFuncion(fecha, sede, precioBase);
 	}
 
 	@Override
-	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contrasenia,
+	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fechaString, String email, String contrasenia,
 			int cantidadEntradas) {
-		// TODO Auto-generated method stub
-		return null;
+		if(!espectaculos.containsKey(nombreEspectaculo)) 
+			throw new RuntimeException("El nombre del espectaculo no esta registrado.");
+		
+		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
+		Fecha fechaObjeto = new Fecha(fechaString);
+		LocalDate fecha = fechaObjeto.obtenerFecha();
+		return espectaculo.venderEntrada(nombreEspectaculo, fecha, cantidadEntradas);
 	}
 
 	@Override
-	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contrasenia,
+	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fechaString, String email, String contrasenia,
 			String sector, int[] asientos) {
-		// TODO Auto-generated method stub
-		return null;
+		if(!espectaculos.containsKey(nombreEspectaculo)) 
+			throw new RuntimeException("El nombre del espectaculo no esta registrado.");
+		
+		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
+		Fecha fechaObjeto = new Fecha(fechaString);
+		LocalDate fecha = fechaObjeto.obtenerFecha();
+		return espectaculo.venderEntrada(nombreEspectaculo, fecha, sector, asientos);
 	}
 
 	@Override
 	public String listarFunciones(String nombreEspectaculo) {
-		// TODO Auto-generated method stub
-		return null;
+		if(!espectaculos.containsKey(nombreEspectaculo)) 
+			throw new RuntimeException("El nombre del espectaculo no esta registrado.");
+		
+		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
+		return espectaculo.listarFunciones();
 	}
 
 	@Override
 	public List<IEntrada> listarEntradasEspectaculo(String nombreEspectaculo) {
-		// TODO Auto-generated method stub
-		return null;
+		if(!espectaculos.containsKey(nombreEspectaculo)) 
+			throw new RuntimeException("El nombre del espectaculo no esta registrado.");
+		
+		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
+		return espectaculo.listarEntradas();
 	}
 
 	@Override
@@ -135,26 +160,48 @@ public class Ticketek implements ITicketek {
 	}
 
 	@Override
-	public double costoEntrada(String nombreEspectaculo, String fecha) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double costoEntrada(String nombreEspectaculo, String fechaString ) {
+		if(!espectaculos.containsKey(nombreEspectaculo)) 
+			throw new RuntimeException("El nombre del espectaculo no esta registrado.");
+		
+		
+		Fecha fechaObjeto = new Fecha(fechaString);
+		LocalDate fecha = fechaObjeto.obtenerFecha();
+		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
+		return espectaculo.costoEntrada(fecha);
 	}
 
 	@Override
-	public double costoEntrada(String nombreEspectaculo, String fecha, String sector) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double costoEntrada(String nombreEspectaculo, String fechaString, String sector) {
+		if(!espectaculos.containsKey(nombreEspectaculo)) 
+			throw new RuntimeException("El nombre del espectaculo no esta registrado.");
+		
+		
+		Fecha fechaObjeto = new Fecha(fechaString);
+		LocalDate fecha = fechaObjeto.obtenerFecha();
+		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
+		return espectaculo.costoEntrada(fecha,sector);
 	}
 
 	@Override
 	public double totalRecaudado(String nombreEspectaculo) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(!espectaculos.containsKey(nombreEspectaculo)) 
+			throw new RuntimeException("El nombre del espectaculo no esta registrado.");
+		
+		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
+		return espectaculo.totalRecaudado();
 	}
 
 	@Override
 	public double totalRecaudadoPorSede(String nombreEspectaculo, String nombreSede) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(!espectaculos.containsKey(nombreEspectaculo)) 
+			throw new RuntimeException("El nombre del espectaculo no esta registrado.");
+		
+		if(!sedes.containsKey(nombreSede))
+			throw new RuntimeException("El nombre de la sede no esta registrado.");
+		
+		Sede sede = sedes.get(nombreSede);
+		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
+		return espectaculo.totalRecaudado(sede);
 	}
 }

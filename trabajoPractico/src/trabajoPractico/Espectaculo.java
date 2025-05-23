@@ -6,15 +6,15 @@ import java.util.LinkedList;
 
 public class Espectaculo {
 	private String nombre;
-	private HashMap<Fecha,Funcion> funciones;
+	private HashMap<LocalDate,Funcion> funciones;
 	
 	Espectaculo(String nombre){
 		this.nombre =  nombre;
-		this.funciones = new  HashMap<Fecha,Funcion>();
+		this.funciones = new  HashMap<LocalDate,Funcion>();
 	}
 	
-	public LinkedList<Entrada> venderEntrada(String nombreEspectaculo, Fecha fecha, int cantAsientos){
-		if(funciones.containsKey(fecha)) 
+	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, LocalDate fecha, int cantAsientos){
+		if(!funciones.containsKey(fecha)) 
 			throw new RuntimeException("Error: El espectaculo no continene una funcion en esa fecha.");
 		
 		if(nombreEspectaculo.isEmpty()) 
@@ -28,8 +28,8 @@ public class Espectaculo {
 	}
 	
 	
-	public LinkedList<Entrada> venderEntrada(String nombreEspectaculo, Fecha fecha, String sector, int[] asientos){
-		if(funciones.containsKey(fecha)) 
+	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, LocalDate fecha, String sector, int[] asientos){
+		if(!funciones.containsKey(fecha)) 
 			throw new RuntimeException("Error: El espectaculo no continene una funcion en esa fecha.");
 		
 		if(nombreEspectaculo.isEmpty() || sector.isEmpty()) 
@@ -42,7 +42,7 @@ public class Espectaculo {
 		return funcion.venderEntrada(nombreEspectaculo,sector, asientos);
 	}
 	
-	public void agregarFuncion(Fecha fecha, Sede sede, double precioBase) {
+	public void agregarFuncion(LocalDate fecha, Sede sede, double precioBase) {
 		if(funciones.containsKey(fecha)) 
 			throw new RuntimeException("Error: El espectaculo ya tiene una funcion registrada en esa fecha.");
 		
@@ -60,10 +60,10 @@ public class Espectaculo {
 		return listaFuncionesString;
 	}
 	
-	public LinkedList<Entrada> listarEntradas(){
-		LinkedList<Entrada> entradasTotales = new LinkedList<Entrada>();
+	public LinkedList<IEntrada> listarEntradas(){
+		LinkedList<IEntrada> entradasTotales = new LinkedList<IEntrada>();
 		for(Funcion funcion : funciones.values()) {
-			LinkedList<Entrada> entradasDeFuncion = funcion.listarEntradas();
+			LinkedList<IEntrada> entradasDeFuncion = funcion.listarEntradas();
 			entradasTotales.addAll(entradasDeFuncion);
 		}
 		return entradasTotales;
@@ -77,7 +77,7 @@ public class Espectaculo {
 		funcion.anularEntrada(entrada);
 	}
 	
-	public double costoEntrada(Fecha fecha) {
+	public double costoEntrada(LocalDate fecha) {
 		if(!funciones.containsKey(fecha)){
 			throw new RuntimeException("Error: La fecha no concuerda con las fechas registradas del espectaculo.");
 		}
@@ -85,7 +85,7 @@ public class Espectaculo {
 		return funcion.costoEntrada();
 	}
 	
-	public double costoEntrada(Fecha fecha, String sector) {
+	public double costoEntrada(LocalDate fecha, String sector) {
 		if(!funciones.containsKey(fecha)){
 			throw new RuntimeException("Error: La fecha no concuerda con las fechas registradas del espectaculo.");
 		}

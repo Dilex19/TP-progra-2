@@ -51,7 +51,7 @@ public abstract class SedeConSectores extends Sede {
 	
 	public double costoEntrada(String sector, double precioBase) {
 		Sector sec = this.sectores.get(sector);
-		return precioBase * ((1+ sec.porcentajeAdicional()) / 100.0) ;
+		return precioBase * (1+ (sec.porcentajeAdicional() / 100.0)) ;
 	}
 	
 	public Sector obtenerSector(String nombreSector) {
