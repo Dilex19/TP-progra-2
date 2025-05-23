@@ -20,6 +20,6 @@ public class Sector {
 	}
 	
 	public String toString() {
-		return "";
+		return nombre + ": 0/" + capacidad;
 	}
 }
