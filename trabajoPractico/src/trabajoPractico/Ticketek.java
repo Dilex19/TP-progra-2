@@ -183,14 +183,56 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public List<IEntrada> listarTodasLasEntradasDelUsuario(String email, String contrasenia) {
-		// TODO Auto-generated method stub
-		return null;
+	    if(email == null) {
+	        throw new RuntimeException("Error: El email no puede estar vacío");
+	    }
+	    
+	    // Validación de contraseña
+	    if(contrasenia == null) {
+	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
+	    }
+	    
+	    Usuario usuario = usuarios.get(email);
+	    
+	    if(usuario == null) {
+	        throw new RuntimeException("Error: No existe un usuario registrado con ese email");
+	    }
+	    
+	    if(!usuario.autenticar(contrasenia)) {
+	        throw new RuntimeException("Error: Contraseña incorrecta");
+	    }
+	    
+	    List<IEntrada> todasLasEntradas = usuario.listarEntradas();
+	    
+	    
 	}
 
 	@Override
 	public boolean anularEntrada(IEntrada entrada, String contrasenia) {
-		// TODO Auto-generated method stub
-		return false;
+		if(entrada == null) {
+	        throw new RuntimeException("Error: La entrada no puede ser nula");
+	    }
+	    if(contrasenia == null) {
+	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
+	    }
+	
+	    Usuario usuario = usuariosDeEntrada.get(entrada.getCodigo());
+	    
+	    if(usuario == null) {
+	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
+	    }
+	    
+	    boolean anulacionExitosa = usuario.anularEntrada(entrada);
+	    
+	    if(anulacionExitosa) {
+	        usuariosDeEntrada.remove(entrada.getCodigo());
+	        Espectaculo espectaculo = espectaculos.get(entrada.getCodigoEspectaculo());
+	        if(espectaculo != null) {
+	            espectaculo.liberarAsiento(entrada);
+	        }
+	    }
+	    
+	    return anulacionExitosa;
 	}
 
 	@Override
