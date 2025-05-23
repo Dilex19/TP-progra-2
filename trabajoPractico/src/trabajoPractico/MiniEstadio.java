@@ -1,7 +1,6 @@
 package trabajoPractico;
 
 public class MiniEstadio extends SedeConSectores{
-	private double valorFijo;
 	private int cantidadPuestos;
 	private double precioConsumision;
 	
@@ -13,7 +12,7 @@ public class MiniEstadio extends SedeConSectores{
 	
 	public double costoEntrada(String nombreSector, double precioBase) {
 		Sector sec = obtenerSector(nombreSector); 
-		return valorFijo + precioBase * ((precioBase * sec.porcentajeAdicional()) / 100.0);
+		return precioConsumision + (precioBase * (1+ (sec.porcentajeAdicional() / 100.0)));
 	}
 
 }
