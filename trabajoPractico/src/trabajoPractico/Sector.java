@@ -15,10 +15,6 @@ public class Sector {
 		return incremento;
 	}
 	
-	public int cantidadDeAsientosPorFila() {
-		return cantidadDeAsientosPorFila;
-	}
-	
 	public int capacidad() {
 		return capacidad;
 	}
