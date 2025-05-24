@@ -26,6 +26,9 @@ public class Entrada implements IEntrada{
 		this.fecha = fecha2;
 		this.precioEntrada = precioEntrada;
 	}
+	public String getCodigo() {
+		return codigo;
+	}
 	
 	@Override
 	public double precio() {
