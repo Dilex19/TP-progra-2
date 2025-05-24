@@ -35,4 +35,6 @@ public interface IEntrada {
 	 */
 	String toString();
 	String getCodigo();
+	String getFecha();
+	String getNombreEspectaculo();
 }
