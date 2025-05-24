@@ -1,5 +1,7 @@
 package trabajoPractico;
 
+import java.time.LocalDate;
+
 public interface IEntrada {
 
 	/**
@@ -35,6 +37,19 @@ public interface IEntrada {
 	 */
 	String toString();
 	String getCodigo();
+<<<<<<< HEAD
 	String getFecha();
 	String getNombreEspectaculo();
+=======
+
+	String obtenerCodigo();
+
+	int asiento();
+
+	LocalDate obtenerFecha();
+
+	String obtenerSector();
+
+	String nombreEspectaculo();
+>>>>>>> df217516433bc5b3000524f5feea94e157f953f8
 }
