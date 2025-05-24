@@ -19,7 +19,12 @@ public class Sector {
 		return capacidad;
 	}
 	
-	public String toString() {
-		return nombre + ": 0/" + capacidad;
+	public String toString( ) {
+        return String.format("%s: %d/%d", nombre, 0, capacidad);
+    }
+	
+	public String toString(int cantidadVendidas) {
+		return String.format("%s: %d/%d", nombre, cantidadVendidas, capacidad);
+
 	}
 }

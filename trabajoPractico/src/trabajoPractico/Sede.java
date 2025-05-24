@@ -21,14 +21,12 @@ public abstract class Sede {
 	public double costoEntrada(double precioBase) {
 		return precioBase;
 	}
-	public String getNombre() {
-		return this.nombre;
-	}
-	public String getDireccion() {
-		return this.direccion;
-	}
 	public String toString() {
-		return nombre + " (" + direccion + ") - Capacidad: " + capacidadMaxima;
+		return nombre;
 	}
 	
+	public String toString(int cantidadVendidas) {
+		return String.format("%s: %d/%d", nombre, cantidadVendidas, capacidadMaxima);
+	}
+
 }

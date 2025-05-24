@@ -30,8 +30,6 @@ public class Ticketek implements ITicketek {
 		}
 		Sede sede = new Estadio(nombre,direccion,capacidadMaxima);
 		sedes.put(nombre, sede);
-			
-
 	}
 
 	@Override

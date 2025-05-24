@@ -27,7 +27,8 @@ public abstract class SedeConSectores extends Sede {
 		}
 	}
 	
-	
+
+
 	public String[] sectores() {
 		String[] sectores = new String[this.sectores.size()];
 		int i = 0;
@@ -35,7 +36,6 @@ public abstract class SedeConSectores extends Sede {
 			sectores[i] = entry.getKey();
 			i++;
 		}
-		
 		return sectores;
 	}
 	
@@ -61,4 +61,24 @@ public abstract class SedeConSectores extends Sede {
 	public int filaDeUnAsiento(int asiento) {
 		return 1 + asiento% cantidadDeAsientosPorFila;
 	}
+	
+	public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString() + " - ");
+        for (Sector sector : sectores.values()) {
+            sb.append(sector.toString()).append(" | ");
+        }
+        return sb.toString().replaceAll(" \\| $", ""); 
+    }
+	
+	public String toString(int[] cantidadVendidas) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString() + " - ");
+        int cantSector = 0;
+        for (Sector sector : sectores.values()) {
+            sb.append(sector.toString(cantidadVendidas[cantSector])).append(" | ");
+            cantSector++;
+        }
+        return sb.toString().replaceAll(" \\| $", "");
+    }
 }
