@@ -225,7 +225,7 @@ public class Ticketek implements ITicketek {
 	        Espectaculo espectaculo = espectaculos.get(entrada.nombreEspectaculo());
 	        if(espectaculo != null) {
 	        	Entrada entradaobjeto = (Entrada) entrada;
-	            espectaculo.anularEntrada(entradaobjeto);
+	            espectaculo.anularEntrada(entrada.obtenerFecha(), entrada.obtenerCodigo(), entrada.obtenerSector(), entrada.asiento());
 	        }
 	    }
 	    

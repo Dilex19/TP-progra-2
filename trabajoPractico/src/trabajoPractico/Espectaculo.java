@@ -72,12 +72,12 @@ public class Espectaculo {
 		return entradasTotales;
 	}
 	
-	public void anularEntrada(Entrada entrada) {
-		if(!funciones.containsKey(entrada.obtenerFecha())){
+	public void anularEntrada(LocalDate fechaEntrada, String codigoEntrada, String sectorEntrada, int asientoEntrada) {
+		if(!funciones.containsKey(fechaEntrada)){
 			throw new RuntimeException("Error: La fecha de la entrada no concuerda con las fechas registradas del espectaculo.");
 		}
-		Funcion funcion = funciones.get(entrada.obtenerFecha());
-		funcion.anularEntrada(entrada);
+		Funcion funcion = funciones.get(fechaEntrada);
+		funcion.anularEntrada(codigoEntrada, sectorEntrada, asientoEntrada);
 	}
 	
 	public double costoEntrada(LocalDate fecha) {

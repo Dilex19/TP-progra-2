@@ -165,11 +165,16 @@ public class Funcion {
 		return randomNumString;
 	}
 	
-	public void anularEntrada(Entrada entra) {
-		if(entradasVendidas.containsKey(entra.obtenerCodigo())) {
-			entradasVendidas.remove(entra.obtenerCodigo());
-			boolean[] asientosDelSector = asientos.get(entra.obtenerSector());
-			asientosDelSector[entra.asiento()] = true;
+	public void anularEntrada(String codigoEntrada, String sectorEntrada, int asientoEntrada) {
+		if(entradasVendidas.containsKey(codigoEntrada)) {
+			if(sede instanceof SedeConSectores) {
+				entradasVendidas.remove(codigoEntrada);
+				boolean[] asientosDelSector = asientos.get(sectorEntrada);
+				asientosDelSector[asientoEntrada] = true;
+			} else {
+				entradasVendidas.remove(codigoEntrada);
+			}
+			
 		} else {
 			throw new RuntimeException("Error: La entrada no esta registrada en la Funcion.");
 		}
