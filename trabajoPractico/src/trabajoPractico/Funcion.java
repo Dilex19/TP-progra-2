@@ -4,13 +4,15 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class Funcion {
 	private Sede sede;
 	private LocalDate fecha;
 	private double precioBase;
-	private HashMap<String, boolean[]> asientos;
+	private Map<String, boolean[]> asientos;
 	private HashMap<String,IEntrada> entradasVendidas;
 	
 	
@@ -20,7 +22,7 @@ public class Funcion {
 		
 		this.sede = sede;
 		this.precioBase = precioBaseS;
-		this.asientos = new HashMap<String, boolean[]>();
+		this.asientos = new LinkedHashMap<String, boolean[]>();
 		this.entradasVendidas = new HashMap<String, IEntrada>();
 		this.fecha = fecha;
 		
@@ -163,11 +165,16 @@ public class Funcion {
 		return randomNumString;
 	}
 	
-	public void anularEntrada(Entrada entra) {
-		if(entradasVendidas.containsKey(entra.obtenerCodigo())) {
-			entradasVendidas.remove(entra.obtenerCodigo());
-			boolean[] asientosDelSector = asientos.get(entra.obtenerSector());
-			asientosDelSector[entra.asiento()] = true;
+	public void anularEntrada(String codigoEntrada, String sectorEntrada, int asientoEntrada) {
+		if(entradasVendidas.containsKey(codigoEntrada)) {
+			if(sede instanceof SedeConSectores) {
+				entradasVendidas.remove(codigoEntrada);
+				boolean[] asientosDelSector = asientos.get(sectorEntrada);
+				asientosDelSector[asientoEntrada] = true;
+			} else {
+				entradasVendidas.remove(codigoEntrada);
+			}
+			
 		} else {
 			throw new RuntimeException("Error: La entrada no esta registrada en la Funcion.");
 		}
@@ -182,6 +189,7 @@ public class Funcion {
 			if(asiento == false)
 				compradas+=1;
 		}
+		System.out.println(sector + compradas);
 		return compradas;
 	}
 	
@@ -206,14 +214,15 @@ public class Funcion {
         	SedeConSectores sedeConSectores = (SedeConSectores) sede;
         	StringBuilder sb = new StringBuilder();
         	int[] entradasVendidasCant = entradasVendidasPorSector();
-            sb.append(" - (" + fechaStr + ") " + sedeConSectores.toString(entradasVendidasCant) );
-            sb.append("");
+            sb.append(" - (");
+            sb.append(fechaStr);
+            sb.append(") ");
+            sb.append(sedeConSectores.toString(entradasVendidasCant) );
         	return sb.toString().replaceAll(" \\| $", "");
         }
         
         StringBuilder sb = new StringBuilder();
         sb.append(" - (" + fechaStr + ") " + sede.toString(entradasVendidas.size()) );
-        sb.append("");
     	return sb.toString().replaceAll(" \\| $", "");
 	}
 	
