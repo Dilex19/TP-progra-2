@@ -1,6 +1,7 @@
 package trabajoPractico;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Entrada implements IEntrada{
 	private String codigo;
@@ -34,6 +35,10 @@ public class Entrada implements IEntrada{
 	public double precio() {
 		return precioEntrada;
 	}
+	public String getFecha() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+		return fecha.format(formatter);
+	}
 
 	@Override
 	public String ubicacion() {
@@ -43,6 +48,9 @@ public class Entrada implements IEntrada{
 	
 	public int asiento() {
 		return asiento;
+	}
+	public String getNombreEspectaculo() {
+		return nombreEspectaculo;
 	}
 	
 	public String obtenerCodigo() {
