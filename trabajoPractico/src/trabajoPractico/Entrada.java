@@ -27,6 +27,7 @@ public class Entrada implements IEntrada{
 		this.fecha = fecha2;
 		this.precioEntrada = precioEntrada;
 	}
+	@Override
 	public String getCodigo() {
 		return codigo;
 	}
@@ -46,23 +47,32 @@ public class Entrada implements IEntrada{
 		return null;
 	}
 	
+	@Override
 	public int asiento() {
 		return asiento;
 	}
+<<<<<<< HEAD
 	public String getNombreEspectaculo() {
 		return nombreEspectaculo;
 	}
 	
+=======
+	@Override
+>>>>>>> df217516433bc5b3000524f5feea94e157f953f8
 	public String obtenerCodigo() {
 		return codigo;
 	}
-
+	@Override
 	public String obtenerSector() {
 		// TODO Auto-generated method stub
 		return sector;
 	}
-	
+	@Override
 	public LocalDate obtenerFecha() {
 		return fecha;
+	}
+	@Override
+	public String nombreEspectaculo() {
+		return nombreEspectaculo;
 	}
 }
