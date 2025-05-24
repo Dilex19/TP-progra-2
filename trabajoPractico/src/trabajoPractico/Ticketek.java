@@ -197,9 +197,7 @@ public class Ticketek implements ITicketek {
 	        throw new RuntimeException("Error: Contraseña incorrecta");
 	    }
 	    
-	    List<IEntrada> todasLasEntradas = usuario.listarEntradas();
-	    
-	    
+	    return usuario.listarEntradas();
 	}
 
 	@Override
@@ -210,20 +208,24 @@ public class Ticketek implements ITicketek {
 	    if(contrasenia == null) {
 	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
 	    }
-	
+	    
+	    
 	    Usuario usuario = usuariosDeEntrada.get(entrada.getCodigo());
+	    System.out.println(usuario);
 	    
 	    if(usuario == null) {
 	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
 	    }
 	    
+	    
 	    boolean anulacionExitosa = usuario.anularEntrada(entrada);
 	    
 	    if(anulacionExitosa) {
 	        usuariosDeEntrada.remove(entrada.getCodigo());
-	        Espectaculo espectaculo = espectaculos.get(entrada.getCodigoEspectaculo());
+	        Espectaculo espectaculo = espectaculos.get(entrada.nombreEspectaculo());
 	        if(espectaculo != null) {
-	            espectaculo.liberarAsiento(entrada);
+	        	Entrada entradaobjeto = (Entrada) entrada;
+	            espectaculo.anularEntrada(entrada.obtenerFecha(), entrada.obtenerCodigo(), entrada.obtenerSector(), entrada.asiento());
 	        }
 	    }
 	    

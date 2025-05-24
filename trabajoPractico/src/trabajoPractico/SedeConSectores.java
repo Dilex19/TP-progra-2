@@ -1,9 +1,11 @@
 package trabajoPractico;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public abstract class SedeConSectores extends Sede {
-	private HashMap<String, Sector> sectores;
+	private Map<String, Sector> sectores;
 	private int cantidadDeAsientosPorFila;
 	
 	SedeConSectores(String nombre, String direccion, int capacidadMaxima, int asientosPorFila, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
@@ -19,7 +21,7 @@ public abstract class SedeConSectores extends Sede {
 			throw new RuntimeException("Error: la cantidad de asientos por fila no puede ser negativa o cero");
 		}
 		
-		this.sectores = new HashMap<String , Sector>();
+		this.sectores = new LinkedHashMap<String , Sector>();
 		this.cantidadDeAsientosPorFila = asientosPorFila;
 		for(int i = 0 ; i<sectores.length; i++) {
 			Sector sector = new Sector(sectores[i], porcentajeAdicional[i], capacidad[i]);
@@ -73,7 +75,8 @@ public abstract class SedeConSectores extends Sede {
 	
 	public String toString(int[] cantidadVendidas) {
         StringBuilder sb = new StringBuilder();
-        sb.append(super.toString() + " - ");
+        sb.append(super.toString());
+        sb.append(" - ");
         int cantSector = 0;
         for (Sector sector : sectores.values()) {
             sb.append(sector.toString(cantidadVendidas[cantSector])).append(" | ");
