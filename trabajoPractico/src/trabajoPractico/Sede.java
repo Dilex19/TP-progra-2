@@ -21,7 +21,6 @@ public abstract class Sede {
 	public double costoEntrada(double precioBase) {
 		return precioBase;
 	}
-	
 	public String toString() {
 		return nombre;
 	}
@@ -29,4 +28,5 @@ public abstract class Sede {
 	public String toString(int cantidadVendidas) {
 		return String.format("%s: %d/%d", nombre, cantidadVendidas, capacidadMaxima);
 	}
+
 }

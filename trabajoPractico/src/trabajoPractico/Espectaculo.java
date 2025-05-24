@@ -30,13 +30,13 @@ public class Espectaculo {
 	
 	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, LocalDate fecha, String sector, int[] asientos){
 		if(!funciones.containsKey(fecha)) 
-			throw new RuntimeException("Error: El espectaculo no continene una funcion en esa fecha.");
+			throw new RuntimeException("Error: El espectaculo no contiene una función en esa fecha.");
 		
 		if(nombreEspectaculo.isEmpty() || sector.isEmpty()) 
 			throw new RuntimeException("Error: El nombre o el sector no puede estar vacio.");
 		
 		if(asientos.length == 0) 
-			throw new RuntimeException("Error: La cantidad de asientos no puede ser menor a 1");
+			throw new RuntimeException("Error: La longitud de asientos no puede ser igual a 0");
 		
 		Funcion funcion = funciones.get(fecha);
 		return funcion.venderEntrada(nombreEspectaculo,sector, asientos);

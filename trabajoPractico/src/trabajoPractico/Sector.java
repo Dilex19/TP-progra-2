@@ -15,10 +15,6 @@ public class Sector {
 		return incremento;
 	}
 	
-	public int cantidadDeAsientosPorFila() {
-		return cantidadDeAsientosPorFila;
-	}
-	
 	public int capacidad() {
 		return capacidad;
 	}
@@ -29,5 +25,6 @@ public class Sector {
 	
 	public String toString(int cantidadVendidas) {
 		return String.format("%s: %d/%d", nombre, cantidadVendidas, capacidad);
+
 	}
 }
