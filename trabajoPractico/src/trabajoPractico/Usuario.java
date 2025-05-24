@@ -2,6 +2,7 @@ package trabajoPractico;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.time.LocalDate;
 
@@ -55,6 +56,7 @@ public class Usuario {
 		if(entrada == null || !tieneEntrada(entrada)) {
 			return false;
 		}
+		System.out.println(tieneEntrada(entrada));
 		entradasCompradas.remove(entrada.getCodigo());
 		return true;
 	}
@@ -64,6 +66,14 @@ public class Usuario {
 
 	public String toString() {
 		return nombre + " " + apellido + " " + email;
+	}
+	public LinkedList<IEntrada> listarEntradas() {
+		LinkedList<IEntrada> entradasUsuario = new LinkedList<IEntrada>();
+		for(Entrada entrada : entradasCompradas.values()) {
+			IEntrada Ientrada = (IEntrada) entrada;
+			entradasUsuario.add(entrada);
+		}
+		return entradasUsuario;
 	}
 	
 }
