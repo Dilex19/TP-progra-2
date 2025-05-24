@@ -3,14 +3,16 @@ package trabajoPractico;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Espectaculo {
 	private String nombre;
-	private HashMap<LocalDate,Funcion> funciones;
+	private Map<LocalDate,Funcion> funciones;
 	
 	Espectaculo(String nombre){
 		this.nombre =  nombre;
-		this.funciones = new  HashMap<LocalDate,Funcion>();
+		this.funciones = new  TreeMap<LocalDate,Funcion>();
 	}
 	
 	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, LocalDate fecha, int cantAsientos){
@@ -53,7 +55,8 @@ public class Espectaculo {
 	public String listarFunciones() {
 		StringBuilder listaFunciones = new StringBuilder();
 		for(Funcion funcion : funciones.values()) {
-			listaFunciones.append(funcion.toString()+ "\n");
+			listaFunciones.append(funcion.toString());
+			listaFunciones.append("\n");
 		}
 		String listaFuncionesString = "" + listaFunciones;
 		
@@ -108,4 +111,5 @@ public class Espectaculo {
 		}
 		return totalRecaudadoPorSede;
 	}
+	
 }
