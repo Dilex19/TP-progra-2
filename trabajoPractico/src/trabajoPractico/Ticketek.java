@@ -46,9 +46,6 @@ public class Ticketek implements ITicketek {
 		if(direccion == null) {
 			throw new RuntimeException("Error: la dirección no puede estar vacía");
 		}
-	    if(cantidadPuestos < 0) {
-	        throw new RuntimeException("Error: La cantidad de puestos no puede ser negativa");
-	    }
 	    if(asientosPorFila <= 0) {
 	        throw new RuntimeException("Error: Los asientos por fila deben ser mayor a 0");
 	    }
