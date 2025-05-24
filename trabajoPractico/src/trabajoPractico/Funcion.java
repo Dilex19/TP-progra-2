@@ -1,7 +1,9 @@
 package trabajoPractico;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Funcion {
@@ -171,7 +173,48 @@ public class Funcion {
 		}
 	}
 	
-	public String toString() {
-		return "" + this.fecha;
+	public int entradasVendidasPorSector(String sector) {
+		if(!asientos.containsKey(sector)) 
+			throw new RuntimeException("Error: El sector indicado no existe.");
+		boolean[] asientos = this.asientos.get(sector);
+		int compradas = 0;
+		for(boolean asiento : asientos) {
+			if(asiento == false)
+				compradas+=1;
+		}
+		return compradas;
 	}
+	
+	public int[] entradasVendidasPorSector() {
+		int[] compradasPorSector = new int[asientos.size()];
+		int i = 0;
+		Iterator<String> iterador = asientos.keySet().iterator();
+		while (iterador.hasNext()) {
+    	    String clave = iterador.next();
+    	    compradasPorSector[i] = entradasVendidasPorSector(clave);
+    	    i++;
+    	}
+		
+		return compradasPorSector;
+	}
+	
+	public String toString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+        String fechaStr = fecha.format(formatter);
+        
+        if(sede instanceof SedeConSectores) {
+        	SedeConSectores sedeConSectores = (SedeConSectores) sede;
+        	StringBuilder sb = new StringBuilder();
+        	int[] entradasVendidasCant = entradasVendidasPorSector();
+            sb.append(" - (" + fechaStr + ") " + sedeConSectores.toString(entradasVendidasCant) );
+            sb.append("");
+        	return sb.toString().replaceAll(" \\| $", "");
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append(" - (" + fechaStr + ") " + sede.toString(entradasVendidas.size()) );
+        sb.append("");
+    	return sb.toString().replaceAll(" \\| $", "");
+	}
+	
 }
