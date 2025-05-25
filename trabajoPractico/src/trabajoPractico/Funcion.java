@@ -56,7 +56,7 @@ public class Funcion {
 			for(int i = 0; i < cantAsientos; i++) {
 				String codigoEntrada = codigoRandomParaEntrada();
 				double costo = costoEntrada();
-				IEntrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, this.fecha, sede.toString(), costo);
+				IEntrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, this.fecha, sede.nombre(), costo);
 				entradasVendidas.put(codigoEntrada, nuevaEntrada);
 				nuevasEntradas.add(nuevaEntrada);
 			}
@@ -85,7 +85,7 @@ public class Funcion {
 				int fila = sedeConS.filaDeUnAsiento(a);
 				String codigoEntrada = codigoRandomParaEntrada();
 				double costo = costoEntrada(sector);
-				IEntrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, fecha, sede.toString(),sector, a, fila, costo);
+				IEntrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, fecha, sede.nombre(),sector, a, fila, costo);
 				entradasVendidas.put(codigoEntrada, nuevaEntrada);
 				nuevasEntradas.add(nuevaEntrada);
 			}
