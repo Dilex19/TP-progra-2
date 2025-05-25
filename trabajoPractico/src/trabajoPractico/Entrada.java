@@ -7,12 +7,13 @@ public class Entrada implements IEntrada{
 	private String codigo;
 	private String nombreEspectaculo;
 	private LocalDate fecha;
+	private String nombreSede;
 	private String sector;
 	private int fila;
 	private int asiento;
 	private double precioEntrada;
 	
-	Entrada(String codigo, String nombreEspectaculo, LocalDate fecha, String sector, int ubicacion, int fila, double precioEntrada){
+	Entrada(String codigo, String nombreEspectaculo, LocalDate fecha, String nombreSede,String sector, int ubicacion, int fila, double precioEntrada){
 		this.codigo = codigo;
 		this.nombreEspectaculo = nombreEspectaculo;
 		this.sector = sector;
@@ -20,13 +21,15 @@ public class Entrada implements IEntrada{
 		this.precioEntrada = precioEntrada;
 		this.fecha =fecha;
 		this.fila = fila;
+		this.nombreSede = nombreSede;
 	}
 	
-	Entrada(String codigo, String nombreEspectaculo, LocalDate fecha2, double precioEntrada){
+	Entrada(String codigo, String nombreEspectaculo, LocalDate fecha2, String nombreSede,double precioEntrada){
 		this.codigo = codigo;
 		this.nombreEspectaculo = nombreEspectaculo;
 		this.fecha = fecha2;
 		this.precioEntrada = precioEntrada;
+		this.nombreSede = nombreSede;
 	}
 	@Override
 	public String getCodigo() {
@@ -44,8 +47,11 @@ public class Entrada implements IEntrada{
 
 	@Override
 	public String ubicacion() {
-		// TODO Auto-generated method stub
-		return null;
+		if(sector == null) {
+			return "CAMPO";
+	    } else {
+	        return String.format("%s f:%s a:%d", sector, fila, asiento);
+	    }
 	}
 	
 	@Override
@@ -53,10 +59,6 @@ public class Entrada implements IEntrada{
 		return asiento;
 	}
 
-	@Override
-	public String obtenerCodigo() {
-		return codigo;
-	}
 	@Override
 	public String obtenerSector() {
 		// TODO Auto-generated method stub
@@ -74,34 +76,16 @@ public class Entrada implements IEntrada{
 	}
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	    if(sector == null) {
-	    	String entradaString = String.format("Entrada [Código: %s, Espectáculo: %s, Fecha: %s, Precio: %.2f€]",
+		String formato = "%s - %s - %s - %s - %s";
+		if(this.fecha.isBefore(LocalDate.now())) {
+			formato = "%s - %s - %s - P - %s - %s";
+		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+	    return String.format(formato,
 		            codigo,
 		            nombreEspectaculo,
 		            fecha.format(formatter),
-		            precioEntrada);
-	    	sb.append(entradaString);
-	    } else { 
-	    	String entradaString = String.format("Entrada [Código: %s, Espectáculo: %s, Fecha: %s, Sector: %s, Fila: %s, Asiento: %d, Precio: %.2f€]",
-	            codigo,
-	            nombreEspectaculo,
-	            fecha.format(formatter),
-	            sector,
-	            fila,
-	            asiento,
-	            precioEntrada);
-	    	sb.append(entradaString);
-	    }
-	    
-	    LocalDate fechaActual = LocalDate.now();
-		if(this.fecha.isAfter(fechaActual)) {
-			String entradaStringFinal = sb.toString();
-			return entradaStringFinal;
-		}
-		sb.insert(0, " P - ");
-		String entradaStringFinal = sb.toString();
-		return entradaStringFinal;
+		            nombreSede,
+		            ubicacion());
 	}
 }

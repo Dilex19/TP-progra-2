@@ -305,7 +305,7 @@ public class Ticketek implements ITicketek {
 	    }
 	    
 	    // Obtener el espectáculo
-	    Espectaculo espectaculo = espectaculos.get(entrada.getCodigo());
+	    Espectaculo espectaculo = espectaculos.get(entrada.nombreEspectaculo());
 	    if(espectaculo == null) {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
@@ -320,7 +320,7 @@ public class Ticketek implements ITicketek {
 	        Fecha fechaObjeto = new Fecha(fecha);
 	        LocalDate fechaNueva = fechaObjeto.obtenerFecha();
 	        
-	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entrada.getNombreEspectaculo(), fechaNueva, sector, new int[]{asiento});
+	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entrada.nombreEspectaculo(), fechaNueva, sector, new int[]{asiento});
 	        
 	        if(nuevasEntradas.isEmpty()) {
 	            throw new RuntimeException("Error: No se pudo crear la nueva entrada");
@@ -342,8 +342,7 @@ public class Ticketek implements ITicketek {
 	        }
 	        throw e;
 	    }
-
-
+	}
 
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha) {
@@ -368,7 +367,7 @@ public class Ticketek implements ITicketek {
 	    }
 	    
 	    // Obtener el espectáculo
-	    Espectaculo espectaculo = espectaculos.get(entrada.getNombreEspectaculo());
+	    Espectaculo espectaculo = espectaculos.get(entrada.nombreEspectaculo());
 	    if(espectaculo == null) {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
@@ -383,7 +382,7 @@ public class Ticketek implements ITicketek {
 	        Fecha fechaObjeto = new Fecha(fecha);
 	        LocalDate fechaNueva = fechaObjeto.obtenerFecha();
 	        
-	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entrada.getNombreEspectaculo(), fechaNueva, 1);
+	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entrada.nombreEspectaculo(), fechaNueva, 1);
 	        
 	        if(nuevasEntradas.isEmpty()) {
 	            throw new RuntimeException("Error: No se pudo crear la nueva entrada");
@@ -407,6 +406,7 @@ public class Ticketek implements ITicketek {
 	    }
 	    
 	}
+
 
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fechaString ) {
