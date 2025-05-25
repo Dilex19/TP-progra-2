@@ -61,9 +61,14 @@ public class Entrada implements IEntrada{
 
 	@Override
 	public String obtenerSector() {
-		// TODO Auto-generated method stub
 		return sector;
 	}
+	
+	@Override
+	public String obtenerSede() {
+		return nombreSede;
+	}
+	
 
 	@Override
 	public String nombreEspectaculo() {
