@@ -77,7 +77,7 @@ public class Entrada implements IEntrada{
 	@Override
 	public String toString() {
 		String formato = "%s - %s - %s - %s - %s";
-		if(sector == null) {
+		if(this.fecha.isBefore(LocalDate.now())) {
 			formato = "%s - %s - %s - P - %s - %s";
 		}
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
