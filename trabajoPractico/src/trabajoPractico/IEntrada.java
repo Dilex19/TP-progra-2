@@ -46,4 +46,6 @@ public interface IEntrada {
 	String obtenerSector();
 
 	String nombreEspectaculo();
+
+	String obtenerSede();
 }

@@ -448,9 +448,8 @@ public class Ticketek implements ITicketek {
 		
 		if(!sedes.containsKey(nombreSede))
 			throw new RuntimeException("Error: El nombre de la sede no esta registrado.");
-		
-		Sede sede = sedes.get(nombreSede);
+	
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
-		return espectaculo.totalRecaudado(sede);
+		return espectaculo.totalRecaudado(nombreSede);
 	}
 }

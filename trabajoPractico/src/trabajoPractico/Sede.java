@@ -13,16 +13,19 @@ public abstract class Sede {
 		this.direccion = direccion;
 		this.capacidadMaxima = capacidadMaxima;
 	}
+	public double costoEntrada(double precioBase) {
+		return precioBase;
+	}
 	
 	public int capacidadMaxima(){
 		return this.capacidadMaxima;
 	}
 	
-	public double costoEntrada(double precioBase) {
-		return precioBase;
+	public String nombre() {
+		return nombre;
 	}
 	public String toString() {
-		return nombre;
+		return String.format("%s: %d/%d", nombre, 0, capacidadMaxima);
 	}
 	
 	public String toString(int cantidadVendidas) {

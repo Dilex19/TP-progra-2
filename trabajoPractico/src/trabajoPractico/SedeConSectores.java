@@ -66,7 +66,7 @@ public abstract class SedeConSectores extends Sede {
 	
 	public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(super.toString() + " - ");
+        sb.append(super.nombre() + " - ");
         for (Sector sector : sectores.values()) {
             sb.append(sector.toString()).append(" | ");
         }
@@ -75,7 +75,7 @@ public abstract class SedeConSectores extends Sede {
 	
 	public String toString(int[] cantidadVendidas) {
         StringBuilder sb = new StringBuilder();
-        sb.append(super.toString());
+        sb.append(super.nombre());
         sb.append(" - ");
         int cantSector = 0;
         for (Sector sector : sectores.values()) {

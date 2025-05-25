@@ -9,10 +9,12 @@ import java.util.TreeMap;
 public class Espectaculo {
 	private String nombre;
 	private Map<LocalDate,Funcion> funciones;
+	private Map<String, Double> RecaudadoPorSede; 
 	
 	Espectaculo(String nombre){
 		this.nombre =  nombre;
 		this.funciones = new  TreeMap<LocalDate,Funcion>();
+		this.RecaudadoPorSede = new TreeMap<String, Double>();
 	}
 	
 	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, LocalDate fecha, int cantAsientos){
@@ -41,7 +43,15 @@ public class Espectaculo {
 			throw new RuntimeException("Error: La longitud de asientos no puede ser igual a 0");
 		
 		Funcion funcion = funciones.get(fecha);
-		return funcion.venderEntrada(nombreEspectaculo,sector, asientos);
+		LinkedList<IEntrada> entradas= funcion.venderEntrada(nombreEspectaculo,sector, asientos);
+		agregarValorDeEntradasALoRecaudado(entradas,entradas.get(0).obtenerSede());
+		return entradas;
+	}
+	
+	public void agregarValorDeEntradasALoRecaudado(LinkedList<IEntrada> entradas,String sede) {
+		for(IEntrada entrada : entradas) {
+			RecaudadoPorSede.merge(sede, entrada.precio(), Double::sum);
+		}
 	}
 	
 	public void agregarFuncion(LocalDate fecha, Sede sede, double precioBase) {
@@ -50,6 +60,9 @@ public class Espectaculo {
 		
 		Funcion nuevaFuncion = new Funcion(fecha, sede, precioBase);
 		funciones.put(fecha, nuevaFuncion);
+		if(!RecaudadoPorSede.containsKey(sede.nombre())) {
+			RecaudadoPorSede.put(sede.nombre(), 0.0);
+		}
 	}
 	
 	public String listarFunciones() {
@@ -98,18 +111,14 @@ public class Espectaculo {
 	
 	public double totalRecaudado() {
 		double totalRecaudado = 0;
-		for(Funcion funcion : funciones.values()) {
-			totalRecaudado+= funcion.totalRecaudado();
+		for(Double reucaudado : RecaudadoPorSede.values()) {
+			totalRecaudado+= reucaudado;
 		}
 		return totalRecaudado;
 	}
 	
-	public double totalRecaudado(Sede sede) {
-		double totalRecaudadoPorSede = 0;
-		for(Funcion funcion : funciones.values()) {
-			totalRecaudadoPorSede+= funcion.totalRecaudadoPorSede(sede);
-		}
-		return totalRecaudadoPorSede;
+	public double totalRecaudado(String sede) {
+		return RecaudadoPorSede.get(sede);
 	}
 	
 }
