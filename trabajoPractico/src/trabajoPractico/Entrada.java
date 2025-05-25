@@ -80,7 +80,7 @@ public class Entrada implements IEntrada{
 		if(this.fecha.isBefore(LocalDate.now())) {
 			formato = "%s - %s - %s - P - %s - %s";
 		}
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
 	    return String.format(formato,
 		            codigo,
 		            nombreEspectaculo,

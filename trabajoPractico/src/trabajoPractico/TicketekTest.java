@@ -187,6 +187,7 @@ public class TicketekTest{
         	if( entrada.toString().contains(" P - "))
         		cont++;
         }
+        
         assertEquals(8,cont);
     }
 
