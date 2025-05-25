@@ -61,7 +61,7 @@ public abstract class SedeConSectores extends Sede {
 	}
 	
 	public int filaDeUnAsiento(int asiento) {
-		return 1 + asiento% cantidadDeAsientosPorFila;
+		return 1 + (asiento/cantidadDeAsientosPorFila);
 	}
 	
 	public String toString() {

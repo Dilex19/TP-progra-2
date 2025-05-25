@@ -42,9 +42,8 @@ public interface IEntrada {
 	String getNombreEspectaculo();
 =======
 
-	String obtenerCodigo();
 
-	int asiento();
+	int obtenerAsiento();
 
 	LocalDate obtenerFecha();
 
