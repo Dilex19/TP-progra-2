@@ -38,9 +38,8 @@ public interface IEntrada {
 	String toString();
 	String getCodigo();
 
-	String obtenerCodigo();
 
-	int asiento();
+	int obtenerAsiento();
 
 	LocalDate obtenerFecha();
 

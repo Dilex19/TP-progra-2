@@ -224,8 +224,7 @@ public class Ticketek implements ITicketek {
 	        usuariosDeEntrada.remove(entrada.getCodigo());
 	        Espectaculo espectaculo = espectaculos.get(entrada.nombreEspectaculo());
 	        if(espectaculo != null) {
-	        	Entrada entradaobjeto = (Entrada) entrada;
-	            espectaculo.anularEntrada(entrada.obtenerFecha(), entrada.obtenerCodigo(), entrada.obtenerSector(), entrada.asiento());
+	            espectaculo.anularEntrada(entrada.obtenerFecha(), entrada.getCodigo(), entrada.obtenerSector(), entrada.obtenerAsiento());
 	        }
 	    }
 	    
@@ -234,7 +233,7 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) {
-		// TODO Auto-generated method stub
+		Fecha fechaObjeto = new Fecha(fecha);
 		return null;
 	}
 

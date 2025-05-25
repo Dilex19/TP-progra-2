@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.time.LocalDate;
 
 public class Usuario {
 	private String email;
@@ -41,6 +42,16 @@ public class Usuario {
 		}
 		return entradasCompradas.containsKey(entrada.getCodigo());
 	}
+	public List<IEntrada> listarEntradas() {
+		return new ArrayList<>(entradasCompradas.values());
+	}
+	public void agregarEntrada(Entrada entrada) {
+		if(entrada != null) {
+			entradasCompradas.put(entrada.getCodigo(), entrada);
+		}
+	}
+		
+	
 	public boolean eliminarEntrada(IEntrada entrada) {
 		if(entrada == null || !tieneEntrada(entrada)) {
 			return false;

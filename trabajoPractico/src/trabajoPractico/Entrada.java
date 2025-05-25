@@ -43,24 +43,22 @@ public class Entrada implements IEntrada{
 	}
 	
 	@Override
-	public int asiento() {
+	public int obtenerAsiento() {
 		return asiento;
-	}
-	@Override
-	public String obtenerCodigo() {
-		return codigo;
 	}
 	@Override
 	public String obtenerSector() {
 		// TODO Auto-generated method stub
 		return sector;
 	}
-	@Override
-	public LocalDate obtenerFecha() {
-		return fecha;
-	}
+
 	@Override
 	public String nombreEspectaculo() {
 		return nombreEspectaculo;
+	}
+
+	@Override
+	public LocalDate obtenerFecha() {
+		return fecha;
 	}
 }
