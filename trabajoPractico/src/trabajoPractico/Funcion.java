@@ -87,6 +87,7 @@ public class Funcion {
 				double costo = costoEntrada(sector);
 				IEntrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, fecha, sector, a, fila, costo);
 				entradasVendidas.put(codigoEntrada, nuevaEntrada);
+				nuevasEntradas.add(nuevaEntrada);
 			}
 			return nuevasEntradas;
 			
@@ -189,7 +190,6 @@ public class Funcion {
 			if(asiento == false)
 				compradas+=1;
 		}
-		System.out.println(sector + compradas);
 		return compradas;
 	}
 	
@@ -210,19 +210,17 @@ public class Funcion {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
         String fechaStr = fecha.format(formatter);
         
+        StringBuilder sb = new StringBuilder();
+        sb.append(" - (");
+        sb.append(fechaStr);
+        sb.append(") ");
         if(sede instanceof SedeConSectores) {
         	SedeConSectores sedeConSectores = (SedeConSectores) sede;
-        	StringBuilder sb = new StringBuilder();
-        	int[] entradasVendidasCant = entradasVendidasPorSector();
-            sb.append(" - (");
-            sb.append(fechaStr);
-            sb.append(") ");
+            int[] entradasVendidasCant = entradasVendidasPorSector();
             sb.append(sedeConSectores.toString(entradasVendidasCant) );
         	return sb.toString().replaceAll(" \\| $", "");
         }
-        
-        StringBuilder sb = new StringBuilder();
-        sb.append(" - (" + fechaStr + ") " + sede.toString(entradasVendidas.size()) );
+        sb.append(sede.toString(entradasVendidas.size()) );
     	return sb.toString().replaceAll(" \\| $", "");
 	}
 	

@@ -11,20 +11,20 @@ public class Usuario {
 	private String nombre;
 	private String apellido;
 	private String contraseña;
-	private HashMap<String, Entrada> entradasCompradas;
+	private HashMap<String, IEntrada> entradasCompradas;
 	
 	Usuario(String email, String nombre, String apellido, String contraseña){
 		this.email = email;
 		this.nombre = nombre;
 		this.apellido =  apellido;
 		this.contraseña = contraseña;
-		entradasCompradas = new HashMap<String, Entrada>();
+		entradasCompradas = new HashMap<String, IEntrada>();
 	}
 	public boolean autenticar(String contrasenia) {
 		if(contrasenia == null) {
 			return false;
 		}
-		return this.contraseña.equals(contrasenia);
+		return this.contraseña.equals(contrasenia); 
 	}
 	public String getEmail() {
 		return this.email;
@@ -42,10 +42,7 @@ public class Usuario {
 		}
 		return entradasCompradas.containsKey(entrada.getCodigo());
 	}
-	public List<IEntrada> listarEntradas() {
-		return new ArrayList<>(entradasCompradas.values());
-	}
-	public void agregarEntrada(Entrada entrada) {
+	public void agregarEntrada(IEntrada entrada) {
 		if(entrada != null) {
 			entradasCompradas.put(entrada.getCodigo(), entrada);
 		}
@@ -56,7 +53,6 @@ public class Usuario {
 		if(entrada == null || !tieneEntrada(entrada)) {
 			return false;
 		}
-		System.out.println(tieneEntrada(entrada));
 		entradasCompradas.remove(entrada.getCodigo());
 		return true;
 	}
@@ -69,11 +65,20 @@ public class Usuario {
 	}
 	public LinkedList<IEntrada> listarEntradas() {
 		LinkedList<IEntrada> entradasUsuario = new LinkedList<IEntrada>();
-		for(Entrada entrada : entradasCompradas.values()) {
-			IEntrada Ientrada = (IEntrada) entrada;
+		for(IEntrada entrada : entradasCompradas.values()) {
 			entradasUsuario.add(entrada);
 		}
 		return entradasUsuario;
+	}
+	public List<IEntrada> listarEntradasFuturas() {
+		LinkedList<IEntrada> entradasFuturasUsuario = new LinkedList<IEntrada>();
+		for(IEntrada entrada : entradasCompradas.values()) {
+			LocalDate fechaActual = LocalDate.now();
+			if(entrada.obtenerFecha().isAfter(fechaActual)) {
+				entradasFuturasUsuario.add(entrada);
+			}
+		}
+		return entradasFuturasUsuario;
 	}
 	
 }

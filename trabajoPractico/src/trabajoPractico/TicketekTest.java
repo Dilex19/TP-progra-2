@@ -158,8 +158,6 @@ public class TicketekTest{
 
        String esperado = " - (01/03/25) Microestadio Sur - VIP: 0/50 | Comun: 0/100 | Baja: 4/150 | Alta: 0/200\n";
        esperado += " - (25/07/25) Microestadio Sur - VIP: 0/50 | Comun: 0/100 | Baja: 0/150 | Alta: 0/200\n";
-       System.out.println(listado);
-       System.out.println(esperado);
        assertEquals(esperado, listado);
     }
 
@@ -189,7 +187,6 @@ public class TicketekTest{
         	if( entrada.toString().contains(" P - "))
         		cont++;
         }
-        
         assertEquals(8,cont);
     }
 

@@ -2,6 +2,7 @@ package trabajoPractico;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Ticketek implements ITicketek {
@@ -134,10 +135,24 @@ public class Ticketek implements ITicketek {
 		if(!espectaculos.containsKey(nombreEspectaculo)) 
 			throw new RuntimeException("Error: El nombre del espectaculo no esta registrado.");
 		
+		if(!usuarios.containsKey(email)) 
+			throw new RuntimeException("Error: El email del usuario no esta registrado.");
+		
+		Usuario usuario = usuarios.get(email);
+		if(!usuario.autenticar(contrasenia))
+			throw new RuntimeException("Error: La contraseña es incorrecta.");
+		
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
 		Fecha fechaObjeto = new Fecha(fechaString);
 		LocalDate fecha = fechaObjeto.obtenerFecha();
-		return espectaculo.venderEntrada(nombreEspectaculo, fecha, cantidadEntradas);
+		LinkedList<IEntrada> entradas = espectaculo.venderEntrada(nombreEspectaculo, fecha, cantidadEntradas);
+		for(IEntrada entrada : entradas) {
+			usuario.agregarEntrada(entrada);
+			usuariosDeEntrada.put(entrada.getCodigo(), usuario);
+		}
+		
+		
+		return entradas;
 	}
 
 	@Override
@@ -145,11 +160,25 @@ public class Ticketek implements ITicketek {
 			String sector, int[] asientos) {
 		if(!espectaculos.containsKey(nombreEspectaculo)) 
 			throw new RuntimeException("Error: El nombre del espectaculo no esta registrado.");
+
+		if(!usuarios.containsKey(email)) 
+			throw new RuntimeException("Error: El email del usuario no esta registrado.");
+		
+		Usuario usuario = usuarios.get(email);
+		
+		if(!usuario.autenticar(contrasenia))
+			throw new RuntimeException("Error: La contraseña es incorrecta.");
 		
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
 		Fecha fechaObjeto = new Fecha(fechaString);
 		LocalDate fecha = fechaObjeto.obtenerFecha();
-		return espectaculo.venderEntrada(nombreEspectaculo, fecha, sector, asientos);
+		LinkedList<IEntrada> entradas = espectaculo.venderEntrada(nombreEspectaculo, fecha, sector, asientos);
+		for(IEntrada entrada : entradas) {
+			usuario.agregarEntrada(entrada);
+			usuariosDeEntrada.put(entrada.getCodigo(), usuario);
+		}
+		
+		return entradas;
 	}
 
 	@Override
@@ -172,8 +201,25 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public List<IEntrada> listarEntradasFuturas(String email, String contrasenia) {
-		// TODO Auto-generated method stub
-		return null;
+		if(email == null) 
+	        throw new RuntimeException("Error: El email no puede estar vacío");
+	    
+	    
+	    // Validación de contraseña
+	    if(contrasenia == null) 
+	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
+	    
+	    
+	    Usuario usuario = usuarios.get(email);
+	    
+	    if(usuario == null) 
+	        throw new RuntimeException("Error: No existe un usuario registrado con ese email");
+	    
+	    
+	    if(!usuario.autenticar(contrasenia)) 
+	        throw new RuntimeException("Error: Contraseña incorrecta");
+	    
+	    return usuario.listarEntradasFuturas();
 	}
 
 	@Override
@@ -209,13 +255,12 @@ public class Ticketek implements ITicketek {
 	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
 	    }
 	    
-	    
 	    Usuario usuario = usuariosDeEntrada.get(entrada.getCodigo());
-	    System.out.println(usuario);
-	    
-	    if(usuario == null) {
+	    if(usuario == null) 
 	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
-	    }
+	    
+	    if(!usuario.autenticar(contrasenia))
+			throw new RuntimeException("Error: La contraseña es incorrecta.");
 	    
 	    
 	    boolean anulacionExitosa = usuario.anularEntrada(entrada);

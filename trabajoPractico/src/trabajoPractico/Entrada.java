@@ -1,13 +1,14 @@
 package trabajoPractico;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Entrada implements IEntrada{
 	private String codigo;
 	private String nombreEspectaculo;
 	private LocalDate fecha;
 	private String sector;
-	private String fila;
+	private int fila;
 	private int asiento;
 	private double precioEntrada;
 	
@@ -18,6 +19,7 @@ public class Entrada implements IEntrada{
 		this.asiento = ubicacion;
 		this.precioEntrada = precioEntrada;
 		this.fecha =fecha;
+		this.fila = fila;
 	}
 	
 	Entrada(String codigo, String nombreEspectaculo, LocalDate fecha2, double precioEntrada){
@@ -60,5 +62,37 @@ public class Entrada implements IEntrada{
 	@Override
 	public LocalDate obtenerFecha() {
 		return fecha;
+	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	    if(sector == null) {
+	    	String entradaString = String.format("Entrada [Código: %s, Espectáculo: %s, Fecha: %s, Precio: %.2f€]",
+		            codigo,
+		            nombreEspectaculo,
+		            fecha.format(formatter),
+		            precioEntrada);
+	    	sb.append(entradaString);
+	    } else { 
+	    	String entradaString = String.format("Entrada [Código: %s, Espectáculo: %s, Fecha: %s, Sector: %s, Fila: %s, Asiento: %d, Precio: %.2f€]",
+	            codigo,
+	            nombreEspectaculo,
+	            fecha.format(formatter),
+	            sector,
+	            fila,
+	            asiento,
+	            precioEntrada);
+	    	sb.append(entradaString);
+	    }
+	    
+	    LocalDate fechaActual = LocalDate.now();
+		if(this.fecha.isAfter(fechaActual)) {
+			String entradaStringFinal = sb.toString();
+			return entradaStringFinal;
+		}
+		sb.insert(0, " P - ");
+		String entradaStringFinal = sb.toString();
+		return entradaStringFinal;
 	}
 }
