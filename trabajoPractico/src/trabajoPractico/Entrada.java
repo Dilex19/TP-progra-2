@@ -37,6 +37,10 @@ public class Entrada implements IEntrada{
 	public double precio() {
 		return precioEntrada;
 	}
+	public String getFecha() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+		return fecha.format(formatter);
+	}
 
 	@Override
 	public String ubicacion() {
@@ -47,6 +51,11 @@ public class Entrada implements IEntrada{
 	@Override
 	public int obtenerAsiento() {
 		return asiento;
+	}
+
+	@Override
+	public String obtenerCodigo() {
+		return codigo;
 	}
 	@Override
 	public String obtenerSector() {

@@ -42,7 +42,9 @@ public class Usuario {
 		}
 		return entradasCompradas.containsKey(entrada.getCodigo());
 	}
+
 	public void agregarEntrada(IEntrada entrada) {
+
 		if(entrada != null) {
 			entradasCompradas.put(entrada.getCodigo(), entrada);
 		}
