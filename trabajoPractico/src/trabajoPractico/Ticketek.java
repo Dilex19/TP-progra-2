@@ -278,134 +278,14 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) {
-		if(entrada == null) {
-	        throw new RuntimeException("Error: La entrada no puede ser nula");
-	    }
-	    if(contrasenia == null || contrasenia.trim().isEmpty()) {
-	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
-	    }
-	    if(fecha == null || fecha.trim().isEmpty()) {
-	        throw new RuntimeException("Error: La fecha no puede estar vacía");
-	    }
-	    if(sector == null || sector.trim().isEmpty()) {
-	        throw new RuntimeException("Error: El sector no puede estar vacío");
-	    }
-	    if(asiento <= 0) {
-	        throw new RuntimeException("Error: El número de asiento debe ser mayor a 0");
-	    }
-
-	    Usuario usuario = usuariosDeEntrada.get(entrada.getCodigo());
-	    
-	    if(usuario == null) {
-	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
-	    }
-	    
-	    if(!usuario.autenticar(contrasenia)) {
-	        throw new RuntimeException("Error: Contraseña incorrecta");
-	    }
-	    
-	    // Obtener el espectáculo
-	    Espectaculo espectaculo = espectaculos.get(entrada.getCodigo());
-	    if(espectaculo == null) {
-	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
-	    }
-	    
-	    // Anular la entrada actual
-	    boolean anulacionExitosa = anularEntrada(entrada, contrasenia);
-	    if(!anulacionExitosa) {
-	        throw new RuntimeException("Error: No se pudo anular la entrada original");
-	    }
-	    try {
-	        // Crear nueva entrada con el nuevo sector y asiento
-	        Fecha fechaObjeto = new Fecha(fecha);
-	        LocalDate fechaNueva = fechaObjeto.obtenerFecha();
-	        
-	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entrada.getNombreEspectaculo(), fechaNueva, sector, new int[]{asiento});
-	        
-	        if(nuevasEntradas.isEmpty()) {
-	            throw new RuntimeException("Error: No se pudo crear la nueva entrada");
-	        }
-	        
-	        IEntrada nuevaEntrada = nuevasEntradas.get(0);
-	        usuario.agregarEntrada(nuevaEntrada);
-	        usuariosDeEntrada.put(nuevaEntrada.getCodigo(), usuario);
-	        
-	        return nuevaEntrada;
-	        
-	    } catch(RuntimeException e) {
-	        // Si falla la creación de la nueva entrada, intentar restaurar la original
-	        try {
-	            usuario.agregarEntrada(entrada);
-	            usuariosDeEntrada.put(entrada.getCodigo(), usuario);
-	        } catch(Exception restoreException) {
-	            // Si no se puede restaurar, lanzar el error original
-	        }
-	        throw e;
-	    }
-
-
+		Fecha fechaObjeto = new Fecha(fecha);
+		return null;
+	}
 
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha) {
-		if(entrada == null) {
-	        throw new RuntimeException("Error: La entrada no puede ser nula");
-	    }
-	    if(contrasenia == null) {
-	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
-	    }
-	    if(fecha == null) {
-	        throw new RuntimeException("Error: La fecha no puede estar vacía");
-	    }
-
-	    Usuario usuario = usuariosDeEntrada.get(entrada.getCodigo());
-	    
-	    if(usuario == null) {
-	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
-	    }
-	    
-	    if(!usuario.autenticar(contrasenia)) {
-	        throw new RuntimeException("Error: Contraseña incorrecta");
-	    }
-	    
-	    // Obtener el espectáculo
-	    Espectaculo espectaculo = espectaculos.get(entrada.getNombreEspectaculo());
-	    if(espectaculo == null) {
-	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
-	    }
-	    
-	    // Anular la entrada actual
-	    boolean anulacionExitosa = anularEntrada(entrada, contrasenia);
-	    if(!anulacionExitosa) {
-	        throw new RuntimeException("Error: No se pudo anular la entrada original");
-	    }
-	    try {
-	        // Crear nueva entrada para estadio (solo cambio de fecha)
-	        Fecha fechaObjeto = new Fecha(fecha);
-	        LocalDate fechaNueva = fechaObjeto.obtenerFecha();
-	        
-	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entrada.getNombreEspectaculo(), fechaNueva, 1);
-	        
-	        if(nuevasEntradas.isEmpty()) {
-	            throw new RuntimeException("Error: No se pudo crear la nueva entrada");
-	        }
-	        
-	        IEntrada nuevaEntrada = nuevasEntradas.get(0);
-	        usuario.agregarEntrada(nuevaEntrada);
-	        usuariosDeEntrada.put(nuevaEntrada.getCodigo(), usuario);
-	        
-	        return nuevaEntrada;
-	        
-	    } catch(RuntimeException e) {
-	        // Si falla la creación de la nueva entrada, intentar restaurar la original
-	        try {
-	            usuario.agregarEntrada(entrada);
-	            usuariosDeEntrada.put(entrada.getCodigo(), usuario);
-	        } catch(Exception restoreException) {
-	            // Si no se puede restaurar, lanzar el error original
-	        }
-	        throw e;
-	    }
-	    
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

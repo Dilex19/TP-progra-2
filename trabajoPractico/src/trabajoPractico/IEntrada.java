@@ -37,10 +37,6 @@ public interface IEntrada {
 	 */
 	String toString();
 	String getCodigo();
-<<<<<<< HEAD
-	String getFecha();
-	String getNombreEspectaculo();
-=======
 
 
 	int obtenerAsiento();
@@ -50,5 +46,4 @@ public interface IEntrada {
 	String obtenerSector();
 
 	String nombreEspectaculo();
->>>>>>> df217516433bc5b3000524f5feea94e157f953f8
 }
