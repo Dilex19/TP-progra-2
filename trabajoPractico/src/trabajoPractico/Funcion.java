@@ -141,6 +141,14 @@ public class Funcion {
 		return entradas;
 	}
 	
+	public double totalRecaudado() {
+		double totalRecaudado = 0;
+		for(IEntrada entrada : entradasVendidas.values()) {
+			totalRecaudado += entrada.precio();
+		}
+		return totalRecaudado;
+	}
+	
 	public String codigoRandomParaEntrada() {
 		int randomNum = (int)(Math.random() * (100000 - 10000)) + 10000;
 		String randomNumString = randomNum + "";

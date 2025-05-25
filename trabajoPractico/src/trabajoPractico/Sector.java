@@ -20,7 +20,7 @@ public class Sector {
 	}
 	
 	public String toString( ) {
-        return String.format("%s: %d/%d", nombre, 0, capacidad);
+        return String.format("%s - Capacidad: %d", nombre, capacidad);
     }
 	
 	public String toString(int cantidadVendidas) {

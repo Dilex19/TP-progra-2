@@ -28,7 +28,9 @@ public class Espectaculo {
 			throw new RuntimeException("Error: La cantidad de asientos no puede ser menor a 1");
 		
 		Funcion funcion = funciones.get(fecha);
-		return funcion.venderEntrada(nombreEspectaculo, cantAsientos);
+		LinkedList<IEntrada> entradas= funcion.venderEntrada(nombreEspectaculo, cantAsientos);
+		agregarValorDeEntradasALoRecaudado(entradas,entradas.get(0).obtenerSede());
+		return entradas;
 	}
 	
 	
@@ -121,4 +123,7 @@ public class Espectaculo {
 		return RecaudadoPorSede.get(sede);
 	}
 	
+	public String toString() {
+		return String.format("%s - Cantidad de Funciones: %d - Total Recaudado %.2f", nombre, funciones.size(), totalRecaudado());
+	}
 }

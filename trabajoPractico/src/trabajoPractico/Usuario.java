@@ -61,8 +61,9 @@ public class Usuario {
 	}
 
 	public String toString() {
-		return nombre + " " + apellido + " " + email;
+		return String.format("%s - %s - %s", nombre,apellido,email);
 	}
+	
 	public LinkedList<IEntrada> listarEntradas() {
 		LinkedList<IEntrada> entradasUsuario = new LinkedList<IEntrada>();
 		for(IEntrada entrada : entradasCompradas.values()) {
@@ -80,5 +81,6 @@ public class Usuario {
 		}
 		return entradasFuturasUsuario;
 	}
+	
 	
 }

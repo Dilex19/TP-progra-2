@@ -452,4 +452,24 @@ public class Ticketek implements ITicketek {
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
 		return espectaculo.totalRecaudado(nombreSede);
 	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Usuarios: \n");
+		for(Usuario usuario: usuarios.values()) {
+			sb.append(usuario.toString());
+			sb.append("\n");
+		}
+		sb.append("Sedes: \n");
+		for(Sede sede : sedes.values()) {
+			sb.append(sede.toString());
+			sb.append("\n");
+		}
+		sb.append("Espectaculos: \n");
+		for(Espectaculo espectaculo : espectaculos.values()) {
+			sb.append(espectaculo.toString());
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
 }
