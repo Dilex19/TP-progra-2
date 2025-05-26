@@ -2,6 +2,7 @@ package trabajoPractico;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -149,14 +150,14 @@ public class Funcion {
 		return totalRecaudado;
 	}
 	
+	//Genera un codigo universal unico el cual es muy poco probable que se repita. Es poco probable, pero verifica que no se repita.
 	public String codigoRandomParaEntrada() {
-		int randomNum = (int)(Math.random() * (100000 - 10000)) + 10000;
-		String randomNumString = randomNum + "";
-		while(entradasVendidas.containsKey(randomNumString)) {
-			randomNum = (int)(Math.random() * (100000 - 10000)) + 10000;
-			randomNumString = "" + randomNum;
+		String codigo = UUID.randomUUID().toString(); 
+		//Verifica que no se repita.
+		while(entradasVendidas.containsKey(codigo)) {
+			codigo = UUID.randomUUID().toString(); 
 		}
-		return randomNumString;
+		return codigo;
 	}
 	
 	public void anularEntrada(String codigoEntrada, String sectorEntrada, int asientoEntrada) {
