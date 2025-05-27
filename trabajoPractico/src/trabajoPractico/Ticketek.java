@@ -453,7 +453,7 @@ public class Ticketek implements ITicketek {
 		return sb.toString();
 	}
 	
-	public LocalDate fecha(String fechaString) {
+	private LocalDate fecha(String fechaString) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
 	    LocalDate fecha = LocalDate.parse(fechaString, formatter);
 	    return fecha;
