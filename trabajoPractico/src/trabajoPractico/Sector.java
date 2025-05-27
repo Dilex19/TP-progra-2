@@ -17,18 +17,23 @@ public class Sector {
 		this.capacidad = capacidad;
 	}
 	
+	//Devuelve un valor int que representa un incremento.
+	
 	public double porcentajeAdicional() {
 		return incremento;
 	}
 	
+	//Devuelve la capacidad del sector.
 	public int capacidad() {
 		return capacidad;
 	}
 	
+	//Versión básica para representar el objeto como cadena.
 	public String toString( ) {
         return String.format("%s - Capacidad: %d", nombre, capacidad);
     }
 	
+	//Versión extendida que muestra información de ventas.
 	public String toString(int cantidadVendidas) {
 		return String.format("%s: %d/%d", nombre, cantidadVendidas, capacidad);
 

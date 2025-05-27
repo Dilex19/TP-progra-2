@@ -11,6 +11,7 @@ public class Espectaculo {
 	private Map<LocalDate,Funcion> funciones;
 	private Map<String, Double> RecaudadoPorSede; 
 	
+	//Constructor
 	Espectaculo(String nombre){
 		if(nombre == null || nombre.length()<2)
 			throw new RuntimeException("Error: El nombre del espectaculo no puede tener menos de 2 caracteres.");
@@ -19,6 +20,7 @@ public class Espectaculo {
 		this.RecaudadoPorSede = new TreeMap<String, Double>();
 	}
 	
+	//Dada una fecha y una cantiada de asientos, si los datos son correctos, devuelve una lista con las entradas compradas.
 	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, LocalDate fecha, int cantAsientos){
 		if(!funciones.containsKey(fecha)) 
 			throw new RuntimeException("Error: El espectaculo no continene una funcion en esa fecha.");
@@ -35,7 +37,7 @@ public class Espectaculo {
 		return entradas;
 	}
 	
-	
+	//Dada una fecha, el sector y un array de asientos, si los datos son correctos, devuelve una lista con las entradas compradas.
 	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, LocalDate fecha, String sector, int[] asientos){
 		if(!funciones.containsKey(fecha)) 
 			throw new RuntimeException("Error: El espectaculo no contiene una función en esa fecha.");
@@ -52,12 +54,15 @@ public class Espectaculo {
 		return entradas;
 	}
 	
+	
+	//Agrega el valor de la entrada comprada al Map.
 	private	 void agregarValorDeEntradasALoRecaudado(LinkedList<IEntrada> entradas,String sede) {
 		for(IEntrada entrada : entradas) {
 			RecaudadoPorSede.merge(sede, entrada.precio(), Double::sum);
 		}
 	}
 	
+	//Crea y agrega una nueva funcion al Map de funciones.
 	public void agregarFuncion(LocalDate fecha, Sede sede, double precioBase) {
 		if(funciones.containsKey(fecha)) 
 			throw new RuntimeException("Error: El espectaculo ya tiene una funcion registrada en esa fecha.");
@@ -69,6 +74,8 @@ public class Espectaculo {
 		}
 	}
 	
+	
+	//Lista todas las funciones del espectaculo
 	public String listarFunciones() {
 		StringBuilder listaFunciones = new StringBuilder();
 		for(Funcion funcion : funciones.values()) {
@@ -80,6 +87,7 @@ public class Espectaculo {
 		return listaFuncionesString;
 	}
 	
+	//Lista todas las entradas de todas las funciones del espectaculo.
 	public LinkedList<IEntrada> listarEntradas(){
 		LinkedList<IEntrada> entradasTotales = new LinkedList<IEntrada>();
 		for(Funcion funcion : funciones.values()) {
@@ -89,6 +97,7 @@ public class Espectaculo {
 		return entradasTotales;
 	}
 	
+	//Dada una fecha, el codigo de la entrada, el sector y el numero del asiento, elimina la entrada comprada.
 	public void anularEntrada(LocalDate fechaEntrada, String codigoEntrada, String sectorEntrada, int asientoEntrada) {
 		if(!funciones.containsKey(fechaEntrada)){
 			throw new RuntimeException("Error: La fecha de la entrada no concuerda con las fechas registradas del espectaculo.");
@@ -97,6 +106,7 @@ public class Espectaculo {
 		funcion.anularEntrada(codigoEntrada, sectorEntrada, asientoEntrada);
 	}
 	
+	//Dada una fecha, devuelve el valor de la entrada correspondiente a la funcion en esa fecha
 	public double costoEntrada(LocalDate fecha) {
 		if(!funciones.containsKey(fecha)){
 			throw new RuntimeException("Error: La fecha no concuerda con las fechas registradas del espectaculo.");
@@ -105,6 +115,7 @@ public class Espectaculo {
 		return funcion.costoEntrada();
 	}
 	
+	//Dada una fecha y un sector, devuelve el valor de la entrada correspondiente a la funcion en esa fecha y al sector elegido.
 	public double costoEntrada(LocalDate fecha, String sector) {
 		if(!funciones.containsKey(fecha)){
 			throw new RuntimeException("Error: La fecha no concuerda con las fechas registradas del espectaculo.");
@@ -113,6 +124,7 @@ public class Espectaculo {
 		return funcion.costoEntrada(sector);
 	}
 	
+	//Devuelve el total recaudado por el Espectaculo.
 	public double totalRecaudado() {
 		double totalRecaudado = 0;
 		for(Double reucaudado : RecaudadoPorSede.values()) {
@@ -121,10 +133,12 @@ public class Espectaculo {
 		return totalRecaudado;
 	}
 	
+	//Devuelve el total recaudado por el Espectaculo en un sector especifico
 	public double totalRecaudado(String sede) {
 		return RecaudadoPorSede.get(sede);
 	}
 	
+	//Imprime la informacion del Espectaculo.
 	public String toString() {
 		return String.format("%s - Cantidad de Funciones: %d - Total Recaudado %.2f", nombre, funciones.size(), totalRecaudado());
 	}

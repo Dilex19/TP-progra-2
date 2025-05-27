@@ -35,17 +35,19 @@ public interface IEntrada {
 	 *  - 7196 - Coldplay en vivo - 30/04/2025 P - La bombonera - CAMPO
 	 * @return
 	 */
+
 	String toString();
+	//Devuelve el codigo de la entrada
 	String getCodigo();
 
-
+	//Devuelve el numero del asiento
 	int obtenerAsiento();
-
+	//Devuelve la fecha de la entrada
 	LocalDate obtenerFecha();
-
-	String obtenerSector();
-
+	//Devuelve el nombre del espectaculo
 	String nombreEspectaculo();
-
+	//Devuelve el nombre de la sede
 	String obtenerSede();
+	//Devuelve el sector.
+	String obtenerSector();
 }
