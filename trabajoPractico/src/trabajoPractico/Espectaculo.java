@@ -52,7 +52,7 @@ public class Espectaculo {
 		return entradas;
 	}
 	
-	public void agregarValorDeEntradasALoRecaudado(LinkedList<IEntrada> entradas,String sede) {
+	private	 void agregarValorDeEntradasALoRecaudado(LinkedList<IEntrada> entradas,String sede) {
 		for(IEntrada entrada : entradas) {
 			RecaudadoPorSede.merge(sede, entrada.precio(), Double::sum);
 		}

@@ -41,15 +41,6 @@ public class Usuario {
 		}
 		return this.contraseña.equals(contrasenia); 
 	}
-	public String getEmail() {
-		return this.email;
-	}
-	public String getNombre() {
-		return this.nombre;
-	}
-	public String getApellido() {
-		return this.apellido;
-	}
 	
 	public void agregarEntrada(IEntrada entrada) {
 		if(entrada != null) {

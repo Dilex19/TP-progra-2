@@ -74,13 +74,13 @@ public abstract class SedeConSectores extends Sede {
         return sb.toString().replaceAll(" \\| $", ""); 
     }
 	
-	public String toString(int[] cantidadVendidas) {
+	public String toString(int[] cantidadDeEntradasVendidas) {
         StringBuilder sb = new StringBuilder();
         sb.append(super.nombre());
         sb.append(" - ");
         int cantSector = 0;
         for (Sector sector : sectores.values()) {
-            sb.append(sector.toString(cantidadVendidas[cantSector])).append(" | ");
+            sb.append(sector.toString(cantidadDeEntradasVendidas[cantSector])).append(" | ");
             cantSector++;
         }
         return sb.toString().replaceAll(" \\| $", "");
