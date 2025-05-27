@@ -13,6 +13,7 @@ public class Entrada implements IEntrada{
 	private int asiento;
 	private double precioEntrada;
 	
+	//Constructor de Entrada que tenga sectores que no sea CAMPO.
 	Entrada(String codigo, String nombreEspectaculo, LocalDate fecha, String nombreSede,String sector, int asiento, int fila, double precioEntrada){
 		if(codigo == null || codigo.isEmpty()) 
 				throw new RuntimeException("Error: El codigo de la entrada no puede ser null o vacio.");
@@ -41,7 +42,7 @@ public class Entrada implements IEntrada{
 		this.fila = fila;
 		this.nombreSede = nombreSede;
 	}
-	
+	//Constructor de entrada con solo sector CAMPO
 	Entrada(String codigo, String nombreEspectaculo, LocalDate fecha, String nombreSede,double precioEntrada){
 		if(codigo == null || codigo.isEmpty()) 
 			throw new RuntimeException("Error: El codigo de la entrada no puede ser null o vacio.");
@@ -59,51 +60,58 @@ public class Entrada implements IEntrada{
 		this.fecha = fecha;
 		this.precioEntrada = precioEntrada;
 		this.nombreSede = nombreSede;
+		this.sector = "CAMPO";
 	}
+	
+	//Devuelve el codigo.
 	@Override
 	public String getCodigo() {
 		return codigo;
 	}
 	
+	//Devuelve el precio.
 	@Override
 	public double precio() {
 		return precioEntrada;
 	}
-	public String getFecha() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-		return fecha.format(formatter);
-	}
 
+	//Devuelve la ubicacion.
 	@Override
 	public String ubicacion() {
-		if(sector == null) {
+		if(sector == "CAMPO") {
 			return "CAMPO";
 	    } else {
 	        return String.format("%s f:%s a:%d", sector, fila, asiento);
 	    }
 	}
 	
+	
+	//Devuelve el numero de Asiento.
 	@Override
 	public int obtenerAsiento() {
 		return asiento;
 	}
 
+	
+	//Devuelve el nombre del Sector
 	@Override
 	public String obtenerSector() {
 		return sector;
 	}
 	
+	//Devuelve el nombre de la sede
 	@Override
 	public String obtenerSede() {
 		return nombreSede;
 	}
 	
-
+	//Devuelve el nombre del Espectaculo
 	@Override
 	public String nombreEspectaculo() {
 		return nombreEspectaculo;
 	}
 
+	//devuelve la fecha.
 	@Override
 	public LocalDate obtenerFecha() {
 		return fecha;
