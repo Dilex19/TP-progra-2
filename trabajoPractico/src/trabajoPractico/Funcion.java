@@ -178,30 +178,6 @@ public class Funcion {
 		}
 	}
 	
-	public int entradasVendidasPorSector(String sector) {
-		if(!asientos.containsKey(sector)) 
-			throw new RuntimeException("Error: El sector indicado no existe.");
-		boolean[] asientos = this.asientos.get(sector);
-		int compradas = 0;
-		for(boolean asiento : asientos) {
-			if(asiento == false)
-				compradas+=1;
-		}
-		return compradas;
-	}
-	
-	public int[] entradasVendidasPorSector() {
-		int[] compradasPorSector = new int[asientos.size()];
-		int i = 0;
-		Iterator<String> iterador = asientos.keySet().iterator();
-		while (iterador.hasNext()) {
-    	    String clave = iterador.next();
-    	    compradasPorSector[i] = entradasVendidasPorSector(clave);
-    	    i++;
-    	}
-		
-		return compradasPorSector;
-	}
 	
 	public String toString() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");

@@ -18,12 +18,17 @@ public abstract class SedeConSectores extends Sede {
 			throw new RuntimeException("La suma de la capacidad de los sectores no concuerda con la capacidad maxima de la Sede");
 		}
 		if(asientosPorFila<=0) {
-			throw new RuntimeException("Error: la cantidad de asientos por fila no puede ser negativa o cero");
+			throw new RuntimeException("Error: la cantidad de asientos por fila no puede ser negativa o cero.");
 		}
+		if(sectores == null || sectores.length<1)
+			throw new RuntimeException("Error: Los sectores son invalidos");
 		
 		this.sectores = new LinkedHashMap<String , Sector>();
 		this.cantidadDeAsientosPorFila = asientosPorFila;
 		for(int i = 0 ; i<sectores.length; i++) {
+			if(sectores[i].length()<2) {
+				throw new RuntimeException("Error: Los sectores deben tener al menos 2 caracteres.");
+			}
 			Sector sector = new Sector(sectores[i], porcentajeAdicional[i], capacidad[i]);
 			this.sectores.put(sectores[i], sector);
 		}
