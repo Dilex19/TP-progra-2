@@ -173,7 +173,7 @@ public class Ticketek implements ITicketek {
 		
 		return entradas;
 	}
-	
+	//Lista las funciones de un espectaculo
 	@Override
 	public String listarFunciones(String nombreEspectaculo) {
 		if(!espectaculos.containsKey(nombreEspectaculo)) 
