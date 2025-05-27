@@ -19,6 +19,7 @@ public class Ticketek implements ITicketek {
 		this.usuariosDeEntrada = new HashMap<String, Usuario>();
 	}
 
+	//Registra una sede sin sectores.
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
 		if(sedes.containsKey(nombre)) {
@@ -34,6 +35,7 @@ public class Ticketek implements ITicketek {
 		sedes.put(nombre, sede);
 	}
 
+	//Registra una sede con múltiples sectores.
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
@@ -56,6 +58,7 @@ public class Ticketek implements ITicketek {
 		sedes.put(nombre, sede);
 	}
 
+	//Registra una sede con servicios adicionales.
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			int cantidadPuestos, double precioConsumicion, String[] sectores, int[] capacidad,
@@ -82,6 +85,7 @@ public class Ticketek implements ITicketek {
 		sedes.put(nombre, sede);
 	}
 
+	//Registra un usuario.
 	@Override
 	public void registrarUsuario(String email, String nombre, String apellido, String contrasenia) {
 		if(usuarios.containsKey(email)) {
@@ -92,6 +96,7 @@ public class Ticketek implements ITicketek {
 		
 	}
 
+	//Registra un espectáculo.
 	@Override
 	public void registrarEspectaculo(String nombre) {
 		if(espectaculos.containsKey(nombre)) {
@@ -101,6 +106,7 @@ public class Ticketek implements ITicketek {
 		espectaculos.put(nombre, espectaculo);
 	}
 
+	//Agrega una función.
 	@Override
 	public void agregarFuncion(String nombreEspectaculo, String fechaString, String sedeString, double precioBase) {
 		if(!espectaculos.containsKey(nombreEspectaculo)) 
@@ -115,6 +121,7 @@ public class Ticketek implements ITicketek {
 		espectaculo.agregarFuncion(fecha, sede, precioBase);
 	}
 
+	// Asocia entradas al usuario.
 	@Override
 	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fechaString, String email, String contrasenia,
 			int cantidadEntradas) {
@@ -141,6 +148,7 @@ public class Ticketek implements ITicketek {
 		return entradas;
 	}
 
+	// Similar al anterior pero con selección de asientos.
 	@Override
 	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fechaString, String email, String contrasenia,
 			String sector, int[] asientos) {
@@ -166,6 +174,7 @@ public class Ticketek implements ITicketek {
 		return entradas;
 	}
 
+	//Lista de funciones.
 	@Override
 	public String listarFunciones(String nombreEspectaculo) {
 		if(!espectaculos.containsKey(nombreEspectaculo)) 
@@ -175,6 +184,7 @@ public class Ticketek implements ITicketek {
 		return espectaculo.listarFunciones();
 	}
 
+	//Lista de entradas de un espectáculo.
 	@Override
 	public List<IEntrada> listarEntradasEspectaculo(String nombreEspectaculo) {
 		if(!espectaculos.containsKey(nombreEspectaculo)) 
@@ -184,6 +194,7 @@ public class Ticketek implements ITicketek {
 		return espectaculo.listarEntradas();
 	}
 
+	//Lista de entradas futuras compradas por un usuario.
 	@Override
 	public List<IEntrada> listarEntradasFuturas(String email, String contrasenia) {
 		if(email == null) 
@@ -207,6 +218,7 @@ public class Ticketek implements ITicketek {
 	    return usuario.listarEntradasFuturas();
 	}
 
+	//Lista de entradas de un usuario.
 	@Override
 	public List<IEntrada> listarTodasLasEntradasDelUsuario(String email, String contrasenia) {
 	    if(email == null) {
@@ -231,6 +243,7 @@ public class Ticketek implements ITicketek {
 	    return usuario.listarEntradas();
 	}
 
+	//Anula una entrada.
 	@Override
 	public boolean anularEntrada(IEntrada entrada, String contrasenia) {
 		if(entrada == null) {
@@ -261,6 +274,7 @@ public class Ticketek implements ITicketek {
 	    return anulacionExitosa;
 	}
 
+	//Cambia una entrada.
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) {
 		if(entrada == null) {
@@ -295,7 +309,7 @@ public class Ticketek implements ITicketek {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
 	    
-	    // Anular la entrada actual
+	    // Anular la entrada actual.
 	    boolean anulacionExitosa = anularEntrada(entrada, contrasenia);
 	    if(!anulacionExitosa) {
 	        throw new RuntimeException("Error: No se pudo anular la entrada original");
@@ -328,6 +342,7 @@ public class Ticketek implements ITicketek {
 	    }
 	}
 
+	//Similar al anterior pero con sector y asientos.
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha) {
 		if(entrada == null) {
@@ -391,6 +406,7 @@ public class Ticketek implements ITicketek {
 	}
 
 
+	//Calcula el costo de una entrada.
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fechaString ) {
 		if(!espectaculos.containsKey(nombreEspectaculo)) 
@@ -402,6 +418,7 @@ public class Ticketek implements ITicketek {
 		return espectaculo.costoEntrada(fecha);
 	}
 
+	//Similar al anterior pero con sector.
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fechaString, String sector) {
 		if(!espectaculos.containsKey(nombreEspectaculo)) 
@@ -412,6 +429,7 @@ public class Ticketek implements ITicketek {
 		return espectaculo.costoEntrada(fecha,sector);
 	}
 
+	//Calcula el total recaudado.
 	@Override
 	public double totalRecaudado(String nombreEspectaculo) {
 		if(!espectaculos.containsKey(nombreEspectaculo)) 
@@ -421,6 +439,7 @@ public class Ticketek implements ITicketek {
 		return espectaculo.totalRecaudado();
 	}
 
+	//Similar al anterior pero por sede.
 	@Override
 	public double totalRecaudadoPorSede(String nombreEspectaculo, String nombreSede) {
 		if(!espectaculos.containsKey(nombreEspectaculo)) 
@@ -433,6 +452,7 @@ public class Ticketek implements ITicketek {
 		return espectaculo.totalRecaudado(nombreSede);
 	}
 	
+	//Genera reporte completo de usuarios, sedes y espectáculos.
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Usuarios: \n");
@@ -453,6 +473,7 @@ public class Ticketek implements ITicketek {
 		return sb.toString();
 	}
 	
+	//Convierte String "dd/MM/yy" a LocalDate.
 	private LocalDate fecha(String fechaString) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
 	    LocalDate fecha = LocalDate.parse(fechaString, formatter);

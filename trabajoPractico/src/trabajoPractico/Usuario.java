@@ -35,6 +35,8 @@ public class Usuario {
 		this.contraseña = contrasenia;
 		entradasCompradas = new HashMap<String, IEntrada>();
 	}
+	
+	//Verifica si la contraseña ingresada coincide con la del usuario.
 	public boolean autenticar(String contrasenia) {
 		if(contrasenia == null) {
 			return false;
@@ -42,18 +44,22 @@ public class Usuario {
 		return this.contraseña.equals(contrasenia); 
 	}
 	
+	//Añade una entrada al mapa de entradas compradas.
 	public void agregarEntrada(IEntrada entrada) {
 		if(entrada != null) {
 			entradasCompradas.put(entrada.getCodigo(), entrada);
 		}
 	}
 
+	//Verifica si el usuario posee una entrada específica.
 	public boolean tieneEntrada(IEntrada entrada) {
 		if(entrada == null) {
 			return false;
 		}
 		return entradasCompradas.containsKey(entrada.getCodigo());
 	}
+	
+	//Elimina una entrada del usuario.
 	public boolean eliminarEntrada(IEntrada entrada) {
 		if(entrada == null || !tieneEntrada(entrada)) {
 			return false;
@@ -61,14 +67,18 @@ public class Usuario {
 		entradasCompradas.remove(entrada.getCodigo());
 		return true;
 	}
+	
+	//Alias de eliminarEntrada(), misma funcionalidad.
 	public boolean anularEntrada(IEntrada entrada) {
 		return eliminarEntrada(entrada);
 	}
 
+	//Formato: "<nombre> - <apellido> - <email>."
 	public String toString() {
 		return String.format("%s - %s - %s", nombre,apellido,email);
 	}
 	
+	//Devuelve todas las entradas del usuario en una lista.
 	public LinkedList<IEntrada> listarEntradas() {
 		LinkedList<IEntrada> entradasUsuario = new LinkedList<IEntrada>();
 		for(IEntrada entrada : entradasCompradas.values()) {
@@ -76,6 +86,8 @@ public class Usuario {
 		}
 		return entradasUsuario;
 	}
+	
+	//Filtra entradas con fechas posteriores al día actual.
 	public List<IEntrada> listarEntradasFuturas() {
 		LinkedList<IEntrada> entradasFuturasUsuario = new LinkedList<IEntrada>();
 		for(IEntrada entrada : entradasCompradas.values()) {
