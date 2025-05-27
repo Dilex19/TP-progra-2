@@ -18,12 +18,17 @@ public abstract class SedeConSectores extends Sede {
 			throw new RuntimeException("La suma de la capacidad de los sectores no concuerda con la capacidad maxima de la Sede");
 		}
 		if(asientosPorFila<=0) {
-			throw new RuntimeException("Error: la cantidad de asientos por fila no puede ser negativa o cero");
+			throw new RuntimeException("Error: la cantidad de asientos por fila no puede ser negativa o cero.");
 		}
+		if(sectores == null || sectores.length<1)
+			throw new RuntimeException("Error: Los sectores son invalidos");
 		
 		this.sectores = new LinkedHashMap<String , Sector>();
 		this.cantidadDeAsientosPorFila = asientosPorFila;
 		for(int i = 0 ; i<sectores.length; i++) {
+			if(sectores[i].length()<2) {
+				throw new RuntimeException("Error: Los sectores deben tener al menos 2 caracteres.");
+			}
 			Sector sector = new Sector(sectores[i], porcentajeAdicional[i], capacidad[i]);
 			this.sectores.put(sectores[i], sector);
 		}
@@ -66,20 +71,21 @@ public abstract class SedeConSectores extends Sede {
 	
 	public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(super.nombre() + " - ");
+        sb.append(super.nombre());
+        sb.append(" - ");
         for (Sector sector : sectores.values()) {
             sb.append(sector.toString()).append(" | ");
         }
         return sb.toString().replaceAll(" \\| $", ""); 
     }
 	
-	public String toString(int[] cantidadVendidas) {
+	public String toString(int[] cantidadDeEntradasVendidas) {
         StringBuilder sb = new StringBuilder();
         sb.append(super.nombre());
         sb.append(" - ");
         int cantSector = 0;
         for (Sector sector : sectores.values()) {
-            sb.append(sector.toString(cantidadVendidas[cantSector])).append(" | ");
+            sb.append(sector.toString(cantidadDeEntradasVendidas[cantSector])).append(" | ");
             cantSector++;
         }
         return sb.toString().replaceAll(" \\| $", "");

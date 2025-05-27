@@ -12,6 +12,8 @@ public class Espectaculo {
 	private Map<String, Double> RecaudadoPorSede; 
 	
 	Espectaculo(String nombre){
+		if(nombre == null || nombre.length()<2)
+			throw new RuntimeException("Error: El nombre del espectaculo no puede tener menos de 2 caracteres.");
 		this.nombre =  nombre;
 		this.funciones = new  TreeMap<LocalDate,Funcion>();
 		this.RecaudadoPorSede = new TreeMap<String, Double>();
@@ -28,7 +30,9 @@ public class Espectaculo {
 			throw new RuntimeException("Error: La cantidad de asientos no puede ser menor a 1");
 		
 		Funcion funcion = funciones.get(fecha);
-		return funcion.venderEntrada(nombreEspectaculo, cantAsientos);
+		LinkedList<IEntrada> entradas= funcion.venderEntrada(nombreEspectaculo, cantAsientos);
+		agregarValorDeEntradasALoRecaudado(entradas,entradas.get(0).obtenerSede());
+		return entradas;
 	}
 	
 	
@@ -48,7 +52,7 @@ public class Espectaculo {
 		return entradas;
 	}
 	
-	public void agregarValorDeEntradasALoRecaudado(LinkedList<IEntrada> entradas,String sede) {
+	private	 void agregarValorDeEntradasALoRecaudado(LinkedList<IEntrada> entradas,String sede) {
 		for(IEntrada entrada : entradas) {
 			RecaudadoPorSede.merge(sede, entrada.precio(), Double::sum);
 		}
@@ -121,4 +125,7 @@ public class Espectaculo {
 		return RecaudadoPorSede.get(sede);
 	}
 	
+	public String toString() {
+		return String.format("%s - Cantidad de Funciones: %d - Total Recaudado %.2f", nombre, funciones.size(), totalRecaudado());
+	}
 }

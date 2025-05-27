@@ -2,6 +2,7 @@ package trabajoPractico;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -16,12 +17,15 @@ public class Funcion {
 	private HashMap<String,IEntrada> entradasVendidas;
 	
 	
-	Funcion(LocalDate fecha, Sede sede, double precioBaseS){
-		if(precioBase<0) 
-			throw new RuntimeException("Error: El precio base no puede ser menor a cero");
-		
+	Funcion(LocalDate fecha, Sede sede, double precioBase){
+		if(precioBase<=0) 
+			throw new RuntimeException("Error: El precio base no puede ser menor o igual cero.");
+		if(fecha == null)
+			throw new RuntimeException("Error: La fecha no puede ser null.");
+		if(sede == null)
+			throw new RuntimeException("Error: La sede no puede ser null.");
 		this.sede = sede;
-		this.precioBase = precioBaseS;
+		this.precioBase = precioBase;
 		this.asientos = new LinkedHashMap<String, boolean[]>();
 		this.entradasVendidas = new HashMap<String, IEntrada>();
 		this.fecha = fecha;
@@ -141,14 +145,22 @@ public class Funcion {
 		return entradas;
 	}
 	
-	public String codigoRandomParaEntrada() {
-		int randomNum = (int)(Math.random() * (100000 - 10000)) + 10000;
-		String randomNumString = randomNum + "";
-		while(entradasVendidas.containsKey(randomNumString)) {
-			randomNum = (int)(Math.random() * (100000 - 10000)) + 10000;
-			randomNumString = "" + randomNum;
+	public double totalRecaudado() {
+		double totalRecaudado = 0;
+		for(IEntrada entrada : entradasVendidas.values()) {
+			totalRecaudado += entrada.precio();
 		}
-		return randomNumString;
+		return totalRecaudado;
+	}
+	
+	//Genera un codigo universal unico el cual es muy poco probable que se repita. Es poco probable, pero verifica que no se repita.
+	public String codigoRandomParaEntrada() {
+		String codigo = UUID.randomUUID().toString(); 
+		//Verifica que no se repita.
+		while(entradasVendidas.containsKey(codigo)) {
+			codigo = UUID.randomUUID().toString(); 
+		}
+		return codigo;
 	}
 	
 	public void anularEntrada(String codigoEntrada, String sectorEntrada, int asientoEntrada) {

@@ -1,6 +1,7 @@
 package trabajoPractico;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,24 +84,9 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public void registrarUsuario(String email, String nombre, String apellido, String contrasenia) {
-		if (email == null) {
-			throw new RuntimeException("Error: El email no puede estar vacío");
-		}
 		if(usuarios.containsKey(email)) {
 	        throw new RuntimeException("Error: Ya existe un usuario registrado con ese email");
 	    }
-		if(nombre == null) {
-	        throw new RuntimeException("Error: El nombre no puede estar vacío");
-	    }
-		if(apellido == null) {
-		    throw new RuntimeException("Error: El apellido no puede estar vacío");
-	    }
-		if(contrasenia == null) {
-	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
-	    }
-		if(!email.contains("@") || !email.contains(".")) {
-		    throw new RuntimeException("Error: El formato del email no es válido");
-		}
 	    Usuario usuario = new Usuario(email, nombre, apellido, contrasenia);
 	    usuarios.put(email, usuario);
 		
@@ -122,8 +108,8 @@ public class Ticketek implements ITicketek {
 		
 		if(!sedes.containsKey(sedeString)) 
 			throw new RuntimeException("Error: El nombre de la sede no esta registrado.");
-		Fecha fechaObjeto = new Fecha(fechaString);
-		LocalDate fecha = fechaObjeto.obtenerFecha();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+	    LocalDate fecha = LocalDate.parse(fechaString, formatter);
 		Sede sede = sedes.get(sedeString);
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
 		espectaculo.agregarFuncion(fecha, sede, precioBase);
@@ -143,8 +129,8 @@ public class Ticketek implements ITicketek {
 			throw new RuntimeException("Error: La contraseña es incorrecta.");
 		
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
-		Fecha fechaObjeto = new Fecha(fechaString);
-		LocalDate fecha = fechaObjeto.obtenerFecha();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+	    LocalDate fecha = LocalDate.parse(fechaString, formatter);
 		LinkedList<IEntrada> entradas = espectaculo.venderEntrada(nombreEspectaculo, fecha, cantidadEntradas);
 		for(IEntrada entrada : entradas) {
 			usuario.agregarEntrada(entrada);
@@ -170,8 +156,7 @@ public class Ticketek implements ITicketek {
 			throw new RuntimeException("Error: La contraseña es incorrecta.");
 		
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
-		Fecha fechaObjeto = new Fecha(fechaString);
-		LocalDate fecha = fechaObjeto.obtenerFecha();
+		LocalDate fecha = fecha(fechaString);
 		LinkedList<IEntrada> entradas = espectaculo.venderEntrada(nombreEspectaculo, fecha, sector, asientos);
 		for(IEntrada entrada : entradas) {
 			usuario.agregarEntrada(entrada);
@@ -317,8 +302,7 @@ public class Ticketek implements ITicketek {
 	    }
 	    try {
 	        // Crear nueva entrada con el nuevo sector y asiento
-	        Fecha fechaObjeto = new Fecha(fecha);
-	        LocalDate fechaNueva = fechaObjeto.obtenerFecha();
+	        LocalDate fechaNueva = fecha(fecha);
 	        
 	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entrada.nombreEspectaculo(), fechaNueva, sector, new int[]{asiento});
 	        
@@ -379,8 +363,7 @@ public class Ticketek implements ITicketek {
 	    }
 	    try {
 	        // Crear nueva entrada para estadio (solo cambio de fecha)
-	        Fecha fechaObjeto = new Fecha(fecha);
-	        LocalDate fechaNueva = fechaObjeto.obtenerFecha();
+	        LocalDate fechaNueva = fecha(fecha);
 	        
 	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entrada.nombreEspectaculo(), fechaNueva, 1);
 	        
@@ -414,8 +397,7 @@ public class Ticketek implements ITicketek {
 			throw new RuntimeException("Error: El nombre del espectaculo no esta registrado.");
 		
 		
-		Fecha fechaObjeto = new Fecha(fechaString);
-		LocalDate fecha = fechaObjeto.obtenerFecha();
+		LocalDate fecha = fecha(fechaString);
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
 		return espectaculo.costoEntrada(fecha);
 	}
@@ -424,10 +406,8 @@ public class Ticketek implements ITicketek {
 	public double costoEntrada(String nombreEspectaculo, String fechaString, String sector) {
 		if(!espectaculos.containsKey(nombreEspectaculo)) 
 			throw new RuntimeException("Error: El nombre del espectaculo no esta registrado.");
-		
-		
-		Fecha fechaObjeto = new Fecha(fechaString);
-		LocalDate fecha = fechaObjeto.obtenerFecha();
+
+		LocalDate fecha = fecha(fechaString);
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
 		return espectaculo.costoEntrada(fecha,sector);
 	}
@@ -451,5 +431,31 @@ public class Ticketek implements ITicketek {
 	
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
 		return espectaculo.totalRecaudado(nombreSede);
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Usuarios: \n");
+		for(Usuario usuario: usuarios.values()) {
+			sb.append(usuario.toString());
+			sb.append("\n");
+		}
+		sb.append("Sedes: \n");
+		for(Sede sede : sedes.values()) {
+			sb.append(sede.toString());
+			sb.append("\n");
+		}
+		sb.append("Espectaculos: \n");
+		for(Espectaculo espectaculo : espectaculos.values()) {
+			sb.append(espectaculo.toString());
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
+	
+	private LocalDate fecha(String fechaString) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+	    LocalDate fecha = LocalDate.parse(fechaString, formatter);
+	    return fecha;
 	}
 }

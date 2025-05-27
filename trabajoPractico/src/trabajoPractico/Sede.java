@@ -25,7 +25,7 @@ public abstract class Sede {
 		return nombre;
 	}
 	public String toString() {
-		return String.format("%s: %d/%d", nombre, 0, capacidadMaxima);
+		return String.format("%s - Capacidad: %d", nombre, capacidadMaxima);
 	}
 	
 	public String toString(int cantidadVendidas) {

@@ -6,6 +6,13 @@ public class MiniEstadio extends SedeConSectores{
 	
 	MiniEstadio(String nombre, String direccion, int capacidadMaxima, int asientosPorFila, int cantidadPuestos, double precioConsumicion, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
 		super(nombre, direccion, capacidadMaxima, asientosPorFila, sectores, capacidad, porcentajeAdicional);
+		if(cantidadPuestos < 0) {
+			throw new RuntimeException("Error: La cantidad de puestos no puede ser negativa");
+		}
+		if(precioConsumicion < 0) {
+			throw new RuntimeException("Error: El precio por consumision no puede ser negativo");
+		}
+		
 		this.cantidadPuestos = cantidadPuestos;
 		this.precioConsumision = precioConsumicion;
 	}
