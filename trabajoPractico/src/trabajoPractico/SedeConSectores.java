@@ -66,7 +66,8 @@ public abstract class SedeConSectores extends Sede {
 	
 	public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(super.nombre() + " - ");
+        sb.append(super.nombre());
+        sb.append(" - ");
         for (Sector sector : sectores.values()) {
             sb.append(sector.toString()).append(" | ");
         }

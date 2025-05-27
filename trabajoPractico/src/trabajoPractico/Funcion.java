@@ -17,12 +17,15 @@ public class Funcion {
 	private HashMap<String,IEntrada> entradasVendidas;
 	
 	
-	Funcion(LocalDate fecha, Sede sede, double precioBaseS){
-		if(precioBase<0) 
-			throw new RuntimeException("Error: El precio base no puede ser menor a cero");
-		
+	Funcion(LocalDate fecha, Sede sede, double precioBase){
+		if(precioBase<=0) 
+			throw new RuntimeException("Error: El precio base no puede ser menor o igual cero.");
+		if(fecha == null)
+			throw new RuntimeException("Error: La fecha no puede ser null.");
+		if(sede == null)
+			throw new RuntimeException("Error: La sede no puede ser null.");
 		this.sede = sede;
-		this.precioBase = precioBaseS;
+		this.precioBase = precioBase;
 		this.asientos = new LinkedHashMap<String, boolean[]>();
 		this.entradasVendidas = new HashMap<String, IEntrada>();
 		this.fecha = fecha;

@@ -12,6 +12,8 @@ public class Espectaculo {
 	private Map<String, Double> RecaudadoPorSede; 
 	
 	Espectaculo(String nombre){
+		if(nombre == null || nombre.length()<2)
+			throw new RuntimeException("Error: El nombre del espectaculo no puede tener menos de 2 caracteres.");
 		this.nombre =  nombre;
 		this.funciones = new  TreeMap<LocalDate,Funcion>();
 		this.RecaudadoPorSede = new TreeMap<String, Double>();

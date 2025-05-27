@@ -13,11 +13,26 @@ public class Usuario {
 	private String contraseña;
 	private HashMap<String, IEntrada> entradasCompradas;
 	
-	Usuario(String email, String nombre, String apellido, String contraseña){
+	Usuario(String email, String nombre, String apellido, String contrasenia){
+		if (email == null) {
+			throw new RuntimeException("Error: El email no puede estar vacío");
+		}
+		if(nombre == null) {
+	        throw new RuntimeException("Error: El nombre no puede estar vacío");
+	    }
+		if(apellido == null) {
+		    throw new RuntimeException("Error: El apellido no puede estar vacío");
+	    }
+		if(contrasenia == null || contrasenia.length() < 3) {
+	        throw new RuntimeException("Error: La contraseña no puede estar vacía o tener menos de 3 caracteres.");
+	    }
+		if(!email.contains("@") || !email.contains(".")) {
+		    throw new RuntimeException("Error: El formato del email no es válido");
+		}
 		this.email = email;
 		this.nombre = nombre;
 		this.apellido =  apellido;
-		this.contraseña = contraseña;
+		this.contraseña = contrasenia;
 		entradasCompradas = new HashMap<String, IEntrada>();
 	}
 	public boolean autenticar(String contrasenia) {
@@ -35,6 +50,12 @@ public class Usuario {
 	public String getApellido() {
 		return this.apellido;
 	}
+	
+	public void agregarEntrada(IEntrada entrada) {
+		if(entrada != null) {
+			entradasCompradas.put(entrada.getCodigo(), entrada);
+		}
+	}
 
 	public boolean tieneEntrada(IEntrada entrada) {
 		if(entrada == null) {
@@ -42,13 +63,6 @@ public class Usuario {
 		}
 		return entradasCompradas.containsKey(entrada.getCodigo());
 	}
-	public void agregarEntrada(IEntrada entrada) {
-		if(entrada != null) {
-			entradasCompradas.put(entrada.getCodigo(), entrada);
-		}
-	}
-		
-	
 	public boolean eliminarEntrada(IEntrada entrada) {
 		if(entrada == null || !tieneEntrada(entrada)) {
 			return false;
