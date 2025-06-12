@@ -92,7 +92,7 @@ public class Usuario {
 		LinkedList<IEntrada> entradasFuturasUsuario = new LinkedList<IEntrada>();
 		for(Entrada entrada : entradasCompradas.values()) {
 			LocalDate fechaActual = LocalDate.now();
-			if(entrada.obtenerFecha().isAfter(fechaActual)) {
+			if(entrada.obtenerFecha().esAntes(fechaActual)) {
 				entradasFuturasUsuario.add(entrada);
 			}
 		}

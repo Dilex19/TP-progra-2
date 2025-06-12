@@ -11,13 +11,13 @@ import java.util.Map;
 
 public class Funcion {
 	private Sede sede;
-	private LocalDate fecha;
+	private Fecha fecha;
 	private double precioBase;
 	private Map<String, boolean[]> asientos;
 	private HashMap<String,IEntrada> entradasVendidas;
 	
 	//Constructor
-	Funcion(LocalDate fecha, Sede sede, double precioBase){
+	Funcion(Fecha fecha, Sede sede, double precioBase){
 		if(precioBase<=0) 
 			throw new RuntimeException("Error: El precio base no puede ser menor o igual cero.");
 		if(fecha == null)
@@ -216,8 +216,7 @@ public class Funcion {
 	
 	//Imprime Funcion y sus datos.
 	public String toString() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-        String fechaStr = fecha.format(formatter);
+        String fechaStr = fecha.toString();
         
         StringBuilder sb = new StringBuilder();
         sb.append(" - (");

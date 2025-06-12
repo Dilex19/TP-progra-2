@@ -3,7 +3,7 @@ package trabajoPractico;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Fecha {
+public class Fecha implements Comparable<Fecha>{
 	private LocalDate fecha;
 	
 	public Fecha(String fechaString) {
@@ -16,6 +16,21 @@ public class Fecha {
 		}catch (Exception e) {
 			throw new IllegalArgumentException("Formato de fecha inválido. Use dd/MM/yy.");
 		}
+	}
+	
+	public boolean esAntes(LocalDate nuevaFecha) {
+		return this.fecha.isBefore(nuevaFecha);
+	}
+	
+	@Override
+    public int compareTo(Fecha otra) {
+        return this.fecha.compareTo(otra.fecha);
+    }
+	
+	public String toString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+        String fechaStr = fecha.format(formatter);
+        return fechaStr;
 	}
 }
 
