@@ -11,7 +11,7 @@ public class Usuario {
 	private String nombre;
 	private String apellido;
 	private String contraseña;
-	private HashMap<String, IEntrada> entradasCompradas;
+	private HashMap<String, Entrada> entradasCompradas;
 	
 	Usuario(String email, String nombre, String apellido, String contrasenia){
 		if (email == null) {
@@ -33,7 +33,7 @@ public class Usuario {
 		this.nombre = nombre;
 		this.apellido =  apellido;
 		this.contraseña = contrasenia;
-		entradasCompradas = new HashMap<String, IEntrada>();
+		entradasCompradas = new HashMap<String, Entrada>();
 	}
 	
 	//Verifica si la contraseña ingresada coincide con la del usuario.
@@ -45,14 +45,14 @@ public class Usuario {
 	}
 	
 	//Añade una entrada al mapa de entradas compradas.
-	public void agregarEntrada(IEntrada entrada) {
+	public void agregarEntrada(Entrada entrada) {
 		if(entrada != null) {
 			entradasCompradas.put(entrada.getCodigo(), entrada);
 		}
 	}
 
 	//Verifica si el usuario posee una entrada específica.
-	public boolean tieneEntrada(IEntrada entrada) {
+	public boolean tieneEntrada(Entrada entrada) {
 		if(entrada == null) {
 			return false;
 		}
@@ -60,7 +60,7 @@ public class Usuario {
 	}
 	
 	//Elimina una entrada del usuario.
-	public boolean eliminarEntrada(IEntrada entrada) {
+	public boolean eliminarEntrada(Entrada entrada) {
 		if(entrada == null || !tieneEntrada(entrada)) {
 			return false;
 		}
@@ -69,7 +69,7 @@ public class Usuario {
 	}
 	
 	//Alias de eliminarEntrada(), misma funcionalidad.
-	public boolean anularEntrada(IEntrada entrada) {
+	public boolean anularEntrada(Entrada entrada) {
 		return eliminarEntrada(entrada);
 	}
 
@@ -90,7 +90,7 @@ public class Usuario {
 	//Filtra entradas con fechas posteriores al día actual.
 	public List<IEntrada> listarEntradasFuturas() {
 		LinkedList<IEntrada> entradasFuturasUsuario = new LinkedList<IEntrada>();
-		for(IEntrada entrada : entradasCompradas.values()) {
+		for(Entrada entrada : entradasCompradas.values()) {
 			LocalDate fechaActual = LocalDate.now();
 			if(entrada.obtenerFecha().isAfter(fechaActual)) {
 				entradasFuturasUsuario.add(entrada);

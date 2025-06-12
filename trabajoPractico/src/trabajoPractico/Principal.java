@@ -55,6 +55,7 @@ public class Principal {
         ticketek.agregarFuncion("Coldplay en vivo", "30/07/25", "La bombonera", 130000.0);
         ticketek.agregarFuncion("Coldplay en vivo", "31/07/25", "La bombonera", 130000.0);
         ticketek.agregarFuncion("Coldplay en vivo", "01/08/25", "La bombonera", 130000.0);
+        
 
 		printEmpresa(ticketek, "Sedes, Usuarios y Funciones registradas.");
 

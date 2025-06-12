@@ -140,8 +140,9 @@ public class Ticketek implements ITicketek {
 	    LocalDate fecha = LocalDate.parse(fechaString, formatter);
 		LinkedList<IEntrada> entradas = espectaculo.venderEntrada(nombreEspectaculo, fecha, cantidadEntradas);
 		for(IEntrada entrada : entradas) {
-			usuario.agregarEntrada(entrada);
-			usuariosDeEntrada.put(entrada.getCodigo(), usuario);
+			Entrada entradaObjeto = (Entrada) entrada;
+			usuario.agregarEntrada(entradaObjeto);
+			usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
 		}
 		
 		
@@ -167,8 +168,9 @@ public class Ticketek implements ITicketek {
 		LocalDate fecha = fecha(fechaString);
 		LinkedList<IEntrada> entradas = espectaculo.venderEntrada(nombreEspectaculo, fecha, sector, asientos);
 		for(IEntrada entrada : entradas) {
-			usuario.agregarEntrada(entrada);
-			usuariosDeEntrada.put(entrada.getCodigo(), usuario);
+			Entrada entradaObjeto = (Entrada) entrada;
+			usuario.agregarEntrada(entradaObjeto);
+			usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
 		}
 		
 		return entradas;
@@ -251,8 +253,8 @@ public class Ticketek implements ITicketek {
 	    if(contrasenia == null) {
 	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
 	    }
-	    
-	    Usuario usuario = usuariosDeEntrada.get(entrada.getCodigo());
+	    Entrada entradaObjeto = (Entrada) entrada;
+	    Usuario usuario = usuariosDeEntrada.get(entradaObjeto.getCodigo());
 	    if(usuario == null) 
 	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
 	    
@@ -260,13 +262,13 @@ public class Ticketek implements ITicketek {
 			throw new RuntimeException("Error: La contraseña es incorrecta.");
 	    
 	    
-	    boolean anulacionExitosa = usuario.anularEntrada(entrada);
+	    boolean anulacionExitosa = usuario.anularEntrada(entradaObjeto);
 	    
 	    if(anulacionExitosa) {
-	        usuariosDeEntrada.remove(entrada.getCodigo());
-	        Espectaculo espectaculo = espectaculos.get(entrada.nombreEspectaculo());
+	        usuariosDeEntrada.remove(entradaObjeto.getCodigo());
+	        Espectaculo espectaculo = espectaculos.get(entradaObjeto.nombreEspectaculo());
 	        if(espectaculo != null) {
-	            espectaculo.anularEntrada(entrada.obtenerFecha(), entrada.getCodigo(), entrada.obtenerSector(), entrada.obtenerAsiento());
+	            espectaculo.anularEntrada(entradaObjeto.obtenerFecha(), entradaObjeto.getCodigo(), entradaObjeto.obtenerSector(), entradaObjeto.obtenerAsiento());
 	        }
 	    }
 	    
@@ -291,8 +293,10 @@ public class Ticketek implements ITicketek {
 	    if(asiento <= 0) {
 	        throw new RuntimeException("Error: El número de asiento debe ser mayor a 0");
 	    }
-
-	    Usuario usuario = usuariosDeEntrada.get(entrada.getCodigo());
+	    
+	    Entrada entradaObjeto = (Entrada) entrada;
+	    
+	    Usuario usuario = usuariosDeEntrada.get(entradaObjeto.getCodigo());
 	    
 	    if(usuario == null) {
 	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
@@ -303,7 +307,7 @@ public class Ticketek implements ITicketek {
 	    }
 	    
 	    // Obtener el espectáculo
-	    Espectaculo espectaculo = espectaculos.get(entrada.nombreEspectaculo());
+	    Espectaculo espectaculo = espectaculos.get(entradaObjeto.nombreEspectaculo());
 	    if(espectaculo == null) {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
@@ -317,13 +321,13 @@ public class Ticketek implements ITicketek {
 	        // Crear nueva entrada con el nuevo sector y asiento
 	        LocalDate fechaNueva = fecha(fecha);
 	        
-	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entrada.nombreEspectaculo(), fechaNueva, sector, new int[]{asiento});
+	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entradaObjeto.nombreEspectaculo(), fechaNueva, sector, new int[]{asiento});
 	        
 	        if(nuevasEntradas.isEmpty()) {
 	            throw new RuntimeException("Error: No se pudo crear la nueva entrada");
 	        }
 	        
-	        IEntrada nuevaEntrada = nuevasEntradas.get(0);
+	        Entrada nuevaEntrada = (Entrada) nuevasEntradas.get(0);
 	        usuario.agregarEntrada(nuevaEntrada);
 	        usuariosDeEntrada.put(nuevaEntrada.getCodigo(), usuario);
 	        
@@ -332,8 +336,8 @@ public class Ticketek implements ITicketek {
 	    } catch(RuntimeException e) {
 	        // Si falla la creación de la nueva entrada, intentar restaurar la original
 	        try {
-	            usuario.agregarEntrada(entrada);
-	            usuariosDeEntrada.put(entrada.getCodigo(), usuario);
+	            usuario.agregarEntrada(entradaObjeto);
+	            usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
 	        } catch(Exception restoreException) {
 	            // Si no se puede restaurar, lanzar el error original
 	        }
@@ -353,8 +357,10 @@ public class Ticketek implements ITicketek {
 	    if(fecha == null) {
 	        throw new RuntimeException("Error: La fecha no puede estar vacía");
 	    }
-
-	    Usuario usuario = usuariosDeEntrada.get(entrada.getCodigo());
+	    
+	    Entrada entradaObjeto = (Entrada) entrada;
+	    
+	    Usuario usuario = usuariosDeEntrada.get(entradaObjeto.getCodigo());
 	    
 	    if(usuario == null) {
 	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
@@ -365,7 +371,7 @@ public class Ticketek implements ITicketek {
 	    }
 	    
 	    // Obtener el espectáculo
-	    Espectaculo espectaculo = espectaculos.get(entrada.nombreEspectaculo());
+	    Espectaculo espectaculo = espectaculos.get(entradaObjeto.nombreEspectaculo());
 	    if(espectaculo == null) {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
@@ -379,13 +385,13 @@ public class Ticketek implements ITicketek {
 	        // Crear nueva entrada para estadio (solo cambio de fecha)
 	        LocalDate fechaNueva = fecha(fecha);
 	        
-	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entrada.nombreEspectaculo(), fechaNueva, 1);
+	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entradaObjeto.nombreEspectaculo(), fechaNueva, 1);
 	        
 	        if(nuevasEntradas.isEmpty()) {
 	            throw new RuntimeException("Error: No se pudo crear la nueva entrada");
 	        }
 	        
-	        IEntrada nuevaEntrada = nuevasEntradas.get(0);
+	        Entrada nuevaEntrada = (Entrada) nuevasEntradas.get(0);
 	        usuario.agregarEntrada(nuevaEntrada);
 	        usuariosDeEntrada.put(nuevaEntrada.getCodigo(), usuario);
 	        
@@ -394,8 +400,8 @@ public class Ticketek implements ITicketek {
 	    } catch(RuntimeException e) {
 	        // Si falla la creación de la nueva entrada, intentar restaurar la original
 	        try {
-	            usuario.agregarEntrada(entrada);
-	            usuariosDeEntrada.put(entrada.getCodigo(), usuario);
+	            usuario.agregarEntrada(entradaObjeto);
+	            usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
 	        } catch(Exception restoreException) {
 	            // Si no se puede restaurar, lanzar el error original
 	        }

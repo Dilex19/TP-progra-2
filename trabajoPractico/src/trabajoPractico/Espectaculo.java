@@ -33,7 +33,9 @@ public class Espectaculo {
 		
 		Funcion funcion = funciones.get(fecha);
 		LinkedList<IEntrada> entradas= funcion.venderEntrada(nombreEspectaculo, cantAsientos);
-		agregarValorDeEntradasALoRecaudado(entradas,entradas.get(0).obtenerSede());
+		Entrada primeraEntradaObjeto = (Entrada) entradas.get(0);
+		
+		agregarValorDeEntradasALoRecaudado(entradas,primeraEntradaObjeto.obtenerSede());
 		return entradas;
 	}
 	
@@ -50,7 +52,8 @@ public class Espectaculo {
 		
 		Funcion funcion = funciones.get(fecha);
 		LinkedList<IEntrada> entradas= funcion.venderEntrada(nombreEspectaculo,sector, asientos);
-		agregarValorDeEntradasALoRecaudado(entradas,entradas.get(0).obtenerSede());
+		Entrada primeraEntradaObjeto = (Entrada) entradas.get(0);	
+		agregarValorDeEntradasALoRecaudado(entradas,primeraEntradaObjeto.obtenerSede());
 		return entradas;
 	}
 	

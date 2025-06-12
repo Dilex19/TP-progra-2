@@ -64,7 +64,6 @@ public class Entrada implements IEntrada{
 	}
 	
 	//Devuelve el codigo.
-	@Override
 	public String getCodigo() {
 		return codigo;
 	}
@@ -87,32 +86,27 @@ public class Entrada implements IEntrada{
 	
 	
 	//Devuelve el numero de Asiento.
-	@Override
 	public int obtenerAsiento() {
 		return asiento;
 	}
 
 	
 	//Devuelve el nombre del Sector
-	@Override
 	public String obtenerSector() {
 		return sector;
 	}
 	
 	//Devuelve el nombre de la sede
-	@Override
 	public String obtenerSede() {
 		return nombreSede;
 	}
 	
 	//Devuelve el nombre del Espectaculo
-	@Override
 	public String nombreEspectaculo() {
 		return nombreEspectaculo;
 	}
 
 	//devuelve la fecha.
-	@Override
 	public LocalDate obtenerFecha() {
 		return fecha;
 	}
