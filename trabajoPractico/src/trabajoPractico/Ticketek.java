@@ -229,10 +229,6 @@ public class Ticketek implements ITicketek {
 	    if(espectaculo == null) {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
-
-	    if(!usuario.puedeAnularEntrada(entradaObjeto)) {
-	        throw new RuntimeException("Error: La entrada original no puede ser anulada");
-	    }
 	    
 	    
 	    // Anular la entrada actual.
@@ -313,9 +309,6 @@ public class Ticketek implements ITicketek {
 	    }
 	    
 	    
-	    if(!usuario.puedeAnularEntrada(entradaObjeto)) {
-	        throw new RuntimeException("Error: La entrada original no puede ser anulada");
-	    }
 	    
 	    // Anular la entrada actual
 	    boolean anulacionExitosa = anularEntrada(entrada, contrasenia);
