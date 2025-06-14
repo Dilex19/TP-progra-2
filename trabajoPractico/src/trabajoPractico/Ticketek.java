@@ -5,13 +5,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class Ticketek implements ITicketek {
-	private Map<String, Usuario> usuarios;
-	private Map<String, Espectaculo> espectaculos;
-	private Map<String, Sede> sedes;
-	private Map<String, Usuario> usuariosDeEntrada;
+	private HashMap<String, Usuario> usuarios;
+	private HashMap<String, Espectaculo> espectaculos;
+	private HashMap<String, Sede> sedes;
+	private HashMap<String, Usuario> usuariosDeEntrada;
 	
 	Ticketek(){
 		this.usuarios = new HashMap<String, Usuario>();
@@ -310,6 +309,14 @@ public class Ticketek implements ITicketek {
 	    if(espectaculo == null) {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
+	    Fecha fechaNuevaa = new Fecha(fechaString);
+	    if(!espectaculo.puedeVenderEntrada(fechaNuevaa, sector, asiento)) {
+	        throw new RuntimeException("Error: El asiento solicitado no está disponible para la fecha especificada");
+	    }
+	    if(!usuario.puedeAnularEntrada(entradaObjeto)) {
+	        throw new RuntimeException("Error: La entrada original no puede ser anulada");
+	    }
+	    
 	    
 	    // Anular la entrada actual.
 	    boolean anulacionExitosa = anularEntrada(entrada, contrasenia);
@@ -375,6 +382,17 @@ public class Ticketek implements ITicketek {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
 	    
+	    Fecha fechaNueva = new Fecha(fechaString);
+	    
+
+	    if(!espectaculo.puedeVenderEntrada(fechaNueva, 1)) {
+	        throw new RuntimeException("Error: No hay entradas disponibles para la fecha especificada");
+	    }
+	    
+	    if(!usuario.puedeAnularEntrada(entradaObjeto)) {
+	        throw new RuntimeException("Error: La entrada original no puede ser anulada");
+	    }
+	    
 	    // Anular la entrada actual
 	    boolean anulacionExitosa = anularEntrada(entrada, contrasenia);
 	    if(!anulacionExitosa) {
@@ -382,9 +400,9 @@ public class Ticketek implements ITicketek {
 	    }
 	    try {
 	        // Crear nueva entrada para estadio (solo cambio de fecha)
-	    	Fecha fechaNueva = new Fecha(fechaString);
+	    	Fecha fechaNuevaa = new Fecha(fechaString);
 	        
-	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entradaObjeto.nombreEspectaculo(), fechaNueva, 1);
+	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entradaObjeto.nombreEspectaculo(), fechaNuevaa, 1);
 	        
 	        if(nuevasEntradas.isEmpty()) {
 	            throw new RuntimeException("Error: No se pudo crear la nueva entrada");

@@ -108,6 +108,7 @@ public class Espectaculo {
 		Funcion funcion = funciones.get(fechaEntrada);
 		funcion.anularEntrada(codigoEntrada, sectorEntrada, asientoEntrada);
 	}
+
 	
 	//Dada una fecha, devuelve el valor de la entrada correspondiente a la funcion en esa fecha
 	public double costoEntrada(Fecha fecha) {
@@ -139,6 +140,22 @@ public class Espectaculo {
 	//Devuelve el total recaudado por el Espectaculo en un sector especifico
 	public double totalRecaudado(String sede) {
 		return RecaudadoPorSede.get(sede);
+	}
+	public boolean puedeVenderEntrada(Fecha fecha, String sector, int asiento) {
+		if(!funciones.containsKey(fecha)) {
+			return false;
+		}
+		Funcion funcion = funciones.get(fecha);
+		return funcion.asientoDisponible(sector, asiento);
+	}
+	
+	public boolean puedeVenderEntrada(Fecha fecha, int cantidad) {
+		if(!funciones.containsKey(fecha)) {
+			return false;
+		}
+		
+		Funcion funcion = funciones.get(fecha);
+		return funcion.entradasDisponibles() >= cantidad;
 	}
 	
 	//Imprime la informacion del Espectaculo.

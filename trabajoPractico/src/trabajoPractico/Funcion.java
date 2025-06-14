@@ -14,7 +14,7 @@ public class Funcion {
 	private Fecha fecha;
 	private double precioBase;
 	private Map<String, boolean[]> asientos;
-	private Map<String,IEntrada> entradasVendidas;
+	private HashMap<String,IEntrada> entradasVendidas;
 	
 	//Constructor
 	Funcion(Fecha fecha, Sede sede, double precioBase){
@@ -213,6 +213,24 @@ public class Funcion {
 		
 		return compradasPorSector;
 	}
+    public boolean asientoDisponible(String sector, int asiento) {
+        if(!asientos.containsKey(sector)) {
+            return false;
+        }
+        
+        boolean[] arrayAsientos = asientos.get(sector);
+        
+        // Verificar que el asiento esté dentro del rango válido
+        if(asiento < 0 || asiento >= arrayAsientos.length) {
+            return false;
+        }
+        
+        // Disponible si no está vendido
+        return arrayAsientos[asiento];
+    }
+    public int entradasDisponibles() {
+        return cantidadAsientosDisponibles();
+    }
 	
 	//Imprime Funcion y sus datos.
 	public String toString() {
