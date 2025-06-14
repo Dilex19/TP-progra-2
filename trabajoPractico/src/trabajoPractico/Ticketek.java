@@ -281,11 +281,24 @@ public class Ticketek implements ITicketek {
 	        try {
 	            usuario.agregarEntrada(entradaObjeto);
 	            usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
+	            Espectaculo espectaculoo = espectaculos.get(entradaObjeto.nombreEspectaculo());
+	            if(espectaculoo != null) {
+	                espectaculoo.restaurarEntradaSimple(
+	                    entradaObjeto.obtenerFecha(), 
+	                    entradaObjeto.getCodigo(), 
+	                    entradaObjeto.obtenerSector(), 
+	                    entradaObjeto.obtenerAsiento()
+	                );
+	            }
+	            System.out.println("Se restauró la entrada original con código " + entradaObjeto.getCodigo());
 	        } catch(Exception restoreException) {
-	            // Si no se puede restaurar, lanzar el error original
+	        	System.out.println("No se pudo restaurar la entrada original.");
+	            System.out.println("Código de entrada perdida: " + entradaObjeto.getCodigo());
+	            System.out.println("Usuario afectado: " + usuario.toString());
 	        }
 	        throw e;
 	    }
+	    
 	}
 
 	//Similar al anterior pero con sector y asientos.
@@ -356,8 +369,20 @@ public class Ticketek implements ITicketek {
 	        try {
 	            usuario.agregarEntrada(entradaObjeto);
 	            usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
+	            Espectaculo espectaculoo = espectaculos.get(entradaObjeto.nombreEspectaculo());
+	            if(espectaculoo != null) {
+	                espectaculoo.restaurarEntradaSimple(
+	                    entradaObjeto.obtenerFecha(), 
+	                    entradaObjeto.getCodigo(), 
+	                    entradaObjeto.obtenerSector(), 
+	                    entradaObjeto.obtenerAsiento()
+	                );
+	            }
+	            System.out.println("Se restauró la entrada original con código " + entradaObjeto.getCodigo());
 	        } catch(Exception restoreException) {
-	            // Si no se puede restaurar, lanzar el error original
+	        	System.out.println("No se pudo restaurar la entrada original.");
+	            System.out.println("Código de entrada perdida: " + entradaObjeto.getCodigo());
+	            System.out.println("Usuario afectado: " + usuario.toString());
 	        }
 	        throw e;
 	    }

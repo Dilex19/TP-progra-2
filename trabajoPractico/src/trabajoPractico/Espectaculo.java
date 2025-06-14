@@ -157,6 +157,18 @@ public class Espectaculo {
 		Funcion funcion = funciones.get(fecha);
 		return funcion.entradasDisponibles() >= cantidad;
 	}
+	public void restaurarEntradaSimple(Fecha fecha, String codigo, String sector, int asiento) {
+		if(!funciones.containsKey(fecha)) {
+			throw new RuntimeException("Error: No existe una función para la fecha especificada");
+		}
+		
+		Funcion funcion = funciones.get(fecha);
+		
+		// Para sedes con sectores específicos
+		if(sector != null && asiento > 0) {
+			funcion.marcarAsientoComoOcupado(sector, asiento);
+		}
+	}
 	
 	//Imprime la informacion del Espectaculo.
 	public String toString() {
