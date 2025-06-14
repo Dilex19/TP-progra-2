@@ -169,6 +169,7 @@ public class TicketekTest{
 
         List<IEntrada> entradasFuturas = ticketek.listarEntradasFuturas("nores@campus.ungs.edu.ar", "1234");
         assertNotNull(entradasFuturas);
+        System.out.println(entradasFuturas.size());
         assertEquals(11, entradasFuturas.size()); 
 
         for (IEntrada entrada : entradasFuturas) {
@@ -181,6 +182,9 @@ public class TicketekTest{
     	// Para Jose hay 8 entradas con fechas en el pasado
         List<IEntrada> entradasFuturas = ticketek.listarTodasLasEntradasDelUsuario("nores@campus.ungs.edu.ar", "1234");
         assertNotNull(entradasFuturas);
+        System.out.println(entradasFuturas.size());
+        for (IEntrada e: entradasFuturas)
+        	System.out.println(" - " + e);
         assertEquals(19, entradasFuturas.size()); 
         int cont=0;
         for (IEntrada entrada : entradasFuturas) {

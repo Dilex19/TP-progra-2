@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.time.LocalDate;
 
 public class Usuario {
@@ -11,7 +12,7 @@ public class Usuario {
 	private String nombre;
 	private String apellido;
 	private String contraseña;
-	private HashMap<String, Entrada> entradasCompradas;
+	private Map<String, Entrada> entradasCompradas;
 	
 	Usuario(String email, String nombre, String apellido, String contrasenia){
 		if (email == null) {
@@ -92,7 +93,7 @@ public class Usuario {
 		LinkedList<IEntrada> entradasFuturasUsuario = new LinkedList<IEntrada>();
 		for(Entrada entrada : entradasCompradas.values()) {
 			LocalDate fechaActual = LocalDate.now();
-			if(entrada.obtenerFecha().esAntes(fechaActual)) {
+			if(entrada.obtenerFecha().esDespues(fechaActual)) {
 				entradasFuturasUsuario.add(entrada);
 			}
 		}

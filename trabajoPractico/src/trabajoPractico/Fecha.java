@@ -32,5 +32,9 @@ public class Fecha implements Comparable<Fecha>{
         String fechaStr = fecha.format(formatter);
         return fechaStr;
 	}
+
+	public boolean esDespues(LocalDate fechaActual) {
+		return this.fecha.isAfter(fechaActual);
+	}
 }
 

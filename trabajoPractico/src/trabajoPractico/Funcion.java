@@ -14,7 +14,7 @@ public class Funcion {
 	private Fecha fecha;
 	private double precioBase;
 	private Map<String, boolean[]> asientos;
-	private HashMap<String,IEntrada> entradasVendidas;
+	private Map<String,IEntrada> entradasVendidas;
 	
 	//Constructor
 	Funcion(Fecha fecha, Sede sede, double precioBase){
