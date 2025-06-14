@@ -139,33 +139,11 @@ public class Espectaculo {
 	public double totalRecaudado(String sede) {
 		return RecaudadoPorSede.get(sede);
 	}
-	public boolean puedeVenderEntrada(Fecha fecha, String sector, int asiento) {
-		if(!funciones.containsKey(fecha)) {
-			return false;
-		}
-		Funcion funcion = funciones.get(fecha);
-		return funcion.asientoDisponible(sector, asiento);
-	}
+
 	
-	public boolean puedeVenderEntrada(Fecha fecha, int cantidad) {
-		if(!funciones.containsKey(fecha)) {
-			return false;
-		}
-		
-		Funcion funcion = funciones.get(fecha);
-		return funcion.entradasDisponibles() >= cantidad;
-	}
 	public void restaurarEntradaSimple(Fecha fecha, String codigo, String sector, int asiento) {
-		if(!funciones.containsKey(fecha)) {
-			throw new RuntimeException("Error: No existe una función para la fecha especificada");
-		}
 		
 		Funcion funcion = funciones.get(fecha);
-		
-		// Para sedes con sectores específicos
-		if(sector != null && asiento > 0) {
-			funcion.marcarAsientoComoOcupado(sector, asiento);
-		}
 	}
 	
 	//Imprime la informacion del Espectaculo.

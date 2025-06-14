@@ -228,18 +228,8 @@ public class Funcion {
         // Disponible si no está vendido
         return arrayAsientos[asiento];
     }
-    public int entradasDisponibles() {
-        return cantidadAsientosDisponibles();
-    }
-    public void marcarAsientoComoOcupado(String sector, int asiento) {
-        if(asientos.containsKey(sector)) {
-            boolean[] arrayAsientos = asientos.get(sector);
-            if(asiento >= 0 && asiento < arrayAsientos.length) {
-                arrayAsientos[asiento] = false;  // false = ocupado
-            }
-        }
-    }
-	
+
+
 	//Imprime Funcion y sus datos.
 	public String toString() {
         String fechaStr = fecha.toString();

@@ -104,15 +104,6 @@ public class Usuario {
 			return false;
 		}
 		
-		// Verificar que la entrada pertenezca a este usuario
-		if(!tieneEntrada(entrada)) {
-			return false;
-		}
-		
-		LocalDate fechaActual = LocalDate.now();
-		if(!entrada.obtenerFecha().esDespues(fechaActual)) {
-			return false; 
-		}
 		
 	return true;
 	}
