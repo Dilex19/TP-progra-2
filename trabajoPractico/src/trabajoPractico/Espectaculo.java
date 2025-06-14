@@ -8,7 +8,7 @@ import java.util.TreeMap;
 
 public class Espectaculo {
 	private String nombre;
-	private Map<LocalDate,Funcion> funciones;
+	private Map<Fecha,Funcion> funciones;
 	private Map<String, Double> RecaudadoPorSede; 
 	
 	//Constructor
@@ -16,12 +16,12 @@ public class Espectaculo {
 		if(nombre == null || nombre.length()<2)
 			throw new RuntimeException("Error: El nombre del espectaculo no puede tener menos de 2 caracteres.");
 		this.nombre =  nombre;
-		this.funciones = new  TreeMap<LocalDate,Funcion>();
+		this.funciones = new  TreeMap<Fecha,Funcion>();
 		this.RecaudadoPorSede = new TreeMap<String, Double>();
 	}
 	
 	//Dada una fecha y una cantiada de asientos, si los datos son correctos, devuelve una lista con las entradas compradas.
-	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, LocalDate fecha, int cantAsientos){
+	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, Fecha fecha, int cantAsientos){
 		if(!funciones.containsKey(fecha)) 
 			throw new RuntimeException("Error: El espectaculo no continene una funcion en esa fecha.");
 		
@@ -33,12 +33,14 @@ public class Espectaculo {
 		
 		Funcion funcion = funciones.get(fecha);
 		LinkedList<IEntrada> entradas= funcion.venderEntrada(nombreEspectaculo, cantAsientos);
-		agregarValorDeEntradasALoRecaudado(entradas,entradas.get(0).obtenerSede());
+		Entrada primeraEntradaObjeto = (Entrada) entradas.get(0);
+		
+		agregarValorDeEntradasALoRecaudado(entradas,primeraEntradaObjeto.obtenerSede());
 		return entradas;
 	}
 	
 	//Dada una fecha, el sector y un array de asientos, si los datos son correctos, devuelve una lista con las entradas compradas.
-	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, LocalDate fecha, String sector, int[] asientos){
+	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, Fecha fecha, String sector, int[] asientos){
 		if(!funciones.containsKey(fecha)) 
 			throw new RuntimeException("Error: El espectaculo no contiene una función en esa fecha.");
 		
@@ -50,7 +52,8 @@ public class Espectaculo {
 		
 		Funcion funcion = funciones.get(fecha);
 		LinkedList<IEntrada> entradas= funcion.venderEntrada(nombreEspectaculo,sector, asientos);
-		agregarValorDeEntradasALoRecaudado(entradas,entradas.get(0).obtenerSede());
+		Entrada primeraEntradaObjeto = (Entrada) entradas.get(0);	
+		agregarValorDeEntradasALoRecaudado(entradas,primeraEntradaObjeto.obtenerSede());
 		return entradas;
 	}
 	
@@ -63,7 +66,7 @@ public class Espectaculo {
 	}
 	
 	//Crea y agrega una nueva funcion al Map de funciones.
-	public void agregarFuncion(LocalDate fecha, Sede sede, double precioBase) {
+	public void agregarFuncion(Fecha fecha, Sede sede, double precioBase) {
 		if(funciones.containsKey(fecha)) 
 			throw new RuntimeException("Error: El espectaculo ya tiene una funcion registrada en esa fecha.");
 		
@@ -98,7 +101,7 @@ public class Espectaculo {
 	}
 	
 	//Dada una fecha, el codigo de la entrada, el sector y el numero del asiento, elimina la entrada comprada.
-	public void anularEntrada(LocalDate fechaEntrada, String codigoEntrada, String sectorEntrada, int asientoEntrada) {
+	public void anularEntrada(Fecha fechaEntrada, String codigoEntrada, String sectorEntrada, int asientoEntrada) {
 		if(!funciones.containsKey(fechaEntrada)){
 			throw new RuntimeException("Error: La fecha de la entrada no concuerda con las fechas registradas del espectaculo.");
 		}
@@ -107,7 +110,7 @@ public class Espectaculo {
 	}
 	
 	//Dada una fecha, devuelve el valor de la entrada correspondiente a la funcion en esa fecha
-	public double costoEntrada(LocalDate fecha) {
+	public double costoEntrada(Fecha fecha) {
 		if(!funciones.containsKey(fecha)){
 			throw new RuntimeException("Error: La fecha no concuerda con las fechas registradas del espectaculo.");
 		}
@@ -116,7 +119,7 @@ public class Espectaculo {
 	}
 	
 	//Dada una fecha y un sector, devuelve el valor de la entrada correspondiente a la funcion en esa fecha y al sector elegido.
-	public double costoEntrada(LocalDate fecha, String sector) {
+	public double costoEntrada(Fecha fecha, String sector) {
 		if(!funciones.containsKey(fecha)){
 			throw new RuntimeException("Error: La fecha no concuerda con las fechas registradas del espectaculo.");
 		}

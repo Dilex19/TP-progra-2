@@ -114,8 +114,7 @@ public class Ticketek implements ITicketek {
 		
 		if(!sedes.containsKey(sedeString)) 
 			throw new RuntimeException("Error: El nombre de la sede no esta registrado.");
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-	    LocalDate fecha = LocalDate.parse(fechaString, formatter);
+		Fecha fecha = new Fecha(fechaString);
 		Sede sede = sedes.get(sedeString);
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
 		espectaculo.agregarFuncion(fecha, sede, precioBase);
@@ -136,12 +135,12 @@ public class Ticketek implements ITicketek {
 			throw new RuntimeException("Error: La contraseña es incorrecta.");
 		
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-	    LocalDate fecha = LocalDate.parse(fechaString, formatter);
+		Fecha fecha = new Fecha(fechaString);
 		LinkedList<IEntrada> entradas = espectaculo.venderEntrada(nombreEspectaculo, fecha, cantidadEntradas);
 		for(IEntrada entrada : entradas) {
-			usuario.agregarEntrada(entrada);
-			usuariosDeEntrada.put(entrada.getCodigo(), usuario);
+			Entrada entradaObjeto = (Entrada) entrada;
+			usuario.agregarEntrada(entradaObjeto);
+			usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
 		}
 		
 		
@@ -164,11 +163,12 @@ public class Ticketek implements ITicketek {
 			throw new RuntimeException("Error: La contraseña es incorrecta.");
 		
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
-		LocalDate fecha = fecha(fechaString);
+		Fecha fecha = new Fecha(fechaString);
 		LinkedList<IEntrada> entradas = espectaculo.venderEntrada(nombreEspectaculo, fecha, sector, asientos);
 		for(IEntrada entrada : entradas) {
-			usuario.agregarEntrada(entrada);
-			usuariosDeEntrada.put(entrada.getCodigo(), usuario);
+			Entrada entradaObjeto = (Entrada) entrada;
+			usuario.agregarEntrada(entradaObjeto);
+			usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
 		}
 		
 		return entradas;
@@ -251,8 +251,8 @@ public class Ticketek implements ITicketek {
 	    if(contrasenia == null) {
 	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
 	    }
-	    
-	    Usuario usuario = usuariosDeEntrada.get(entrada.getCodigo());
+	    Entrada entradaObjeto = (Entrada) entrada;
+	    Usuario usuario = usuariosDeEntrada.get(entradaObjeto.getCodigo());
 	    if(usuario == null) 
 	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
 	    
@@ -260,13 +260,13 @@ public class Ticketek implements ITicketek {
 			throw new RuntimeException("Error: La contraseña es incorrecta.");
 	    
 	    
-	    boolean anulacionExitosa = usuario.anularEntrada(entrada);
+	    boolean anulacionExitosa = usuario.anularEntrada(entradaObjeto);
 	    
 	    if(anulacionExitosa) {
-	        usuariosDeEntrada.remove(entrada.getCodigo());
-	        Espectaculo espectaculo = espectaculos.get(entrada.nombreEspectaculo());
+	        usuariosDeEntrada.remove(entradaObjeto.getCodigo());
+	        Espectaculo espectaculo = espectaculos.get(entradaObjeto.nombreEspectaculo());
 	        if(espectaculo != null) {
-	            espectaculo.anularEntrada(entrada.obtenerFecha(), entrada.getCodigo(), entrada.obtenerSector(), entrada.obtenerAsiento());
+	            espectaculo.anularEntrada(entradaObjeto.obtenerFecha(), entradaObjeto.getCodigo(), entradaObjeto.obtenerSector(), entradaObjeto.obtenerAsiento());
 	        }
 	    }
 	    
@@ -275,14 +275,14 @@ public class Ticketek implements ITicketek {
 
 	//Cambia una entrada.
 	@Override
-	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) {
+	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fechaString, String sector, int asiento) {
 		if(entrada == null) {
 	        throw new RuntimeException("Error: La entrada no puede ser nula");
 	    }
 	    if(contrasenia == null || contrasenia.trim().isEmpty()) {
 	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
 	    }
-	    if(fecha == null || fecha.trim().isEmpty()) {
+	    if(fechaString == null || fechaString.trim().isEmpty()) {
 	        throw new RuntimeException("Error: La fecha no puede estar vacía");
 	    }
 	    if(sector == null || sector.trim().isEmpty()) {
@@ -291,8 +291,10 @@ public class Ticketek implements ITicketek {
 	    if(asiento <= 0) {
 	        throw new RuntimeException("Error: El número de asiento debe ser mayor a 0");
 	    }
-
-	    Usuario usuario = usuariosDeEntrada.get(entrada.getCodigo());
+	    
+	    Entrada entradaObjeto = (Entrada) entrada;
+	    
+	    Usuario usuario = usuariosDeEntrada.get(entradaObjeto.getCodigo());
 	    
 	    if(usuario == null) {
 	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
@@ -303,7 +305,7 @@ public class Ticketek implements ITicketek {
 	    }
 	    
 	    // Obtener el espectáculo
-	    Espectaculo espectaculo = espectaculos.get(entrada.nombreEspectaculo());
+	    Espectaculo espectaculo = espectaculos.get(entradaObjeto.nombreEspectaculo());
 	    if(espectaculo == null) {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
@@ -315,15 +317,15 @@ public class Ticketek implements ITicketek {
 	    }
 	    try {
 	        // Crear nueva entrada con el nuevo sector y asiento
-	        LocalDate fechaNueva = fecha(fecha);
+	    	Fecha fechaNueva = new Fecha(fechaString);
 	        
-	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entrada.nombreEspectaculo(), fechaNueva, sector, new int[]{asiento});
+	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entradaObjeto.nombreEspectaculo(), fechaNueva, sector, new int[]{asiento});
 	        
 	        if(nuevasEntradas.isEmpty()) {
 	            throw new RuntimeException("Error: No se pudo crear la nueva entrada");
 	        }
 	        
-	        IEntrada nuevaEntrada = nuevasEntradas.get(0);
+	        Entrada nuevaEntrada = (Entrada) nuevasEntradas.get(0);
 	        usuario.agregarEntrada(nuevaEntrada);
 	        usuariosDeEntrada.put(nuevaEntrada.getCodigo(), usuario);
 	        
@@ -332,8 +334,8 @@ public class Ticketek implements ITicketek {
 	    } catch(RuntimeException e) {
 	        // Si falla la creación de la nueva entrada, intentar restaurar la original
 	        try {
-	            usuario.agregarEntrada(entrada);
-	            usuariosDeEntrada.put(entrada.getCodigo(), usuario);
+	            usuario.agregarEntrada(entradaObjeto);
+	            usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
 	        } catch(Exception restoreException) {
 	            // Si no se puede restaurar, lanzar el error original
 	        }
@@ -343,18 +345,20 @@ public class Ticketek implements ITicketek {
 
 	//Similar al anterior pero con sector y asientos.
 	@Override
-	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha) {
+	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fechaString) {
 		if(entrada == null) {
 	        throw new RuntimeException("Error: La entrada no puede ser nula");
 	    }
 	    if(contrasenia == null) {
 	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
 	    }
-	    if(fecha == null) {
+	    if(fechaString == null) {
 	        throw new RuntimeException("Error: La fecha no puede estar vacía");
 	    }
-
-	    Usuario usuario = usuariosDeEntrada.get(entrada.getCodigo());
+	    
+	    Entrada entradaObjeto = (Entrada) entrada;
+	    
+	    Usuario usuario = usuariosDeEntrada.get(entradaObjeto.getCodigo());
 	    
 	    if(usuario == null) {
 	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
@@ -365,7 +369,7 @@ public class Ticketek implements ITicketek {
 	    }
 	    
 	    // Obtener el espectáculo
-	    Espectaculo espectaculo = espectaculos.get(entrada.nombreEspectaculo());
+	    Espectaculo espectaculo = espectaculos.get(entradaObjeto.nombreEspectaculo());
 	    if(espectaculo == null) {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
@@ -377,15 +381,15 @@ public class Ticketek implements ITicketek {
 	    }
 	    try {
 	        // Crear nueva entrada para estadio (solo cambio de fecha)
-	        LocalDate fechaNueva = fecha(fecha);
+	    	Fecha fechaNueva = new Fecha(fechaString);
 	        
-	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entrada.nombreEspectaculo(), fechaNueva, 1);
+	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entradaObjeto.nombreEspectaculo(), fechaNueva, 1);
 	        
 	        if(nuevasEntradas.isEmpty()) {
 	            throw new RuntimeException("Error: No se pudo crear la nueva entrada");
 	        }
 	        
-	        IEntrada nuevaEntrada = nuevasEntradas.get(0);
+	        Entrada nuevaEntrada = (Entrada) nuevasEntradas.get(0);
 	        usuario.agregarEntrada(nuevaEntrada);
 	        usuariosDeEntrada.put(nuevaEntrada.getCodigo(), usuario);
 	        
@@ -394,8 +398,8 @@ public class Ticketek implements ITicketek {
 	    } catch(RuntimeException e) {
 	        // Si falla la creación de la nueva entrada, intentar restaurar la original
 	        try {
-	            usuario.agregarEntrada(entrada);
-	            usuariosDeEntrada.put(entrada.getCodigo(), usuario);
+	            usuario.agregarEntrada(entradaObjeto);
+	            usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
 	        } catch(Exception restoreException) {
 	            // Si no se puede restaurar, lanzar el error original
 	        }
@@ -412,7 +416,7 @@ public class Ticketek implements ITicketek {
 			throw new RuntimeException("Error: El nombre del espectaculo no esta registrado.");
 		
 		
-		LocalDate fecha = fecha(fechaString);
+		Fecha fecha = new Fecha(fechaString);
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
 		return espectaculo.costoEntrada(fecha);
 	}
@@ -423,7 +427,7 @@ public class Ticketek implements ITicketek {
 		if(!espectaculos.containsKey(nombreEspectaculo)) 
 			throw new RuntimeException("Error: El nombre del espectaculo no esta registrado.");
 
-		LocalDate fecha = fecha(fechaString);
+		Fecha fecha = new Fecha(fechaString);
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
 		return espectaculo.costoEntrada(fecha,sector);
 	}
@@ -472,10 +476,4 @@ public class Ticketek implements ITicketek {
 		return sb.toString();
 	}
 	
-	//Convierte String "dd/MM/yy" a LocalDate.
-	private LocalDate fecha(String fechaString) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-	    LocalDate fecha = LocalDate.parse(fechaString, formatter);
-	    return fecha;
-	}
 }

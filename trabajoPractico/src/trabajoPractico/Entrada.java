@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 public class Entrada implements IEntrada{
 	private String codigo;
 	private String nombreEspectaculo;
-	private LocalDate fecha;
+	private Fecha fecha;
 	private String nombreSede;
 	private String sector;
 	private int fila;
@@ -14,7 +14,7 @@ public class Entrada implements IEntrada{
 	private double precioEntrada;
 	
 	//Constructor de Entrada que tenga sectores que no sea CAMPO.
-	Entrada(String codigo, String nombreEspectaculo, LocalDate fecha, String nombreSede,String sector, int asiento, int fila, double precioEntrada){
+	Entrada(String codigo, String nombreEspectaculo, Fecha fecha, String nombreSede,String sector, int asiento, int fila, double precioEntrada){
 		if(codigo == null || codigo.isEmpty()) 
 				throw new RuntimeException("Error: El codigo de la entrada no puede ser null o vacio.");
 		if(nombreEspectaculo == null || nombreEspectaculo.isEmpty()) 
@@ -43,7 +43,7 @@ public class Entrada implements IEntrada{
 		this.nombreSede = nombreSede;
 	}
 	//Constructor de entrada con solo sector CAMPO
-	Entrada(String codigo, String nombreEspectaculo, LocalDate fecha, String nombreSede,double precioEntrada){
+	Entrada(String codigo, String nombreEspectaculo, Fecha fecha, String nombreSede,double precioEntrada){
 		if(codigo == null || codigo.isEmpty()) 
 			throw new RuntimeException("Error: El codigo de la entrada no puede ser null o vacio.");
 		if(nombreEspectaculo == null || nombreEspectaculo.isEmpty()) 
@@ -64,7 +64,6 @@ public class Entrada implements IEntrada{
 	}
 	
 	//Devuelve el codigo.
-	@Override
 	public String getCodigo() {
 		return codigo;
 	}
@@ -87,46 +86,41 @@ public class Entrada implements IEntrada{
 	
 	
 	//Devuelve el numero de Asiento.
-	@Override
 	public int obtenerAsiento() {
 		return asiento;
 	}
 
 	
 	//Devuelve el nombre del Sector
-	@Override
 	public String obtenerSector() {
 		return sector;
 	}
 	
 	//Devuelve el nombre de la sede
-	@Override
 	public String obtenerSede() {
 		return nombreSede;
 	}
 	
 	//Devuelve el nombre del Espectaculo
-	@Override
 	public String nombreEspectaculo() {
 		return nombreEspectaculo;
 	}
 
 	//devuelve la fecha.
-	@Override
-	public LocalDate obtenerFecha() {
+	public Fecha obtenerFecha() {
 		return fecha;
 	}
 	@Override
 	public String toString() {
 		String formato = "%s - %s - %s - %s - %s";
-		if(this.fecha.isBefore(LocalDate.now())) {
+		if(this.fecha.esAntes(LocalDate.now())) {
 			formato = "%s - %s - %s - P - %s - %s";
 		}
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
 	    return String.format(formato,
 		            codigo,
 		            nombreEspectaculo,
-		            fecha.format(formatter),
+		            fecha.toString(),
 		            nombreSede,
 		            ubicacion());
 	}

@@ -38,16 +38,4 @@ public interface IEntrada {
 
 	String toString();
 	//Devuelve el codigo de la entrada
-	String getCodigo();
-
-	//Devuelve el numero del asiento
-	int obtenerAsiento();
-	//Devuelve la fecha de la entrada
-	LocalDate obtenerFecha();
-	//Devuelve el nombre del espectaculo
-	String nombreEspectaculo();
-	//Devuelve el nombre de la sede
-	String obtenerSede();
-	//Devuelve el sector.
-	String obtenerSector();
 }
