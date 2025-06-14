@@ -51,15 +51,15 @@ public class Funcion {
 	
 	//Dado una cantidad de asientos, verifica si la cantidad de asientos necesarias estan disponibles, luego crea Entradas con sus
 	//datos necesarios, guarda las entradas en un Map y devuelve una lista con las Entradas.
-	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, int cantAsientos){
+	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, int cantEspacios){
 		if(sede instanceof Estadio) {
 			
-			if(cantidadAsientosDisponibles() - cantAsientos <0) {
-				throw new RuntimeException("Error: Se quiere comprar más entradas de las disponibles. La cantidad de entradas dispobibles es: " + cantidadAsientosDisponibles());
+			if(cantidadPuestosDisponibles() - cantEspacios <0) {
+				throw new RuntimeException("Error: Se quiere comprar más entradas de las disponibles. La cantidad de entradas dispobibles es: " + cantidadPuestosDisponibles());
 			}
 			
 			LinkedList<IEntrada> nuevasEntradas = new LinkedList<IEntrada>();
-			for(int i = 0; i < cantAsientos; i++) {
+			for(int i = 0; i < cantEspacios; i++) {
 				String codigoEntrada = codigoRandomParaEntrada();
 				double costo = costoEntrada();
 				IEntrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, this.fecha, sede.nombre(), costo);
@@ -105,7 +105,7 @@ public class Funcion {
 	}
 	
 	//Calcula y devuelve la cantidad de asientos disponibles segun la capacidad y la cantidad ya vendida
-	public int cantidadAsientosDisponibles() {
+	public int cantidadPuestosDisponibles() {
 		return sede.capacidadMaxima() - entradasVendidas.size();
 	}
 	

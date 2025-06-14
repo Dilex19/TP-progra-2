@@ -96,22 +96,13 @@ public class Ticketek implements ITicketek {
 		
 		validarSiEspectaculoEstaRegistrado(nombreEspectaculo);
 		
-		if(!usuarios.containsKey(email)) 
-			throw new RuntimeException("Error: El email del usuario no esta registrado.");
-		
-		Usuario usuario = usuarios.get(email);
-		if(!usuario.autenticar(contrasenia))
-			throw new RuntimeException("Error: La contraseña es incorrecta.");
+		Usuario usuario = autentificarUsuario(email, contrasenia);
 		
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
 		Fecha fecha = new Fecha(fechaString);
 		LinkedList<IEntrada> entradas = espectaculo.venderEntrada(nombreEspectaculo, fecha, cantidadEntradas);
-		for(IEntrada entrada : entradas) {
-			Entrada entradaObjeto = (Entrada) entrada;
-			usuario.agregarEntrada(entradaObjeto);
-			usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
-		}
 		
+		agregarEntradasAlUsuario(usuario,entradas);
 		
 		return entradas;
 	}
@@ -123,22 +114,14 @@ public class Ticketek implements ITicketek {
 		
 		validarSiEspectaculoEstaRegistrado(nombreEspectaculo);
 
-		if(!usuarios.containsKey(email)) 
-			throw new RuntimeException("Error: El email del usuario no esta registrado.");
 		
-		Usuario usuario = usuarios.get(email);
-		
-		if(!usuario.autenticar(contrasenia))
-			throw new RuntimeException("Error: La contraseña es incorrecta.");
+		Usuario usuario = autentificarUsuario(email, contrasenia);
 		
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
 		Fecha fecha = new Fecha(fechaString);
 		LinkedList<IEntrada> entradas = espectaculo.venderEntrada(nombreEspectaculo, fecha, sector, asientos);
-		for(IEntrada entrada : entradas) {
-			Entrada entradaObjeto = (Entrada) entrada;
-			usuario.agregarEntrada(entradaObjeto);
-			usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
-		}
+		
+		agregarEntradasAlUsuario(usuario,entradas);
 		
 		return entradas;
 	}
@@ -449,6 +432,14 @@ public class Ticketek implements ITicketek {
 	        throw new RuntimeException("Error: Contraseña incorrecta");
 	    
 	    return usuario;
+	}
+	
+	private void agregarEntradasAlUsuario(Usuario usuario, LinkedList<IEntrada> entradas) {
+		for(IEntrada entrada : entradas) {
+			Entrada entradaObjeto = (Entrada) entrada;
+			usuario.agregarEntrada(entradaObjeto);
+			usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
+		}
 	}
 	
 }

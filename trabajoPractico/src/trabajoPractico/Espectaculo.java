@@ -21,18 +21,16 @@ public class Espectaculo {
 	}
 	
 	//Dada una fecha y una cantiada de asientos, si los datos son correctos, devuelve una lista con las entradas compradas.
-	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, Fecha fecha, int cantAsientos){
-		if(!funciones.containsKey(fecha)) 
-			throw new RuntimeException("Error: El espectaculo no continene una funcion en esa fecha.");
+	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, Fecha fecha, int cantEspacios){
+		validarFechaDeFuncion(fecha);
 		
-		if(nombreEspectaculo.isEmpty()) 
-			throw new RuntimeException("Error: El nombre no puede estar vacio.");
+		validarExistenciaEspectaculo(nombreEspectaculo);
 		
-		if(cantAsientos <1) 
+		if(cantEspacios <1) 
 			throw new RuntimeException("Error: La cantidad de asientos no puede ser menor a 1");
 		
 		Funcion funcion = funciones.get(fecha);
-		LinkedList<IEntrada> entradas= funcion.venderEntrada(nombreEspectaculo, cantAsientos);
+		LinkedList<IEntrada> entradas= funcion.venderEntrada(nombreEspectaculo, cantEspacios);
 		Entrada primeraEntradaObjeto = (Entrada) entradas.get(0);
 		
 		agregarValorDeEntradasALoRecaudado(entradas,primeraEntradaObjeto.obtenerSede());
@@ -41,11 +39,13 @@ public class Espectaculo {
 	
 	//Dada una fecha, el sector y un array de asientos, si los datos son correctos, devuelve una lista con las entradas compradas.
 	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, Fecha fecha, String sector, int[] asientos){
-		if(!funciones.containsKey(fecha)) 
-			throw new RuntimeException("Error: El espectaculo no contiene una función en esa fecha.");
 		
-		if(nombreEspectaculo.isEmpty() || sector.isEmpty()) 
-			throw new RuntimeException("Error: El nombre o el sector no puede estar vacio.");
+		validarFechaDeFuncion(fecha);
+		
+		validarExistenciaEspectaculo(nombreEspectaculo);
+		
+		if(sector.isEmpty()) 
+			throw new RuntimeException("Error: El sector no puede estar vacio.");
 		
 		if(asientos.length == 0) 
 			throw new RuntimeException("Error: La longitud de asientos no puede ser igual a 0");
@@ -102,27 +102,25 @@ public class Espectaculo {
 	
 	//Dada una fecha, el codigo de la entrada, el sector y el numero del asiento, elimina la entrada comprada.
 	public void anularEntrada(Fecha fechaEntrada, String codigoEntrada, String sectorEntrada, int asientoEntrada) {
-		if(!funciones.containsKey(fechaEntrada)){
-			throw new RuntimeException("Error: La fecha de la entrada no concuerda con las fechas registradas del espectaculo.");
-		}
+		
+		validarFechaDeFuncion(fechaEntrada);
+		
 		Funcion funcion = funciones.get(fechaEntrada);
 		funcion.anularEntrada(codigoEntrada, sectorEntrada, asientoEntrada);
 	}
 	
 	//Dada una fecha, devuelve el valor de la entrada correspondiente a la funcion en esa fecha
 	public double costoEntrada(Fecha fecha) {
-		if(!funciones.containsKey(fecha)){
-			throw new RuntimeException("Error: La fecha no concuerda con las fechas registradas del espectaculo.");
-		}
+		
+		validarFechaDeFuncion(fecha);
+		
 		Funcion funcion = funciones.get(fecha);
 		return funcion.costoEntrada();
 	}
 	
 	//Dada una fecha y un sector, devuelve el valor de la entrada correspondiente a la funcion en esa fecha y al sector elegido.
 	public double costoEntrada(Fecha fecha, String sector) {
-		if(!funciones.containsKey(fecha)){
-			throw new RuntimeException("Error: La fecha no concuerda con las fechas registradas del espectaculo.");
-		}
+		validarFechaDeFuncion(fecha);
 		Funcion funcion = funciones.get(fecha);
 		return funcion.costoEntrada(sector);
 	}
@@ -144,5 +142,15 @@ public class Espectaculo {
 	//Imprime la informacion del Espectaculo.
 	public String toString() {
 		return String.format("%s - Cantidad de Funciones: %d - Total Recaudado %.2f", nombre, funciones.size(), totalRecaudado());
+	}
+	
+	private void validarExistenciaEspectaculo(String nombreEspectaculo) throws RuntimeException{
+		if(nombreEspectaculo == null || nombreEspectaculo.isEmpty())
+			throw new RuntimeException("Error: El nombre del espectaculo no puede ser nulo ni estar vacio.");
+	}
+	
+	private void validarFechaDeFuncion(Fecha fecha) {
+		if(!funciones.containsKey(fecha)) 
+			throw new RuntimeException("Error: La fecha no concuerda con las fechas de las funciones registradas del espectaculo.");
 	}
 }
