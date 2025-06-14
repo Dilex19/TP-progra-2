@@ -229,7 +229,6 @@ public class Ticketek implements ITicketek {
 	    if(espectaculo == null) {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
-	    Fecha fechaNuevaa = new Fecha(fechaString);
 
 	    if(!usuario.puedeAnularEntrada(entradaObjeto)) {
 	        throw new RuntimeException("Error: La entrada original no puede ser anulada");
@@ -313,9 +312,6 @@ public class Ticketek implements ITicketek {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
 	    
-	    Fecha fechaNueva = new Fecha(fechaString);
-	    
-
 	    
 	    if(!usuario.puedeAnularEntrada(entradaObjeto)) {
 	        throw new RuntimeException("Error: La entrada original no puede ser anulada");
