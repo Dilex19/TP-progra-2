@@ -23,6 +23,14 @@ public abstract class SedeConSectores extends Sede {
 		if(sectores == null || sectores.length<1)
 			throw new RuntimeException("Error: Los sectores son invalidos");
 		
+		if(porcentajeAdicional == null) {
+	        throw new RuntimeException("Error: El porcentaje adicional no puede ser nulo");
+	    }
+		
+		if(porcentajeAdicional.length != sectores.length) {
+			throw new RuntimeException("Error: El porcentaje adicional por sector y la cantidad de sectores no corresponden a la misma cantidad.");
+		}
+		
 		this.sectores = new LinkedHashMap<String , Sector>();
 		this.cantidadDeAsientosPorFila = asientosPorFila;
 		for(int i = 0 ; i<sectores.length; i++) {
