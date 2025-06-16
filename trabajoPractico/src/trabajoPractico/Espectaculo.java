@@ -139,12 +139,24 @@ public class Espectaculo {
 	public double totalRecaudado(String sede) {
 		return RecaudadoPorSede.get(sede);
 	}
-
 	
-	public void restaurarEntradaSimple(Fecha fecha, String codigo, String sector, int asiento) {
+	public boolean puedeVenderEntrada(Fecha fecha, String sector, int asiento) {
+		if(!funciones.containsKey(fecha)) {
+			return false;
+		}
+		Funcion funcion = funciones.get(fecha);
+		return funcion.asientoDisponible(sector, asiento);
+	}
+	
+	public boolean puedeVenderEntrada(Fecha fecha, int cantidad) {
+		if(!funciones.containsKey(fecha)) {
+			return false;
+		}
 		
 		Funcion funcion = funciones.get(fecha);
+		return funcion.cantidadPuestosDisponibles() >= cantidad;
 	}
+	
 	
 	//Imprime la informacion del Espectaculo.
 	public String toString() {

@@ -169,18 +169,11 @@ public class Ticketek implements ITicketek {
 		if(entrada == null) {
 	        throw new RuntimeException("Error: La entrada no puede ser nula");
 	    }
-	    if(contrasenia == null) {
-	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
-	    }
-	    Entrada entradaObjeto = (Entrada) entrada;
-	    Usuario usuario = usuariosDeEntrada.get(entradaObjeto.getCodigo());
-	    if(usuario == null) 
-	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
-	    
-	    if(!usuario.autenticar(contrasenia))
-			throw new RuntimeException("Error: La contraseña es incorrecta.");
-	    
-	    
+		
+		Entrada entradaObjeto = (Entrada) entrada;
+		
+		Usuario usuario = autentificarUsuarioDeEntrada(entradaObjeto, contrasenia);
+		
 	    boolean anulacionExitosa = usuario.anularEntrada(entradaObjeto);
 	    
 	    if(anulacionExitosa) {
@@ -200,30 +193,9 @@ public class Ticketek implements ITicketek {
 		if(entrada == null) {
 	        throw new RuntimeException("Error: La entrada no puede ser nula");
 	    }
-	    if(contrasenia == null || contrasenia.trim().isEmpty()) {
-	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
-	    }
-	    if(fechaString == null || fechaString.trim().isEmpty()) {
-	        throw new RuntimeException("Error: La fecha no puede estar vacía");
-	    }
-	    if(sector == null || sector.trim().isEmpty()) {
-	        throw new RuntimeException("Error: El sector no puede estar vacío");
-	    }
-	    if(asiento <= 0) {
-	        throw new RuntimeException("Error: El número de asiento debe ser mayor a 0");
-	    }
-	    
-	    Entrada entradaObjeto = (Entrada) entrada;
-	    
-	    Usuario usuario = usuariosDeEntrada.get(entradaObjeto.getCodigo());
-	    
-	    if(usuario == null) {
-	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
-	    }
-	    
-	    if(!usuario.autenticar(contrasenia)) {
-	        throw new RuntimeException("Error: Contraseña incorrecta");
-	    }
+		Entrada entradaObjeto = (Entrada) entrada;
+		
+		Usuario usuario = autentificarUsuarioDeEntrada(entradaObjeto, contrasenia);
 	    
 	    // Obtener el espectáculo
 	    Espectaculo espectaculo = espectaculos.get(entradaObjeto.nombreEspectaculo());
@@ -231,50 +203,21 @@ public class Ticketek implements ITicketek {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
 	    
+	    Fecha fechaNueva = new Fecha(fechaString);
 	    
+	    if(!espectaculo.puedeVenderEntrada(fechaNueva, sector, asiento)) {
+	        throw new RuntimeException("Error: El asiento solicitado no está disponible para la fecha especificada");
+	    }
+	    //Crea la nueva entrada
+	    List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entradaObjeto.nombreEspectaculo(), fechaNueva, sector, new int[]{asiento});
 	    // Anular la entrada actual.
-	    boolean anulacionExitosa = anularEntrada(entrada, contrasenia);
-	    if(!anulacionExitosa) {
-	        throw new RuntimeException("Error: No se pudo anular la entrada original");
-	    }
-	    try {
-	        // Crear nueva entrada con el nuevo sector y asiento
-	    	Fecha fechaNueva = new Fecha(fechaString);
-	        
-	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entradaObjeto.nombreEspectaculo(), fechaNueva, sector, new int[]{asiento});
-	        
-	        if(nuevasEntradas.isEmpty()) {
-	            throw new RuntimeException("Error: No se pudo crear la nueva entrada");
-	        }
-	        
-	        Entrada nuevaEntrada = (Entrada) nuevasEntradas.get(0);
-	        usuario.agregarEntrada(nuevaEntrada);
-	        usuariosDeEntrada.put(nuevaEntrada.getCodigo(), usuario);
-	        
-	        return nuevaEntrada;
-	        
-	    } catch(RuntimeException e) {
-	        // Si falla la creación de la nueva entrada, intentar restaurar la original
-	        try {
-	            usuario.agregarEntrada(entradaObjeto);
-	            usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
-	            Espectaculo espectaculoo = espectaculos.get(entradaObjeto.nombreEspectaculo());
-	            if(espectaculoo != null) {
-	                espectaculoo.restaurarEntradaSimple(
-	                    entradaObjeto.obtenerFecha(), 
-	                    entradaObjeto.getCodigo(), 
-	                    entradaObjeto.obtenerSector(), 
-	                    entradaObjeto.obtenerAsiento()
-	                );
-	            }
-	            System.out.println("Se restauró la entrada original con código " + entradaObjeto.getCodigo());
-	        } catch(Exception restoreException) {
-	        	System.out.println("No se pudo restaurar la entrada original.");
-	            System.out.println("Código de entrada perdida: " + entradaObjeto.getCodigo());
-	            System.out.println("Usuario afectado: " + usuario.toString());
-	        }
-	        throw e;
-	    }
+	    anularEntrada(entrada, contrasenia);
+	    //Agrega la nueva entrada
+	    Entrada nuevaEntrada = (Entrada) nuevasEntradas.get(0);
+	    usuario.agregarEntrada(nuevaEntrada);
+        usuariosDeEntrada.put(nuevaEntrada.getCodigo(), usuario);
+        
+        return nuevaEntrada;
 	    
 	}
 
@@ -284,24 +227,9 @@ public class Ticketek implements ITicketek {
 		if(entrada == null) {
 	        throw new RuntimeException("Error: La entrada no puede ser nula");
 	    }
-	    if(contrasenia == null) {
-	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
-	    }
-	    if(fechaString == null) {
-	        throw new RuntimeException("Error: La fecha no puede estar vacía");
-	    }
-	    
-	    Entrada entradaObjeto = (Entrada) entrada;
-	    
-	    Usuario usuario = usuariosDeEntrada.get(entradaObjeto.getCodigo());
-	    
-	    if(usuario == null) {
-	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
-	    }
-	    
-	    if(!usuario.autenticar(contrasenia)) {
-	        throw new RuntimeException("Error: Contraseña incorrecta");
-	    }
+		Entrada entradaObjeto = (Entrada) entrada;
+		
+		Usuario usuario = autentificarUsuarioDeEntrada(entradaObjeto, contrasenia);
 	    
 	    // Obtener el espectáculo
 	    Espectaculo espectaculo = espectaculos.get(entradaObjeto.nombreEspectaculo());
@@ -309,51 +237,23 @@ public class Ticketek implements ITicketek {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
 	    }
 	    
+	    Fecha fechaNueva = new Fecha(fechaString);
 	    
+	    if(!espectaculo.puedeVenderEntrada(fechaNueva, 1)) {
+	        throw new RuntimeException("Error: No hay entradas disponibles para la fecha especificada");
+	    }
 	    
-	    // Anular la entrada actual
-	    boolean anulacionExitosa = anularEntrada(entrada, contrasenia);
-	    if(!anulacionExitosa) {
-	        throw new RuntimeException("Error: No se pudo anular la entrada original");
-	    }
-	    try {
-	        // Crear nueva entrada para estadio (solo cambio de fecha)
-	    	Fecha fechaNuevaa = new Fecha(fechaString);
+	    //Crea la nueva entrada
+	    List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entradaObjeto.nombreEspectaculo(), fechaNueva, 1);
+	    //Anula la entrada anterior
+	    anularEntrada(entrada, contrasenia);
+	    //Aguarda la nueva entrada
+	    Entrada nuevaEntrada = (Entrada) nuevasEntradas.get(0);
+	    usuario.agregarEntrada(nuevaEntrada);
+	    usuariosDeEntrada.put(nuevaEntrada.getCodigo(), usuario);
 	        
-	        List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entradaObjeto.nombreEspectaculo(), fechaNuevaa, 1);
-	        
-	        if(nuevasEntradas.isEmpty()) {
-	            throw new RuntimeException("Error: No se pudo crear la nueva entrada");
-	        }
-	        
-	        Entrada nuevaEntrada = (Entrada) nuevasEntradas.get(0);
-	        usuario.agregarEntrada(nuevaEntrada);
-	        usuariosDeEntrada.put(nuevaEntrada.getCodigo(), usuario);
-	        
-	        return nuevaEntrada;
-	        
-	    } catch(RuntimeException e) {
-	        // Si falla la creación de la nueva entrada, intentar restaurar la original
-	        try {
-	            usuario.agregarEntrada(entradaObjeto);
-	            usuariosDeEntrada.put(entradaObjeto.getCodigo(), usuario);
-	            Espectaculo espectaculoo = espectaculos.get(entradaObjeto.nombreEspectaculo());
-	            if(espectaculoo != null) {
-	                espectaculoo.restaurarEntradaSimple(
-	                    entradaObjeto.obtenerFecha(), 
-	                    entradaObjeto.getCodigo(), 
-	                    entradaObjeto.obtenerSector(), 
-	                    entradaObjeto.obtenerAsiento()
-	                );
-	            }
-	            System.out.println("Se restauró la entrada original con código " + entradaObjeto.getCodigo());
-	        } catch(Exception restoreException) {
-	        	System.out.println("No se pudo restaurar la entrada original.");
-	            System.out.println("Código de entrada perdida: " + entradaObjeto.getCodigo());
-	            System.out.println("Usuario afectado: " + usuario.toString());
-	        }
-	        throw e;
-	    }
+	    return nuevaEntrada;
+
 	    
 	}
 
@@ -459,6 +359,23 @@ public class Ticketek implements ITicketek {
 	    if(!usuario.autenticar(contrasenia)) 
 	        throw new RuntimeException("Error: Contraseña incorrecta");
 	    
+	    return usuario;
+	}
+	
+	private Usuario autentificarUsuarioDeEntrada(Entrada entrada, String contrasenia) {
+		if(contrasenia == null) {
+	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
+	    }
+	    
+	    Usuario usuario = usuariosDeEntrada.get(entrada.getCodigo());
+	    
+	    if(usuario == null) {
+	        throw new RuntimeException("Error: No se encontró un usuario asociado a esta entrada");
+	    }
+	    
+	    if(!usuario.autenticar(contrasenia)) {
+	        throw new RuntimeException("Error: Contraseña incorrecta");
+	    }
 	    return usuario;
 	}
 	

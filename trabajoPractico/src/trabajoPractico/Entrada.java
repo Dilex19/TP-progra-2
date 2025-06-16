@@ -25,8 +25,8 @@ public class Entrada implements IEntrada{
 			throw new RuntimeException("Error: El nombre de la sede no puede ser null o vacio.");
 		if(sector == null || sector.isEmpty()) 
 			throw new RuntimeException("Error: El nombre del sector no puede ser null o vacio.");
-		if(asiento < 0)
-			throw new RuntimeException("Error: El numero del asiento no puede ser negativo");
+		if(asiento <= 0)
+			throw new RuntimeException("Error: El numero del asiento no puede ser negativo o cero.");
 		if(fila <0)
 			throw new RuntimeException("Error: El numero de la fila no puede ser negativa");
 		if(precioEntrada <1)
