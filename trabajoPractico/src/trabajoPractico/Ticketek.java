@@ -5,12 +5,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Ticketek implements ITicketek {
-	private HashMap<String, Usuario> usuarios;
-	private HashMap<String, Espectaculo> espectaculos;
-	private HashMap<String, Sede> sedes;
-	private HashMap<String, Usuario> usuariosDeEntrada;
+	private Map<String, Usuario> usuarios;
+	private Map<String, Espectaculo> espectaculos;
+	private Map<String, Sede> sedes;
+	private Map<String, Usuario> usuariosDeEntrada;
 	
 	Ticketek(){
 		this.usuarios = new HashMap<String, Usuario>();
