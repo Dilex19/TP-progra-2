@@ -55,9 +55,16 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public void registrarUsuario(String email, String nombre, String apellido, String contrasenia) {
+		if (email == null || email.isEmpty()) {
+		    throw new IllegalArgumentException("Error: el email es invalido.");
+		}
+		if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+		    throw new IllegalArgumentException("Error: el email es invalido.");
+		}
 		if(usuarios.containsKey(email)) {
 	        throw new RuntimeException("Error: Ya existe un usuario registrado con ese email");
 	    }
+		
 	    Usuario usuario = new Usuario(email, nombre, apellido, contrasenia);
 	    usuarios.put(email, usuario);
 		
@@ -193,8 +200,8 @@ public class Ticketek implements ITicketek {
 	        throw new RuntimeException("Error: La entrada no puede ser nula.");
 	    }
 		
-		if(sector.isEmpty()) {
-			throw new RuntimeException("Error: El sector no puede estar vacio.");
+		if(sector == null || sector.isEmpty()) {
+			throw new RuntimeException("Error: El sector no puede estar vacio o nulo.");
 		}
 		
 		if(asiento < 1) {
@@ -276,6 +283,9 @@ public class Ticketek implements ITicketek {
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fechaString, String sector) {
 		
+		if(sector == null || sector.isEmpty())
+			throw new RuntimeException("Error: el sector es invalido.");
+		
 		validarSiEspectaculoEstaRegistrado(nombreEspectaculo);
 
 		Fecha fecha = new Fecha(fechaString);
@@ -298,6 +308,9 @@ public class Ticketek implements ITicketek {
 	public double totalRecaudadoPorSede(String nombreEspectaculo, String nombreSede) {
 		
 		validarSiEspectaculoEstaRegistrado(nombreEspectaculo);
+		
+		if(nombreSede == null)
+			throw new RuntimeException("Error, el nombre de la sede es nulo.");
 		
 		if(!sedes.containsKey(nombreSede))
 			throw new RuntimeException("Error: El nombre de la sede no esta registrado.");
@@ -328,16 +341,22 @@ public class Ticketek implements ITicketek {
 	}
 	
 	private void validarExistenciaEspectaculo(String nombreEspectaculo) throws RuntimeException{
+		if(nombreEspectaculo == null)
+			throw new RuntimeException("Error, el nombre del espectaculo es nulo.");
 		if(espectaculos.containsKey(nombreEspectaculo))
 			throw new RuntimeException("Error, el nombre del espectaculo ya esta registrado.");
 	}
 	
 	private void validarExistenciaSede(String nombreSede) throws RuntimeException{
+		if(nombreSede == null)
+			throw new RuntimeException("Error, el nombre de la sede es nulo.");
 		if(sedes.containsKey(nombreSede))
 			throw new RuntimeException("Error, el nombre de la sede ya esta registrado.");
 	}
 	
 	private void validarSiEspectaculoEstaRegistrado(String nombreEspectaculo) throws RuntimeException{
+		if(nombreEspectaculo == null)
+			throw new RuntimeException("Error, el nombre del espectaculo es nulo.");
 		if(!espectaculos.containsKey(nombreEspectaculo)) 
 			throw new RuntimeException("Error: El nombre del espectaculo no esta registrado.");
 	}
@@ -365,7 +384,7 @@ public class Ticketek implements ITicketek {
 	
 	private Usuario autentificarUsuarioDeEntrada(Entrada entrada, String contrasenia) {
 		if(contrasenia == null) {
-	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
+	        throw new RuntimeException("Error: La contraseña no puede ser nula");
 	    }
 	    
 	    Usuario usuario = usuariosDeEntrada.get(entrada.getCodigo());
