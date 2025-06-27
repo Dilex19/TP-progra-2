@@ -43,7 +43,6 @@ public abstract class SedeConSectores extends Sede {
 	}
 	
 
-	// Devuelve un arreglo con los nombres de todos los sectores.
 	public String[] sectores() {
 		String[] sectores = new String[this.sectores.size()];
 		int i = 0;
@@ -54,7 +53,6 @@ public abstract class SedeConSectores extends Sede {
 		return sectores;
 	}
 	
-	//Devuelve un arreglo con las capacidades de cada sector.
 	public int[] capacidadPorSector() {
 		int[] capacidad = new int[this.sectores.size()];
 		int i = 0;
@@ -65,23 +63,20 @@ public abstract class SedeConSectores extends Sede {
 		return capacidad;
 	}
 	
-	//Calcula el precio de entrada para un sector específico, aplicando un porcentaje adicional.
+	
 	public double costoEntrada(String sector, double precioBase) {
 		Sector sec = this.sectores.get(sector);
 		return precioBase * (1+ (sec.porcentajeAdicional() / 100.0)) ;
 	}
 	
-	//Obtiene un objeto Sector por su nombre.
 	public Sector obtenerSector(String nombreSector) {
 		return sectores.get(nombreSector);
 	}
 	
-	//Calcula la fila correspondiente a un número de asiento.
 	public int filaDeUnAsiento(int asiento) {
 		return 1 + (asiento/cantidadDeAsientosPorFila);
 	}
 	
-	//Representación en String de la sede con todos sus sectores.
 	public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.nombre());
@@ -92,7 +87,6 @@ public abstract class SedeConSectores extends Sede {
         return sb.toString().replaceAll(" \\| $", ""); 
     }
 	
-	//Representación extendida con entradas vendidas por sector.
 	public String toString(int[] cantidadDeEntradasVendidas) {
         StringBuilder sb = new StringBuilder();
         sb.append(super.nombre());

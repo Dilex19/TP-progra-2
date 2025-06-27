@@ -49,8 +49,7 @@ public class Funcion {
 		}
 	}
 	
-	//Dado una cantidad de asientos, verifica si la cantidad de asientos necesarias estan disponibles, luego crea Entradas con sus
-	//datos necesarios, guarda las entradas en un Map y devuelve una lista con las Entradas.
+
 	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, int cantEspacios){
 		if(sede instanceof Estadio) {
 			
@@ -74,8 +73,7 @@ public class Funcion {
 			throw new RuntimeException("Error: Los parametros no concuerdan con el tipo de Sede.");
 		}
 	}
-	//Dado unos asientos y un sector, verifica si los asientos estan disponibles.
-	//Si estan disponibles los pone como ocupado y crea Entradas, las guarda y devuelve una lista con las Entradas.
+	
 	public LinkedList<IEntrada> venderEntrada(String nombreEspectaculo, String sector, int[] asientos){
 		if(sede instanceof SedeConSectores) {
 			if(!estanDisponibles(sector, asientos)) {
@@ -104,7 +102,7 @@ public class Funcion {
 		}
 	}
 	
-	//Calcula y devuelve la cantidad de asientos disponibles segun la capacidad y la cantidad ya vendida
+	
 	public int cantidadPuestosDisponibles() {
 		return sede.capacidadMaxima() - entradasVendidas.size();
 	}
@@ -119,7 +117,7 @@ public class Funcion {
 		return true;
 	}
 	
-	//Calcula el costo de la entrada
+	
 	public double costoEntrada() {
 		if(sede instanceof Estadio) {
 			return sede.costoEntrada(precioBase);
@@ -128,8 +126,7 @@ public class Funcion {
 		}
 	}
 	
-	//Calcula el costo de la entrada segun un sector dado.
-	//Si la sede es un teatro devuelve un numero diferente a si es un MiniEstadio.
+	
 	public double costoEntrada(String sector) {
 		if(sede instanceof SedeConSectores) {
 			if(sede instanceof MiniEstadio) {
@@ -143,7 +140,7 @@ public class Funcion {
 		}
 	}
 	
-	//Devuelve una lista de todas las entradas vendidas en la funcion.
+	
 	public LinkedList<IEntrada> listarEntradas(){
 		LinkedList<IEntrada> entradas = new LinkedList<IEntrada>();
 		for(IEntrada entrada : entradasVendidas.values()) {
@@ -152,7 +149,7 @@ public class Funcion {
 		return entradas;
 	}
 	
-	//Devuelve el total recaudado por la funcion.
+	
 	public double totalRecaudado() {
 		double totalRecaudado = 0;
 		for(IEntrada entrada : entradasVendidas.values()) {
@@ -161,17 +158,15 @@ public class Funcion {
 		return totalRecaudado;
 	}
 	
-	//Genera un codigo universal unico el cual es muy poco probable que se repita. Es poco probable, pero verifica que no se repita.
 	public String codigoRandomParaEntrada() {
 		String codigo = UUID.randomUUID().toString(); 
-		//Verifica que no se repita.
 		while(entradasVendidas.containsKey(codigo)) {
 			codigo = UUID.randomUUID().toString(); 
 		}
 		return codigo;
 	}
 	
-	//Dado el codigo de una entrada, su sector y su asiento, si se encuentra registrada la elimina.
+	
 	public void anularEntrada(String codigoEntrada, String sectorEntrada, int asientoEntrada) {
 		if(entradasVendidas.containsKey(codigoEntrada)) {
 			if(sede instanceof SedeConSectores) {
@@ -187,7 +182,7 @@ public class Funcion {
 		}
 	}
 	
-	//Devuelve la cantidad de entradas vendidas en un sector especifico
+
 	public int entradasVendidasPorSector(String sector) {
 		if(!asientos.containsKey(sector)) 
 			throw new RuntimeException("Error: El sector indicado no existe.");
@@ -200,7 +195,7 @@ public class Funcion {
 		return compradas;
 	}
 	
-	//Devuelve un array con la cantidad de entradas vendidas por Sector.
+
 	public int[] entradasVendidasPorSector() {
 		int[] compradasPorSector = new int[asientos.size()];
 		int i = 0;
@@ -220,17 +215,17 @@ public class Funcion {
         
         boolean[] arrayAsientos = asientos.get(sector);
         
-        // Verificar que el asiento esté dentro del rango válido
+       
         if(asiento < 0 || asiento >= arrayAsientos.length) {
             return false;
         }
         
-        // Disponible si no está vendido
+        
         return arrayAsientos[asiento];
     }
 
 
-	//Imprime Funcion y sus datos.
+	
 	public String toString() {
         String fechaStr = fecha.toString();
         

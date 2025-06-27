@@ -20,7 +20,7 @@ public class Ticketek implements ITicketek {
 		this.usuariosDeEntrada = new HashMap<String, Usuario>();
 	}
 
-	//Registra una sede sin sectores.
+
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
 		
@@ -30,7 +30,6 @@ public class Ticketek implements ITicketek {
 		sedes.put(nombre, sede);
 	}
 
-	//Registra una sede con múltiples sectores.
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
@@ -41,7 +40,7 @@ public class Ticketek implements ITicketek {
 		sedes.put(nombre, sede);
 	}
 
-	//Registra una sede con servicios adicionales.
+
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			int cantidadPuestos, double precioConsumicion, String[] sectores, int[] capacidad,
@@ -53,7 +52,7 @@ public class Ticketek implements ITicketek {
 		sedes.put(nombre, sede);
 	}
 
-	//Registra un usuario.
+
 	@Override
 	public void registrarUsuario(String email, String nombre, String apellido, String contrasenia) {
 		if(usuarios.containsKey(email)) {
@@ -64,7 +63,7 @@ public class Ticketek implements ITicketek {
 		
 	}
 
-	//Registra un espectáculo.
+
 	@Override
 	public void registrarEspectaculo(String nombre) {
 		
@@ -74,7 +73,7 @@ public class Ticketek implements ITicketek {
 		espectaculos.put(nombre, espectaculo);
 	}
 
-	//Agrega una función.
+
 	@Override
 	public void agregarFuncion(String nombreEspectaculo, String fechaString, String sedeString, double precioBase) {
 		
@@ -89,7 +88,7 @@ public class Ticketek implements ITicketek {
 		espectaculo.agregarFuncion(fecha, sede, precioBase);
 	}
 
-	// Asocia entradas al usuario.
+
 	@Override
 	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fechaString, String email, String contrasenia,
 			int cantidadEntradas) {
@@ -107,7 +106,7 @@ public class Ticketek implements ITicketek {
 		return entradas;
 	}
 
-	// Similar al anterior pero con selección de asientos.
+
 	@Override
 	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fechaString, String email, String contrasenia,
 			String sector, int[] asientos) {
@@ -125,7 +124,7 @@ public class Ticketek implements ITicketek {
 		
 		return entradas;
 	}
-	//Lista las funciones de un espectaculo
+
 	@Override
 	public String listarFunciones(String nombreEspectaculo) {
 		
@@ -135,7 +134,7 @@ public class Ticketek implements ITicketek {
 		return espectaculo.listarFunciones();
 	}
 
-	//Lista de entradas de un espectáculo.
+
 	@Override
 	public List<IEntrada> listarEntradasEspectaculo(String nombreEspectaculo) {
 		
@@ -145,7 +144,7 @@ public class Ticketek implements ITicketek {
 		return espectaculo.listarEntradas();
 	}
 
-	//Lista de entradas futuras compradas por un usuario.
+
 	@Override
 	public List<IEntrada> listarEntradasFuturas(String email, String contrasenia) {
 		
@@ -154,7 +153,7 @@ public class Ticketek implements ITicketek {
 	    return usuario.listarEntradasFuturas();
 	}
 
-	//Lista de entradas de un usuario.
+
 	@Override
 	public List<IEntrada> listarTodasLasEntradasDelUsuario(String email, String contrasenia) {
 		
@@ -163,7 +162,7 @@ public class Ticketek implements ITicketek {
 	    return usuario.listarEntradas();
 	}
 
-	//Anula una entrada.
+	
 	@Override
 	public boolean anularEntrada(IEntrada entrada, String contrasenia) {
 		if(entrada == null) {
@@ -174,7 +173,7 @@ public class Ticketek implements ITicketek {
 		
 		Usuario usuario = autentificarUsuarioDeEntrada(entradaObjeto, contrasenia);
 		
-	    boolean anulacionExitosa = usuario.anularEntrada(entradaObjeto);
+	    boolean anulacionExitosa = usuario.anularEntrada(entradaObjeto.getCodigo());
 	    
 	    if(anulacionExitosa) {
 	        usuariosDeEntrada.remove(entradaObjeto.getCodigo());
@@ -187,17 +186,27 @@ public class Ticketek implements ITicketek {
 	    return anulacionExitosa;
 	}
 
-	//Cambia una entrada.
+	
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fechaString, String sector, int asiento) {
 		if(entrada == null) {
-	        throw new RuntimeException("Error: La entrada no puede ser nula");
+	        throw new RuntimeException("Error: La entrada no puede ser nula.");
 	    }
+		
+		if(sector.isEmpty()) {
+			throw new RuntimeException("Error: El sector no puede estar vacio.");
+		}
+		
+		if(asiento < 1) {
+			throw new RuntimeException("Error: El asiento tiene un numero invalido.");
+		}
+		
+		
 		Entrada entradaObjeto = (Entrada) entrada;
 		
 		Usuario usuario = autentificarUsuarioDeEntrada(entradaObjeto, contrasenia);
 	    
-	    // Obtener el espectáculo
+
 	    Espectaculo espectaculo = espectaculos.get(entradaObjeto.nombreEspectaculo());
 	    if(espectaculo == null) {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
@@ -208,20 +217,15 @@ public class Ticketek implements ITicketek {
 	    if(!espectaculo.puedeVenderEntrada(fechaNueva, sector, asiento)) {
 	        throw new RuntimeException("Error: El asiento solicitado no está disponible para la fecha especificada");
 	    }
-	    //Crea la nueva entrada
+
+	    
 	    List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entradaObjeto.nombreEspectaculo(), fechaNueva, sector, new int[]{asiento});
-	    // Anular la entrada actual.
-	    anularEntrada(entrada, contrasenia);
-	    //Agrega la nueva entrada
-	    Entrada nuevaEntrada = (Entrada) nuevasEntradas.get(0);
-	    usuario.agregarEntrada(nuevaEntrada);
-        usuariosDeEntrada.put(nuevaEntrada.getCodigo(), usuario);
-        
-        return nuevaEntrada;
+	    
+	    return procesarCambioEntrada(nuevasEntradas, usuario, entrada,contrasenia);
 	    
 	}
 
-	//Similar al anterior pero con sector y asientos.
+
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fechaString) {
 		if(entrada == null) {
@@ -231,7 +235,7 @@ public class Ticketek implements ITicketek {
 		
 		Usuario usuario = autentificarUsuarioDeEntrada(entradaObjeto, contrasenia);
 	    
-	    // Obtener el espectáculo
+
 	    Espectaculo espectaculo = espectaculos.get(entradaObjeto.nombreEspectaculo());
 	    if(espectaculo == null) {
 	        throw new RuntimeException("Error: No se encontró el espectáculo asociado a la entrada");
@@ -243,22 +247,20 @@ public class Ticketek implements ITicketek {
 	        throw new RuntimeException("Error: No hay entradas disponibles para la fecha especificada");
 	    }
 	    
-	    //Crea la nueva entrada
 	    List<IEntrada> nuevasEntradas = espectaculo.venderEntrada(entradaObjeto.nombreEspectaculo(), fechaNueva, 1);
-	    //Anula la entrada anterior
-	    anularEntrada(entrada, contrasenia);
-	    //Aguarda la nueva entrada
+	   
+	    return procesarCambioEntrada(nuevasEntradas, usuario, entrada,contrasenia);
+	    
+	}
+	
+	public IEntrada procesarCambioEntrada(List<IEntrada> nuevasEntradas, Usuario usuario, IEntrada entrada, String contrasenia) {
+		anularEntrada(entrada, contrasenia);
 	    Entrada nuevaEntrada = (Entrada) nuevasEntradas.get(0);
 	    usuario.agregarEntrada(nuevaEntrada);
 	    usuariosDeEntrada.put(nuevaEntrada.getCodigo(), usuario);
-	        
 	    return nuevaEntrada;
-
-	    
 	}
 
-
-	//Calcula el costo de una entrada.
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fechaString ) {
 		
@@ -270,7 +272,7 @@ public class Ticketek implements ITicketek {
 		return espectaculo.costoEntrada(fecha);
 	}
 
-	//Similar al anterior pero con sector.
+
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fechaString, String sector) {
 		
@@ -281,7 +283,7 @@ public class Ticketek implements ITicketek {
 		return espectaculo.costoEntrada(fecha,sector);
 	}
 
-	//Calcula el total recaudado.
+
 	@Override
 	public double totalRecaudado(String nombreEspectaculo) {
 		
@@ -291,7 +293,7 @@ public class Ticketek implements ITicketek {
 		return espectaculo.totalRecaudado();
 	}
 
-	//Similar al anterior pero por sede.
+
 	@Override
 	public double totalRecaudadoPorSede(String nombreEspectaculo, String nombreSede) {
 		
@@ -304,7 +306,7 @@ public class Ticketek implements ITicketek {
 		return espectaculo.totalRecaudado(nombreSede);
 	}
 	
-	//Genera reporte completo de usuarios, sedes y espectáculos.
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Usuarios: \n");
@@ -345,7 +347,6 @@ public class Ticketek implements ITicketek {
 	        throw new RuntimeException("Error: El email no puede estar vacío");
 	    
 	    
-	    // Validación de contraseña
 	    if(contrasenia == null) 
 	        throw new RuntimeException("Error: La contraseña no puede estar vacía");
 	    

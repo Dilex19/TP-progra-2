@@ -37,7 +37,7 @@ public class Usuario {
 		entradasCompradas = new HashMap<String, Entrada>();
 	}
 	
-	//Verifica si la contraseña ingresada coincide con la del usuario.
+
 	public boolean autenticar(String contrasenia) {
 		if(contrasenia == null) {
 			return false;
@@ -45,41 +45,38 @@ public class Usuario {
 		return this.contraseña.equals(contrasenia); 
 	}
 	
-	//Añade una entrada al mapa de entradas compradas.
+
 	public void agregarEntrada(Entrada entrada) {
 		if(entrada != null) {
 			entradasCompradas.put(entrada.getCodigo(), entrada);
 		}
 	}
 
-	//Verifica si el usuario posee una entrada específica.
-	public boolean tieneEntrada(Entrada entrada) {
-		if(entrada == null) {
-			return false;
-		}
-		return entradasCompradas.containsKey(entrada.getCodigo());
+
+	public boolean tieneEntrada(String entradaCodigo) {
+		return entradasCompradas.containsKey(entradaCodigo);
 	}
 	
-	//Elimina una entrada del usuario.
-	public boolean eliminarEntrada(Entrada entrada) {
-		if(entrada == null || !tieneEntrada(entrada)) {
+
+	public boolean eliminarEntrada(String entradaCodigo) {
+		if(entradaCodigo.isEmpty() || !tieneEntrada(entradaCodigo)) {
 			return false;
 		}
-		entradasCompradas.remove(entrada.getCodigo());
+		entradasCompradas.remove(entradaCodigo);
 		return true;
 	}
 	
-	//Alias de eliminarEntrada(), misma funcionalidad.
-	public boolean anularEntrada(Entrada entrada) {
-		return eliminarEntrada(entrada);
+
+	public boolean anularEntrada(String entradaCodigo) {
+		return eliminarEntrada(entradaCodigo);
 	}
 
-	//Formato: "<nombre> - <apellido> - <email>."
+
 	public String toString() {
 		return String.format("%s - %s - %s", nombre,apellido,email);
 	}
+
 	
-	//Devuelve todas las entradas del usuario en una lista.
 	public LinkedList<IEntrada> listarEntradas() {
 		LinkedList<IEntrada> entradasUsuario = new LinkedList<IEntrada>();
 		for(IEntrada entrada : entradasCompradas.values()) {
@@ -88,7 +85,7 @@ public class Usuario {
 		return entradasUsuario;
 	}
 	
-	//Filtra entradas con fechas posteriores al día actual.
+	
 	public List<IEntrada> listarEntradasFuturas() {
 		LinkedList<IEntrada> entradasFuturasUsuario = new LinkedList<IEntrada>();
 		for(Entrada entrada : entradasCompradas.values()) {

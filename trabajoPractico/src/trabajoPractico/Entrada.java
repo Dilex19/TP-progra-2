@@ -13,7 +13,8 @@ public class Entrada implements IEntrada{
 	private int asiento;
 	private double precioEntrada;
 	
-	//Constructor de Entrada que tenga sectores que no sea CAMPO.
+	
+	
 	Entrada(String codigo, String nombreEspectaculo, Fecha fecha, String nombreSede,String sector, int asiento, int fila, double precioEntrada){
 		if(codigo == null || codigo.isEmpty()) 
 				throw new RuntimeException("Error: El codigo de la entrada no puede ser null o vacio.");
@@ -42,7 +43,8 @@ public class Entrada implements IEntrada{
 		this.fila = fila;
 		this.nombreSede = nombreSede;
 	}
-	//Constructor de entrada con solo sector CAMPO
+
+	
 	Entrada(String codigo, String nombreEspectaculo, Fecha fecha, String nombreSede,double precioEntrada){
 		if(codigo == null || codigo.isEmpty()) 
 			throw new RuntimeException("Error: El codigo de la entrada no puede ser null o vacio.");
@@ -63,18 +65,17 @@ public class Entrada implements IEntrada{
 		this.sector = "CAMPO";
 	}
 	
-	//Devuelve el codigo.
+
 	public String getCodigo() {
 		return codigo;
 	}
 	
-	//Devuelve el precio.
+
 	@Override
 	public double precio() {
 		return precioEntrada;
 	}
 
-	//Devuelve la ubicacion.
 	@Override
 	public String ubicacion() {
 		if(sector == "CAMPO") {
@@ -85,28 +86,26 @@ public class Entrada implements IEntrada{
 	}
 	
 	
-	//Devuelve el numero de Asiento.
+
 	public int obtenerAsiento() {
 		return asiento;
 	}
 
 	
-	//Devuelve el nombre del Sector
+
 	public String obtenerSector() {
 		return sector;
 	}
-	
-	//Devuelve el nombre de la sede
+
 	public String obtenerSede() {
 		return nombreSede;
 	}
 	
-	//Devuelve el nombre del Espectaculo
+
 	public String nombreEspectaculo() {
 		return nombreEspectaculo;
 	}
 
-	//devuelve la fecha.
 	public Fecha obtenerFecha() {
 		return fecha;
 	}
