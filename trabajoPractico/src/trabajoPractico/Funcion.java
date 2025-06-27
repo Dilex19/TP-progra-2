@@ -3,6 +3,7 @@ package trabajoPractico;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -13,7 +14,7 @@ public class Funcion {
 	private Sede sede;
 	private Fecha fecha;
 	private double precioBase;
-	private Map<String, boolean[]> asientos;
+	private Map<String, ArrayList<Boolean>> asientos;
 	private Map<String,IEntrada> entradasVendidas;
 	
 	//Constructor
@@ -26,7 +27,7 @@ public class Funcion {
 			throw new RuntimeException("Error: La sede no puede ser null.");
 		this.sede = sede;
 		this.precioBase = precioBase;
-		this.asientos = new LinkedHashMap<String, boolean[]>();
+		this.asientos = new LinkedHashMap<String, ArrayList<Boolean>>();
 		this.entradasVendidas = new HashMap<String, IEntrada>();
 		this.fecha = fecha;
 		
@@ -37,14 +38,14 @@ public class Funcion {
 			for(int i = 0; i < sectoresDeSede.length; i++) {
 				
 				int capacidadPorSector = sedeConSec.capacidadPorSector()[i];
-				boolean[] asientosBoolean = new boolean[capacidadPorSector];
+				
+				ArrayList<Boolean> asientosLista = new ArrayList<Boolean>();
 				
 				for(int x = 0; x<capacidadPorSector; x++) {
-					
-					asientosBoolean[x] = true;
+					asientosLista.add(true);
 				}
 				
-				asientos.put(sectoresDeSede[i], asientosBoolean);
+				this.asientos.put(sectoresDeSede[i], asientosLista);
 			}
 		}
 	}
@@ -81,12 +82,12 @@ public class Funcion {
 			}
 			
 			SedeConSectores sedeConS = (SedeConSectores) sede;
-			boolean[] arrayAsientos = this.asientos.get(sector);
+			ArrayList<Boolean> asientosLista = this.asientos.get(sector);
 			LinkedList<IEntrada> nuevasEntradas = new LinkedList<IEntrada>();
 			
 			
 			for(int a : asientos) {
-				arrayAsientos[a] = false;
+				asientosLista.set(a, false);
 				int fila = sedeConS.filaDeUnAsiento(a);
 				String codigoEntrada = codigoRandomParaEntrada();
 				double costo = costoEntrada(sector);
@@ -108,9 +109,9 @@ public class Funcion {
 	}
 	
 	public boolean estanDisponibles(String sector,int[] asientos) {
-		boolean[] arrayAsientos = this.asientos.get(sector);
+		ArrayList<Boolean> arrayAsientos = this.asientos.get(sector);
 		for(int a : asientos) {
-			if(arrayAsientos[a] == false) {
+			if(arrayAsientos.get(a) == false) {
 				return false;
 			}
 		}
@@ -171,8 +172,8 @@ public class Funcion {
 		if(entradasVendidas.containsKey(codigoEntrada)) {
 			if(sede instanceof SedeConSectores) {
 				entradasVendidas.remove(codigoEntrada);
-				boolean[] asientosDelSector = asientos.get(sectorEntrada);
-				asientosDelSector[asientoEntrada] = true;
+				ArrayList<Boolean> asientosDelSector = asientos.get(sectorEntrada);
+				asientosDelSector.set(asientoEntrada, true);
 			} else {
 				entradasVendidas.remove(codigoEntrada);
 			}
@@ -186,9 +187,9 @@ public class Funcion {
 	public int entradasVendidasPorSector(String sector) {
 		if(!asientos.containsKey(sector)) 
 			throw new RuntimeException("Error: El sector indicado no existe.");
-		boolean[] asientos = this.asientos.get(sector);
+		ArrayList<Boolean> asientosLista = this.asientos.get(sector);
 		int compradas = 0;
-		for(boolean asiento : asientos) {
+		for(boolean asiento : asientosLista) {
 			if(asiento == false)
 				compradas+=1;
 		}
@@ -213,15 +214,15 @@ public class Funcion {
             return false;
         }
         
-        boolean[] arrayAsientos = asientos.get(sector);
+        ArrayList<Boolean> arrayAsientos = asientos.get(sector);
         
        
-        if(asiento < 0 || asiento >= arrayAsientos.length) {
+        if(asiento < 0 || asiento >= arrayAsientos.size()) {
             return false;
         }
         
         
-        return arrayAsientos[asiento];
+        return arrayAsientos.get(asiento);
     }
 
 

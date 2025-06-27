@@ -3,9 +3,11 @@ package trabajoPractico;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Ticketek implements ITicketek {
 	private Map<String, Usuario> usuarios;
@@ -119,7 +121,9 @@ public class Ticketek implements ITicketek {
 			String sector, int[] asientos) {
 		
 		validarSiEspectaculoEstaRegistrado(nombreEspectaculo);
-
+		
+		if(asientosSeRepiten(asientos))
+			throw new RuntimeException("Error: Hay asientos repetidos.");
 		
 		Usuario usuario = autentificarUsuario(email, contrasenia);
 		
@@ -131,6 +135,18 @@ public class Ticketek implements ITicketek {
 		
 		return entradas;
 	}
+
+	private boolean asientosSeRepiten(int[] asientos) {
+		Set<Integer> asientosVistos = new HashSet<>();
+	    for (int asiento : asientos) {
+	        if (asientosVistos.contains(asiento)) {
+	            return true;
+	        }
+	        asientosVistos.add(asiento);
+	    }
+	    return false;
+	}
+
 
 	@Override
 	public String listarFunciones(String nombreEspectaculo) {
